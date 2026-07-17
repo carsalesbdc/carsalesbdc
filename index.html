@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarSalesBDC - Live Inventory Search</title>
+    <!-- Tailwind CSS for clean, high-performance styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for clean mobile icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-white font-sans antialiased flex justify-center min-h-screen">
+
+    <!-- Mobile-first wrapper (constrained to look like a mobile phone screen on desktop) -->
+    <main class="w-full max-w-md bg-slate-950 min-h-screen flex flex-col relative shadow-2xl border-x border-slate-800">
+        
+        <!-- Sticky Header with Brand and Global Quick Action -->
+        <header class="sticky top-0 z-50 bg-slate-950/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white tracking-wider text-sm">CS</div>
+                <div>
+                    <h1 class="text-sm font-bold tracking-tight uppercase">Apex Auto Group</h1>
+                    <p class="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+                        Live Inventory
+                    </p>
+                </div>
+            </div>
+            <a href="tel:555-555-5555" class="bg-slate-800 border border-slate-700 text-xs font-bold px-3 py-1.5 rounded-full transition flex items-center gap-1.5">
+                <i class="fa-solid fa-phone text-blue-500"></i> Call BDC
+            </a>
+        </header>
+
+        <!-- Fast Search / Filter Bar -->
+        <section class="p-4 bg-slate-900/40 border-b border-slate-900 sticky top-[57px] z-40 backdrop-blur-md">
+            <div class="relative flex items-center">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-slate-500 text-sm"></i>
+                <input type="text" placeholder="Search make, model, or year..." class="w-full bg-slate-900 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-blue-500 transition placeholder-slate-500 text-white">
+            </div>
+            <!-- Quick Filter Badges -->
+            <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar text-xs">
+                <button class="bg-blue-600 text-white font-bold px-3 py-1.5 rounded-full whitespace-nowrap">All (142)</button>
+                <button class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap">SUVs</button>
+                <button class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap">Trucks</button>
+                <button class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap">Performance</button>
+            </div>
+        </section>
+
+        <!-- Inventory Results Count -->
+        <div class="px-4 pt-4 flex justify-between items-center text-xs text-slate-400">
+            <span>Showing 2 Featured Vehicles</span>
+            <span class="flex items-center gap-1 text-slate-300 font-medium">Sort: Price (Low) <i class="fa-solid fa-chevron-down text-[10px]"></i></span>
+        </div>
+
+        <!-- Inventory Cards Grid -->
+        <section class="p-4 space-y-4 flex-1">
+            
+            <!-- Vehicle Card 1 -->
+            <div onclick="alert('Demo: Redirecting to VDP for Porsche 911')" class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800/80 shadow-lg cursor-pointer active:scale-[0.99] transition flex flex-col">
+                <!-- Image Container with Aspect Ratio -->
+                <div class="bg-slate-800 aspect-[16/9] w-full flex items-center justify-center relative">
+                    <span class="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">Just Arrived</span>
+                    <i class="fa-solid fa-car text-4xl text-slate-700"></i>
+                </div>
+                <!-- Details -->
+                <div class="p-3.5 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-extrabold text-base tracking-tight text-white">2024 Porsche 911 GT3</h3>
+                            <p class="text-xs text-slate-400">1,250 miles • Chalk Gray</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-black text-emerald-400">$184,950</span>
+                        </div>
+                    </div>
+                    <!-- Quick Specs Strips -->
+                    <div class="flex gap-3 text-[11px] text-slate-400 pt-1 border-t border-slate-800/60">
+                        <span><i class="fa-solid fa-gauge text-blue-500 mr-1"></i> 4.0L H6</span>
+                        <span><i class="fa-solid fa-bolt text-blue-500 mr-1"></i> 502 HP</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicle Card 2 -->
+            <div onclick="alert('Demo: Redirecting to VDP for Ford Raptor')" class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800/80 shadow-lg cursor-pointer active:scale-[0.99] transition flex flex-col">
+                <div class="bg-slate-800 aspect-[16/9] w-full flex items-center justify-center relative">
+                    <span class="absolute top-2 left-2 bg-emerald-900/80 text-emerald-400 border border-emerald-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">Manager's Special</span>
+                    <i class="fa-solid fa-truck-pickup text-4xl text-slate-700"></i>
+                </div>
+                <div class="p-3.5 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-extrabold text-base tracking-tight text-white">2023 Ford F-150 Raptor</h3>
+                            <p class="text-xs text-slate-400">14,200 miles • Agate Black</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500 line-through font-semibold block">$79,900</span>
+                            <span class="text-base font-black text-emerald-400">$76,450</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 text-[11px] text-slate-400 pt-1 border-t border-slate-800/60">
+                        <span><i class="fa-solid fa-gauge text-blue-500 mr-1"></i> 3.5L V6 EcoBoost</span>
+                        <span><i class="fa-solid fa-truck-monster text-blue-500 mr-1"></i> 4WD</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Fixed Footer Status -->
+        <footer class="p-4 text-center text-[10px] text-slate-600 border-t border-slate-900">
+            <p>Powered by carsalesbdc.com • Connected to Live Inventory</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
