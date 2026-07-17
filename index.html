@@ -2,178 +2,158 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cory Auto Group - Live Inventory</title>
-    <!-- Tailwind CSS for high-performance mobile layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>CarsalesBDC Mobile SRP</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for clean mobile icons -->
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Hide scrollbars for filter track */
+        /* Smooth scrolling and hiding scrollbars for filter pills */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
-<body class="bg-slate-950 text-white font-sans antialiased flex justify-center min-h-screen w-full">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased">
 
-    <!-- Full-width mobile layout wrapper (scales to perfectly fill any mobile screen width) -->
-    <main class="w-full min-h-screen flex flex-col relative">
+    <!-- Top Sticky Header Bar -->
+    <header class="sticky top-0 z-50 bg-slate-950 border-b border-slate-900 px-4 h-12 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-car-side text-blue-500 text-lg"></i>
+            <span class="font-black text-sm tracking-wider uppercase">CarSales<span class="text-blue-500">BDC</span></span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="tel:5551234567" class="text-slate-400 hover:text-white"><i class="fa-solid fa-phone text-sm"></i></a>
+            <i class="fa-solid fa-bars text-slate-400 text-sm"></i>
+        </div>
+    </header>
+
+    <!-- Compact Search & Filter Section (FIXED FOR AUTO-ZOOM) -->
+    <section class="p-2.5 bg-slate-900/30 border-b border-slate-900 sticky top-12 z-40 backdrop-blur-md">
+        <div class="relative flex items-center mb-2">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 text-slate-500 text-[11px]"></i>
+            <!-- text-base (16px) kills iOS auto-zoom; py-1 keeps it compact on mobile screens -->
+            <input type="text" placeholder="Search 30 vehicles..." class="w-full bg-slate-900 border border-slate-800 rounded-lg py-1 pl-8 pr-3 text-base focus:outline-none focus:border-blue-500 transition text-white placeholder-slate-500">
+        </div>
+        <!-- Quick Filter Badges -->
+        <div class="flex gap-2 overflow-x-auto no-scrollbar text-[10px]">
+            <button class="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-full whitespace-nowrap">All (30)</button>
+            <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">Hondas</button>
+            <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">SUVs</button>
+            <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">Trucks</button>
+            <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">Under $30k</button>
+        </div>
+    </section>
+
+    <!-- 2-Column Vehicle Grid (Max 4 visible on screen at once) -->
+    <main class="p-2 grid grid-cols-2 gap-2 max-w-md mx-auto">
         
-        <!-- Sticky Header: Cory Auto Group & Direct Cell Call -->
-        <header class="sticky top-0 z-50 bg-slate-950/95 backdrop-blur-md border-b border-slate-900 px-4 py-2.5 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <div class="w-7 h-7 rounded bg-blue-600 flex items-center justify-center font-black text-white text-xs">CAG</div>
+        <!-- Card 1: Honda Civic -->
+        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
+            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
+                <img src="https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Civic-Rallye-Red.jpg" alt="2024 Honda Civic Sport" class="w-full h-full object-cover">
+                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">New</span>
+            </div>
+            <div class="p-2 flex-grow flex flex-col justify-between">
                 <div>
-                    <h1 class="text-xs font-black tracking-tight uppercase">Cory Auto Group</h1>
-                    <p class="text-[9px] text-emerald-400 font-semibold flex items-center gap-1">
-                        <span class="w-1 h-1 rounded-full bg-emerald-400"></span> 30 Cars Available
-                    </p>
+                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2024 Honda Civic Sport</h2>
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
+                        <span>4,200 mi</span>
+                        <span>•</span>
+                        <span class="text-rose-400 font-medium">Rallye Red</span>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="text-xs font-black text-emerald-400 leading-none">$25,495 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
+                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $379/mo</div>
                 </div>
             </div>
-            <a href="tel:573-356-4614" class="bg-slate-900 border border-slate-800 text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 active:scale-95 transition-transform">
-                <i class="fa-solid fa-phone text-blue-500"></i> Call Cory
-            </a>
-        </header>
-
-        <!-- Compact Search & Filter Section -->
-        <section class="p-2.5 bg-slate-900/30 border-b border-slate-900 sticky top-[49px] z-40 backdrop-blur-md">
-            <div class="relative flex items-center mb-2">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 text-slate-500 text-[11px]"></i>
-                <input type="text" placeholder="Search 30 vehicles..." class="w-full bg-slate-900 border border-slate-800 rounded-lg py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:border-blue-500 transition text-white placeholder-slate-500">
+            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
+                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
+                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
             </div>
-            <!-- Quick Filter Badges -->
-            <div class="flex gap-2 overflow-x-auto no-scrollbar text-[10px]">
-                <button class="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-full whitespace-nowrap">All (30)</button>
-                <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">Hondas</button>
-                <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">SUVs</button>
-                <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">Trucks</button>
-                <button class="bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-1 rounded-full whitespace-nowrap">Under $30k</button>
-            </div>
-        </section>
+        </article>
 
-        <!-- 2-Column High-Density Grid (Fits exactly 4 cars on typical mobile screen height) -->
-        <section class="grid grid-cols-2 gap-2 p-2 flex-1 bg-slate-950">
-            
-            <!-- Vehicle 1 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]">
-                <div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950">
-                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=220&q=80" alt="Vehicle" class="w-full h-full object-cover">
-                    <span class="absolute top-1 left-1 bg-blue-600 text-white text-[7px] font-black px-1 py-0.5 rounded uppercase">New</span>
+        <!-- Card 2: Toyota RAV4 -->
+        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
+            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
+                <img src="https://dealerinspire-image-library-prod.s3.us-east-1.amazonaws.com/images/b9axaHK3uBYeZFKVcG3C2jOz0PrAWvWWw27VMvbj.png" alt="2021 Toyota RAV4 XLE" class="w-full h-full object-cover">
+                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">Pre-Owned</span>
+            </div>
+            <div class="p-2 flex-grow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2021 Toyota RAV4 XLE</h2>
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
+                        <span>32,150 mi</span>
+                        <span>•</span>
+                        <span class="text-blue-400 font-medium">Cavalry Blue</span>
+                    </div>
                 </div>
-                <div class="mt-1.5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-extrabold text-[11px] leading-tight text-white truncate">2024 Honda Civic Sport</h3>
-                        <p class="text-[9px] text-slate-400">6,200 miles</p>
-                        <div class="mt-1">
-                            <p class="text-[11px] font-bold text-emerald-400">All-In: $24,800</p>
-                            <p class="text-[9px] text-slate-500 font-medium">Est. $349/mo</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1.5 mt-2">
-                        <button onclick="alert('Lead Prompt: Checking Availability on 2024 Honda Civic Sport')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-1.5 rounded text-[8px] uppercase tracking-wider text-center">Check Avail</button>
-                        <a href="tel:573-356-4614" class="bg-slate-800 hover:bg-slate-700 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a>
-                    </div>
+                <div class="mt-2">
+                    <div class="text-xs font-black text-emerald-400 leading-none">$27,890 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
+                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $415/mo</div>
                 </div>
             </div>
+            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
+                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
+                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
+            </div>
+        </article>
 
-            <!-- Vehicle 2 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]">
-                <div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950">
-                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=220&q=80" alt="Vehicle" class="w-full h-full object-cover">
+        <!-- Card 3: Ford Explorer -->
+        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
+            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
+                <img src="https://di-sitebuilder-assets.dealerinspire.com/Ford/MLP/Explorer/2022/color-Carbonized-Gray.jpg" alt="2022 Ford Explorer XLT" class="w-full h-full object-cover">
+                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">Pre-Owned</span>
+            </div>
+            <div class="p-2 flex-grow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2022 Ford Explorer XLT</h2>
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
+                        <span>24,800 mi</span>
+                        <span>•</span>
+                        <span class="text-slate-400 font-medium">Gray</span>
+                    </div>
                 </div>
-                <div class="mt-1.5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-extrabold text-[11px] leading-tight text-white truncate">2021 Toyota RAV4 XLE</h3>
-                        <p class="text-[9px] text-slate-400">32,450 miles</p>
-                        <div class="mt-1">
-                            <p class="text-[11px] font-bold text-emerald-400">All-In: $26,995</p>
-                            <p class="text-[9px] text-slate-500 font-medium">Est. $389/mo</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1.5 mt-2">
-                        <button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-1.5 rounded text-[8px] uppercase tracking-wider text-center">Check Avail</button>
-                        <a href="tel:573-356-4614" class="bg-slate-800 hover:bg-slate-700 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a>
-                    </div>
+                <div class="mt-2">
+                    <div class="text-xs font-black text-emerald-400 leading-none">$34,995 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
+                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $519/mo</div>
                 </div>
             </div>
+            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
+                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
+                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
+            </div>
+        </article>
 
-            <!-- Vehicle 3 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]">
-                <div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950">
-                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=220&q=80" alt="Vehicle" class="w-full h-full object-cover">
-                    <span class="absolute top-1 left-1 bg-emerald-900 text-emerald-400 border border-emerald-800 text-[7px] font-black px-1 py-0.5 rounded uppercase">Manager Spec</span>
+        <!-- Card 4: Honda Accord -->
+        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
+            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
+                <img src="https://mystrongad.com/HEH_HendrickHondaCharlotte/Interactive/Accord/2024/Hybrid/2024-Honda-Accord-Hybrid-Black.webp" alt="2024 Honda Accord EX" class="w-full h-full object-cover">
+                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">New</span>
+            </div>
+            <div class="p-2 flex-grow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2024 Honda Accord EX</h2>
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
+                        <span>12 mi</span>
+                        <span>•</span>
+                        <span class="text-slate-200 font-medium">Crystal Black</span>
+                    </div>
                 </div>
-                <div class="mt-1.5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-extrabold text-[11px] leading-tight text-white truncate">2022 Ford Explorer XLT</h3>
-                        <p class="text-[9px] text-slate-400">18,210 miles</p>
-                        <div class="mt-1">
-                            <p class="text-[11px] font-bold text-emerald-400">All-In: $34,495</p>
-                            <p class="text-[9px] text-slate-500 font-medium">Est. $497/mo</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1.5 mt-2">
-                        <button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-1.5 rounded text-[8px] uppercase tracking-wider text-center">Check Avail</button>
-                        <a href="tel:573-356-4614" class="bg-slate-800 hover:bg-slate-700 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a>
-                    </div>
+                <div class="mt-2">
+                    <div class="text-xs font-black text-emerald-400 leading-none">$28,980 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
+                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $429/mo</div>
                 </div>
             </div>
-
-            <!-- Vehicle 4 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]">
-                <div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950">
-                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=220&q=80" alt="Vehicle" class="w-full h-full object-cover">
-                </div>
-                <div class="mt-1.5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-extrabold text-[11px] leading-tight text-white truncate">2024 Honda Accord EX</h3>
-                        <p class="text-[9px] text-slate-400">850 miles</p>
-                        <div class="mt-1">
-                            <p class="text-[11px] font-bold text-emerald-400">All-In: $29,900</p>
-                            <p class="text-[9px] text-slate-500 font-medium">Est. $429/mo</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1.5 mt-2">
-                        <button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-1.5 rounded text-[8px] uppercase tracking-wider text-center">Check Avail</button>
-                        <a href="tel:573-356-4614" class="bg-slate-800 hover:bg-slate-700 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a>
-                    </div>
-                </div>
+            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
+                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
+                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
             </div>
-
-            <!-- Generating up to 30 items for true scrolling performance test -->
-            <!-- 5 - 10 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2020 Chevrolet Equinox</h3><p class="text-[9px] text-slate-400">42,800 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $19,995</p><p class="text-[9px] text-slate-500 font-medium">Est. $288/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2019 Jeep Grand Cherokee</h3><p class="text-[9px] text-slate-400">58,120 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $24,950</p><p class="text-[9px] text-slate-500 font-medium">Est. $359/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2024 Honda CR-V EX-L</h3><p class="text-[9px] text-slate-400">12,100 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $33,450</p><p class="text-[9px] text-slate-500 font-medium">Est. $479/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2025 Honda Pilot TrailSport</h3><p class="text-[9px] text-slate-400">3,100 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $48,900</p><p class="text-[9px] text-slate-500 font-medium">Est. $699/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2023 Honda CR-V Sport</h3><p class="text-[9px] text-slate-400">18,400 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $31,200</p><p class="text-[9px] text-slate-500 font-medium">Est. $449/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2021 Toyota Camry SE</h3><p class="text-[9px] text-slate-400">41,200 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $22,800</p><p class="text-[9px] text-slate-500 font-medium">Est. $329/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-
-            <!-- 11 - 20 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2022 Ford Mustang GT</h3><p class="text-[9px] text-slate-400">12,400 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $38,900</p><p class="text-[9px] text-slate-500 font-medium">Est. $559/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2023 Jeep Wrangler Rubicon</h3><p class="text-[9px] text-slate-400">15,600 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $47,200</p><p class="text-[9px] text-slate-500 font-medium">Est. $679/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2021 Chevy Silverado</h3><p class="text-[9px] text-slate-400">45,100 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $32,950</p><p class="text-[9px] text-slate-500 font-medium">Est. $475/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2024 Toyota Highlander</h3><p class="text-[9px] text-slate-400">8,200 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $41,500</p><p class="text-[9px] text-slate-500 font-medium">Est. $599/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2020 Ford F-150 Lariat</h3><p class="text-[9px] text-slate-400">49,800 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $36,800</p><p class="text-[9px] text-slate-500 font-medium">Est. $529/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2022 Honda HR-V LX</h3><p class="text-[9px] text-slate-400">22,400 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $21,900</p><p class="text-[9px] text-slate-500 font-medium">Est. $315/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2023 Chevy Blazer LT</h3><p class="text-[9px] text-slate-400">19,100 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $28,950</p><p class="text-[9px] text-slate-500 font-medium">Est. $419/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2021 Toyota Tundra SR5</h3><p class="text-[9px] text-slate-400">38,700 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $39,950</p><p class="text-[9px] text-slate-500 font-medium">Est. $575/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2022 Jeep Compass Trailhawk</h3><p class="text-[9px] text-slate-400">26,300 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $24,800</p><p class="text-[9px] text-slate-500 font-medium">Est. $355/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2024 Honda Odyssey EX-L</h3><p class="text-[9px] text-slate-400">11,400 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $38,500</p><p class="text-[9px] text-slate-500 font-medium">Est. $555/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-
-            <!-- 21 - 30 -->
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2022 Chevy Traverse RS</h3><p class="text-[9px] text-slate-400">31,500 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $33,900</p><p class="text-[9px] text-slate-500 font-medium">Est. $489/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2020 Toyota Tacoma TRD</h3><p class="text-[9px] text-slate-400">47,200 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $31,500</p><p class="text-[9px] text-slate-500 font-medium">Est. $455/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            <div class="bg-slate-900/50 rounded border border-slate-800/85 overflow-hidden flex flex-col justify-between p-2 min-h-[220px]"><div class="relative rounded overflow-hidden aspect-[4/3] bg-slate-950"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=220&q=80" class="w-full h-full object-cover"></div><div class="mt-1.5 flex-1 flex flex-col justify-between"><div><h3 class="font-extrabold text-[11px] leading-tight truncate">2023 Ford Edge SEL</h3><p class="text-[9px] text-slate-400">14,200 miles</p><div class="mt-1"><p class="text-[11px] font-bold text-emerald-400">All-In: $27,900</p><p class="text-[9px] text-slate-500 font-medium">Est. $399/mo</p></div></div><div class="flex gap-1.5 mt-2"><button onclick="alert('Lead Prompt')" class="flex-1 bg-blue-600 text-white font-extrabold py-1.5 rounded text-[8px] uppercase text-center">Check Avail</button><a href="tel:573-356-4614" class="bg-slate-800 text-blue-400 w-7 h-7 flex items-center justify-center rounded border border-slate-700"><i class="fa-solid fa-phone text-[10px]"></i></a></div></div></div>
-            
-        </section>
-
-        <!-- Minimalist Mobile Footer -->
-        <footer class="py-6 px-4 border-t border-slate-900 bg-slate-950 text-center text-[10px] text-slate-600">
-            <p>© 2026 Cory Auto Group. All rights reserved.</p>
-            <p class="mt-1">Designed for extreme conversion rate efficiency.</p>
-        </footer>
+        </article>
 
     </main>
+
 </body>
 </html>
