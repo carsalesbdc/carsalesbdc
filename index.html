@@ -9,7 +9,6 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Smooth scrolling and hiding scrollbars for filter pills */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         body { -webkit-tap-highlight-color: transparent; }
@@ -29,12 +28,11 @@
         </div>
     </header>
 
-    <!-- Compact Search & Filter Section (FIXED FOR AUTO-ZOOM) -->
+    <!-- Compact Search & Filter Section -->
     <section class="p-2.5 bg-slate-900/30 border-b border-slate-900 sticky top-12 z-40 backdrop-blur-md">
         <div class="relative flex items-center mb-2">
             <i class="fa-solid fa-magnifying-glass absolute left-3 text-slate-500 text-[11px]"></i>
-            <!-- text-base (16px) kills iOS auto-zoom; py-1 keeps it compact on mobile screens -->
-            <input type="text" placeholder="Search 30 vehicles..." class="w-full bg-slate-900 border border-slate-800 rounded-lg py-1 pl-8 pr-3 text-base focus:outline-none focus:border-blue-500 transition text-white placeholder-slate-500">
+            <input type="text" id="searchInput" placeholder="Search 30 vehicles..." class="w-full bg-slate-900 border border-slate-800 rounded-lg py-1 pl-8 pr-3 text-base focus:outline-none focus:border-blue-500 transition text-white placeholder-slate-500">
         </div>
         <!-- Quick Filter Badges -->
         <div class="flex gap-2 overflow-x-auto no-scrollbar text-[10px]">
@@ -46,114 +44,87 @@
         </div>
     </section>
 
-    <!-- 2-Column Vehicle Grid (Max 4 visible on screen at once) -->
-    <main class="p-2 grid grid-cols-2 gap-2 max-w-md mx-auto">
-        
-        <!-- Card 1: Honda Civic -->
-        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
-            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
-                <img src="https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Civic-Rallye-Red.jpg" alt="2024 Honda Civic Sport" class="w-full h-full object-cover">
-                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">New</span>
-            </div>
-            <div class="p-2 flex-grow flex flex-col justify-between">
-                <div>
-                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2024 Honda Civic Sport</h2>
-                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
-                        <span>4,200 mi</span>
-                        <span>•</span>
-                        <span class="text-rose-400 font-medium">Rallye Red</span>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="text-xs font-black text-emerald-400 leading-none">$25,495 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
-                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $379/mo</div>
-                </div>
-            </div>
-            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
-                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
-                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
-            </div>
-        </article>
-
-        <!-- Card 2: Toyota RAV4 -->
-        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
-            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
-                <img src="https://dealerinspire-image-library-prod.s3.us-east-1.amazonaws.com/images/b9axaHK3uBYeZFKVcG3C2jOz0PrAWvWWw27VMvbj.png" alt="2021 Toyota RAV4 XLE" class="w-full h-full object-cover">
-                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">Pre-Owned</span>
-            </div>
-            <div class="p-2 flex-grow flex flex-col justify-between">
-                <div>
-                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2021 Toyota RAV4 XLE</h2>
-                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
-                        <span>32,150 mi</span>
-                        <span>•</span>
-                        <span class="text-blue-400 font-medium">Cavalry Blue</span>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="text-xs font-black text-emerald-400 leading-none">$27,890 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
-                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $415/mo</div>
-                </div>
-            </div>
-            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
-                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
-                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
-            </div>
-        </article>
-
-        <!-- Card 3: Ford Explorer -->
-        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
-            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
-                <img src="https://di-sitebuilder-assets.dealerinspire.com/Ford/MLP/Explorer/2022/color-Carbonized-Gray.jpg" alt="2022 Ford Explorer XLT" class="w-full h-full object-cover">
-                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">Pre-Owned</span>
-            </div>
-            <div class="p-2 flex-grow flex flex-col justify-between">
-                <div>
-                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2022 Ford Explorer XLT</h2>
-                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
-                        <span>24,800 mi</span>
-                        <span>•</span>
-                        <span class="text-slate-400 font-medium">Gray</span>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="text-xs font-black text-emerald-400 leading-none">$34,995 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
-                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $519/mo</div>
-                </div>
-            </div>
-            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
-                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
-                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
-            </div>
-        </article>
-
-        <!-- Card 4: Honda Accord -->
-        <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
-            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center">
-                <img src="https://mystrongad.com/HEH_HendrickHondaCharlotte/Interactive/Accord/2024/Hybrid/2024-Honda-Accord-Hybrid-Black.webp" alt="2024 Honda Accord EX" class="w-full h-full object-cover">
-                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">New</span>
-            </div>
-            <div class="p-2 flex-grow flex flex-col justify-between">
-                <div>
-                    <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">2024 Honda Accord EX</h2>
-                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
-                        <span>12 mi</span>
-                        <span>•</span>
-                        <span class="text-slate-200 font-medium">Crystal Black</span>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="text-xs font-black text-emerald-400 leading-none">$28,980 <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
-                    <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $429/mo</div>
-                </div>
-            </div>
-            <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
-                <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
-                <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
-            </div>
-        </article>
-
+    <!-- 2-Column Vehicle Grid -->
+    <main id="vehicleGrid" class="p-2 grid grid-cols-2 gap-2 max-w-md mx-auto">
+        <!-- Rendered dynamically by Javascript below -->
     </main>
+
+    <!-- Database and Card Builder script -->
+    <script>
+        // 30 Vehicle Database
+        const vehicles = [
+            { id: 1, year: 2024, make: "Honda", model: "Civic Sport", price: 25495, payment: 379, miles: "4,200", color: "Rallye Red", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Civic-Rallye-Red.jpg" },
+            { id: 2, year: 2021, make: "Toyota", model: "RAV4 XLE", price: 27890, payment: 415, miles: "32,150", color: "Cavalry Blue", status: "Pre-Owned", img: "https://dealerinspire-image-library-prod.s3.us-east-1.amazonaws.com/images/b9axaHK3uBYeZFKVcG3C2jOz0PrAWvWWw27VMvbj.png" },
+            { id: 3, year: 2022, make: "Ford", model: "Explorer XLT", price: 34995, payment: 519, miles: "24,800", color: "Carbonized Gray", status: "Pre-Owned", img: "https://di-sitebuilder-assets.dealerinspire.com/Ford/MLP/Explorer/2022/color-Carbonized-Gray.jpg" },
+            { id: 4, year: 2024, make: "Honda", model: "Accord EX", price: 28980, payment: 429, miles: "12", color: "Crystal Black", status: "New", img: "https://mystrongad.com/HEH_HendrickHondaCharlotte/Interactive/Accord/2024/Hybrid/2024-Honda-Accord-Hybrid-Black.webp" },
+            { id: 5, year: 2023, make: "Jeep", model: "Grand Cherokee", price: 38450, payment: 569, miles: "18,400", color: "Bright White", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Jeep/Grand%20Cherokee/SUV/color/Bright%20White%20Clearcoat-PW7-640-en_US.jpg" },
+            { id: 6, year: 2021, make: "Subaru", model: "Outback Premium", price: 24995, payment: 369, miles: "41,200", color: "Autumn Green", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Subaru/Outback/Wagon/color/Autumn%20Green%20Metallic-T6-640-en_US.jpg" },
+            { id: 7, year: 2023, make: "Chevrolet", model: "Silverado 1500 LT", price: 44800, payment: 659, miles: "15,300", color: "Red Hot", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Chevrolet/Silverado%201500/Crew%20Cab%20Pickup/color/Red%20Hot-G7C-640-en_US.jpg" },
+            { id: 8, year: 2024, make: "Honda", model: "HR-V LX", price: 26150, payment: 389, miles: "15", color: "Milano Red", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-HR-V-Milano-Red.jpg" },
+            { id: 9, year: 2022, make: "Nissan", model: "Altima SV", price: 19890, payment: 299, miles: "34,100", color: "Super Black", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Nissan/Altima/Sedan/color/Super%20Black-KH3-640-en_US.jpg" },
+            { id: 10, year: 2023, make: "Kia", model: "Telluride S", price: 37900, payment: 559, miles: "21,800", color: "Dark Moss", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Kia/Telluride/SUV/color/Dark%20Moss-GMS-640-en_US.jpg" },
+            { id: 11, year: 2024, make: "Hyundai", model: "Tucson SEL", price: 29450, payment: 439, miles: "100", color: "Intense Blue", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Hyundai/Tucson/SUV/color/Intense%20Blue-YP5-640-en_US.jpg" },
+            { id: 12, year: 2020, make: "Ford", model: "F-150 XLT", price: 32800, payment: 489, miles: "52,400", color: "Velocity Blue", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2020/Ford/F-150/SuperCrew%20Cab%20Pickup/color/Velocity%20Blue%20Metallic-E7-640-en_US.jpg" },
+            { id: 13, year: 2024, make: "Honda", model: "CR-V EX-L", price: 34650, payment: 509, miles: "5", color: "Platinum White", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-CR-V-Platinum-White.jpg" },
+            { id: 14, year: 2021, make: "Mazda", model: "CX-5 Touring", price: 21990, payment: 329, miles: "39,700", color: "Soul Red Crystal", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Mazda/CX-5/SUV/color/Soul%20Red%20Crystal%20Metallic-46V-640-en_US.jpg" },
+            { id: 15, year: 2023, make: "GMC", model: "Sierra 1500 Pro", price: 41900, payment: 619, miles: "19,200", color: "Onyx Black", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/GMC/Sierra%201500/Double%20Cab%20Pickup/color/Onyx%20Black-GBA-640-en_US.jpg" },
+            { id: 16, year: 2021, make: "Dodge", model: "Challenger SXT", price: 24850, payment: 369, miles: "28,600", color: "Pitch Black", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Dodge/Challenger/Coupe/color/Pitch%20Black%20Clearcoat-PX8-640-en_US.jpg" },
+            { id: 17, year: 2024, make: "Honda", model: "Pilot Touring", price: 48600, payment: 719, miles: "8", color: "Sonic Gray", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Pilot-Sonic-Gray.jpg" },
+            { id: 18, year: 2022, make: "Toyota", model: "Camry SE", price: 23900, payment: 359, miles: "29,400", color: "Predawn Gray", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Toyota/Camry/Sedan/color/Predawn%20Gray%20Mica-1H1-640-en_US.jpg" },
+            { id: 19, year: 2023, make: "Lexus", model: "RX 350", price: 49950, payment: 739, miles: "14,500", color: "Eminent White", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Lexus/RX%20350/SUV/color/Eminent%20White%20Pearl-085-640-en_US.jpg" },
+            { id: 20, year: 2020, make: "Jeep", model: "Wrangler Unlimited", price: 31500, payment: 469, miles: "45,100", color: "Firecracker Red", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2020/Jeep/Wrangler%20Unlimited/SUV/color/Firecracker%20Red%20Clearcoat-PRC-640-en_US.jpg" },
+            { id: 21, year: 2024, make: "Honda", model: "Odyssey EX-L", price: 41200, payment: 609, miles: "25", color: "Modern Steel", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Odyssey-Modern-Steel.jpg" },
+            { id: 22, year: 2021, make: "Ford", model: "Mustang EcoBoost", price: 22900, payment: 339, miles: "31,800", color: "Rapid Red", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Ford/Mustang/Coupe/color/Rapid%20Red%20Metallic%20Tinted%20Clearcoat-D4-640-en_US.jpg" },
+            { id: 23, year: 2023, make: "Tesla", model: "Model 3 Base", price: 31990, payment: 479, miles: "22,400", color: "Solid Black", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Tesla/Model%203/Sedan/color/Solid%20Black-PBSB-640-en_US.jpg" },
+            { id: 24, year: 2024, make: "Honda", model: "Ridgeline RTL", price: 42500, payment: 629, miles: "10", color: "Obsidian Blue", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Ridgeline-Obsidian-Blue.jpg" },
+            { id: 25, year: 2022, make: "Ram", model: "1500 Big Horn", price: 36900, payment: 549, miles: "38,200", color: "Delmonico Red", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Ram/1500/Crew%20Cab%20Pickup/color/Delmonico%20Red%20Pearlcoat-PRV-640-en_US.jpg" },
+            { id: 26, year: 2021, make: "Audi", model: "Q5 45 S-Line", price: 29800, payment: 449, miles: "36,400", color: "Ibis White", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Audi/Q5/SUV/color/Ibis%20White-T9T9-640-en_US.jpg" },
+            { id: 27, year: 2023, make: "Volkswagen", model: "Tiguan SE", price: 25990, payment: 389, miles: "18,900", color: "Pyrite Silver", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Volkswagen/Tiguan/SUV/color/Pyrite%20Silver%20Metallic-K2K2-640-en_US.jpg" },
+            { id: 28, year: 2024, make: "Honda", model: "Passport TrailSport", price: 44500, payment: 659, miles: "11", color: "Diffused Sky", status: "New", img: "https://di-uploads-pod44.dealerinspire.com/hondaofmiddleburgheights/uploads/2024/02/2024-Honda-Passport-Diffused-Sky.jpg" },
+            { id: 29, year: 2022, make: "Volvo", model: "XC60 B5", price: 31400, payment: 469, miles: "27,300", color: "Thunder Grey", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Volvo/XC60/SUV/color/Thunder%20Grey%20Metallic-728-640-en_US.jpg" },
+            { id: 30, year: 2023, make: "BMW", model: "330i xDrive", price: 35900, payment: 539, miles: "20,100", color: "Portimao Blue", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/BMW/330/Sedan/color/Portimao%20Blue%20Metallic-C31-640-en_US.jpg" }
+        ];
+
+        const grid = document.getElementById('vehicleGrid');
+
+        // Function to build and display the cards
+        function displayVehicles(list) {
+            grid.innerHTML = '';
+            list.forEach(car => {
+                const card = `
+                    <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
+                        <!-- Image Container (CONTAINED WITH BG-SLATE-950 SO CARS NEVER CROP OR CUT OFF) -->
+                        <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center p-1">
+                            <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-contain">
+                            <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">${car.status}</span>
+                        </div>
+                        <div class="p-2 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                                <div class="flex flex-wrap gap-x-1.5 gap-y-0.5 mt-0.5 text-[9px] text-slate-400">
+                                    <span>${car.miles} mi</span>
+                                    <span>•</span>
+                                    <span class="text-slate-300 font-medium">${car.color}</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <div class="text-xs font-black text-emerald-400 leading-none">$${car.price.toLocaleString()} <span class="text-[8px] font-normal text-slate-500 uppercase tracking-wider">All-In</span></div>
+                                <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $${car.payment}/mo</div>
+                            </div>
+                        </div>
+                        <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
+                            <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
+                            <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
+                        </div>
+                    </article>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // Render the 30 vehicles immediately on page load
+        displayVehicles(vehicles);
+    </script>
 
 </body>
 </html>
