@@ -23,7 +23,7 @@
             <span class="font-black text-sm tracking-wider uppercase">CarSales<span class="text-blue-500">BDC</span></span>
         </div>
         <div class="flex items-center gap-4">
-            <a href="tel:5551234567" class="text-slate-400 hover:text-white"><i class="fa-solid fa-phone text-sm"></i></a>
+            <a href="tel:5733564614" class="text-slate-400 hover:text-white"><i class="fa-solid fa-phone text-sm"></i></a>
             <i class="fa-solid fa-bars text-slate-400 text-sm"></i>
         </div>
     </header>
@@ -50,53 +50,54 @@
     </main>
 
     <script>
-        // Premium 30-Vehicle Complete Dataset
+        // Premium 30-Vehicle Complete Dataset with Active Image Assets
         const vehicles = [
-            { id: 1, year: 2024, make: "Honda", model: "Civic Sport", price: 25495, payment: 379, miles: "4,200", color: "Rallye Red", colorClass: "text-rose-400", type: "Car", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Civic/Sedan/color/Rallye%20Red-R513-640-en_US.jpg" },
-            { id: 2, year: 2021, make: "Toyota", model: "RAV4 XLE", price: 27890, payment: 415, miles: "32,150", color: "Cavalry Blue", colorClass: "text-blue-400", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Toyota/RAV4/SUV/color/Cavalry%20Blue-08W7-640-en_US.jpg" },
-            { id: 3, year: 2022, make: "Ford", model: "Explorer XLT", price: 34995, payment: 519, miles: "24,800", color: "Carbonized Gray", colorClass: "text-slate-400", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Ford/Explorer/SUV/color/Carbonized%20Gray%20Metallic-M7-640-en_US.jpg" },
-            { id: 4, year: 2024, make: "Honda", model: "Accord EX", price: 28980, payment: 429, miles: "12", color: "Crystal Black", colorClass: "text-slate-200", type: "Car", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Accord/Sedan/color/Crystal%20Black%20Pearl-NH731P-640-en_US.jpg" },
-            { id: 5, year: 2023, make: "Jeep", model: "Grand Cherokee", price: 38450, payment: 569, miles: "18,400", color: "Bright White", colorClass: "text-white", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Jeep/Grand%20Cherokee/SUV/color/Bright%20White%20Clearcoat-PW7-640-en_US.jpg" },
-            { id: 6, year: 2021, make: "Subaru", model: "Outback Premium", price: 24995, payment: 369, miles: "41,200", color: "Autumn Green", colorClass: "text-emerald-500", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Subaru/Outback/Wagon/color/Autumn%20Green%20Metallic-T6-640-en_US.jpg" },
-            { id: 7, year: 2023, make: "Chevrolet", model: "Silverado 1500", price: 44800, payment: 659, miles: "15,300", color: "Red Hot", colorClass: "text-red-500", type: "Truck", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Chevrolet/Silverado%201500/Crew%20Cab%20Pickup/color/Red%20Hot-G7C-640-en_US.jpg" },
-            { id: 8, year: 2024, make: "Honda", model: "HR-V LX", price: 26150, payment: 389, miles: "15", color: "Milano Red", colorClass: "text-rose-500", type: "SUV", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/HR-V/SUV/color/Milano%20Red-R81-640-en_US.jpg" },
-            { id: 9, year: 2022, make: "Nissan", model: "Altima SV", price: 19890, payment: 299, miles: "34,100", color: "Super Black", colorClass: "text-slate-300", type: "Car", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Nissan/Altima/Sedan/color/Super%20Black-KH3-640-en_US.jpg" },
-            { id: 10, year: 2023, make: "Kia", model: "Telluride S", price: 37900, payment: 559, miles: "21,800", color: "Dark Moss", colorClass: "text-olive-400", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Kia/Telluride/SUV/color/Dark%20Moss-GMS-640-en_US.jpg" },
-            { id: 11, year: 2024, make: "Hyundai", model: "Tucson SEL", price: 29450, payment: 439, miles: "100", color: "Intense Blue", colorClass: "text-blue-500", type: "SUV", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Hyundai/Tucson/SUV/color/Intense%20Blue-YP5-640-en_US.jpg" },
-            { id: 12, year: 2020, make: "Ford", model: "F-150 XLT", price: 32800, payment: 489, miles: "52,400", color: "Velocity Blue", colorClass: "text-cyan-400", type: "Truck", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2020/Ford/F-150/SuperCrew%20Cab%20Pickup/color/Velocity%20Blue%20Metallic-E7-640-en_US.jpg" },
-            { id: 13, year: 2024, make: "Honda", model: "CR-V EX-L", price: 34650, payment: 509, miles: "5", color: "Platinum White", colorClass: "text-white", type: "SUV", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/CR-V/SUV/color/Platinum%20White%20Pearl-NH883P-640-en_US.jpg" },
-            { id: 14, year: 2021, make: "Mazda", model: "CX-5 Touring", price: 21990, payment: 329, miles: "39,700", color: "Soul Red", colorClass: "text-red-400", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Mazda/CX-5/SUV/color/Soul%20Red%20Crystal%20Metallic-46V-640-en_US.jpg" },
-            { id: 15, year: 2023, make: "GMC", model: "Sierra 1500", price: 41900, payment: 619, miles: "19,200", color: "Onyx Black", colorClass: "text-slate-100", type: "Truck", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/GMC/Sierra%201500/Double%20Cab%20Pickup/color/Onyx%20Black-GBA-640-en_US.jpg" },
-            { id: 16, year: 2021, make: "Dodge", model: "Challenger SXT", price: 24850, payment: 369, miles: "28,600", color: "Pitch Black", colorClass: "text-slate-300", type: "Car", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Dodge/Challenger/Coupe/color/Pitch%20Black%20Clearcoat-PX8-640-en_US.jpg" },
-            { id: 17, year: 2024, make: "Honda", model: "Pilot Touring", price: 48600, payment: 719, miles: "8", color: "Sonic Gray", colorClass: "text-teal-600", type: "SUV", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Pilot/SUV/color/Sonic%20Gray%20Pearl-NH877P-640-en_US.jpg" },
-            { id: 18, year: 2022, make: "Toyota", model: "Camry SE", price: 23900, payment: 359, miles: "29,400", color: "Predawn Gray", colorClass: "text-slate-400", type: "Car", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Toyota/Camry/Sedan/color/Predawn%20Gray%20Mica-1H1-640-en_US.jpg" },
-            { id: 19, year: 2023, make: "Lexus", model: "RX 350", price: 49950, payment: 739, miles: "14,500", color: "Eminent White", colorClass: "text-slate-100", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Lexus/RX%20350/SUV/color/Eminent%20White%20Pearl-085-640-en_US.jpg" },
-            { id: 20, year: 2020, make: "Jeep", model: "Wrangler UTD", price: 31500, payment: 469, miles: "45,100", color: "Firecracker Red", colorClass: "text-red-500", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2020/Jeep/Wrangler%20Unlimited/SUV/color/Firecracker%20Red%20Clearcoat-PRC-640-en_US.jpg" },
-            { id: 21, year: 2024, make: "Honda", model: "Odyssey EX-L", price: 41200, payment: 609, miles: "25", color: "Modern Steel", colorClass: "text-slate-400", type: "SUV", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Odyssey/Mini-Van/color/Modern%20Steel%20Metallic-NH797M-640-en_US.jpg" },
-            { id: 22, year: 2021, make: "Ford", model: "Mustang Eco", price: 22900, payment: 339, miles: "31,800", color: "Rapid Red", colorClass: "text-rose-600", type: "Car", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Ford/Mustang/Coupe/color/Rapid%20Red%20Metallic%20Tinted%20Clearcoat-D4-640-en_US.jpg" },
-            { id: 23, year: 2023, make: "Tesla", model: "Model 3 Base", price: 31990, payment: 479, miles: "22,400", color: "Solid Black", colorClass: "text-slate-400", type: "Car", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Tesla/Model%203/Sedan/color/Solid%20Black-PBSB-640-en_US.jpg" },
-            { id: 24, year: 2024, make: "Honda", model: "Ridgeline RTL", price: 42500, payment: 629, miles: "10", color: "Obsidian Blue", colorClass: "text-blue-600", type: "Truck", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Ridgeline/Crew%20Cab%20Pickup/color/Obsidian%20Blue%20Pearl-B588P-640-en_US.jpg" },
-            { id: 25, year: 2022, make: "Ram", model: "1500 Horn", price: 36900, payment: 549, miles: "38,200", color: "Delmonico Red", colorClass: "text-red-700", type: "Truck", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Ram/1500/Crew%20Cab%20Pickup/color/Delmonico%20Red%20Pearlcoat-PRV-640-en_US.jpg" },
-            { id: 26, year: 2021, make: "Audi", model: "Q5 S-Line", price: 29800, payment: 449, miles: "36,400", color: "Ibis White", colorClass: "text-white", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2021/Audi/Q5/SUV/color/Ibis%20White-T9T9-640-en_US.jpg" },
-            { id: 27, year: 2023, make: "VW", model: "Tiguan SE", price: 25990, payment: 389, miles: "18,900", color: "Pyrite Silver", colorClass: "text-slate-300", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/Volkswagen/Tiguan/SUV/color/Pyrite%20Silver%20Metallic-K2K2-640-en_US.jpg" },
-            { id: 28, year: 2024, make: "Honda", model: "Passport TS", price: 44500, payment: 659, miles: "11", color: "Diffused Sky", colorClass: "text-cyan-300", type: "SUV", status: "New", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Passport/SUV/color/Diffused%20Sky%20Blue-B635M-640-en_US.jpg" },
-            { id: 29, year: 2022, make: "Volvo", model: "XC60 B5", price: 31400, payment: 469, miles: "27,300", color: "Thunder Grey", colorClass: "text-slate-400", type: "SUV", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2022/Volvo/XC60/SUV/color/Thunder%20Grey%20Metallic-728-640-en_US.jpg" },
-            { id: 30, year: 2023, make: "BMW", model: "330i xDrive", price: 35900, payment: 539, miles: "20,100", color: "Portimao Blue", colorClass: "text-blue-500", type: "Car", status: "Pre-Owned", img: "https://images.dealer.com/ddc/vehicles/2023/BMW/330/Sedan/color/Portimao%20Blue%20Metallic-C31-640-en_US.jpg" }
+            { id: 1, year: 2024, make: "Honda", model: "Civic Sport", price: 25495, payment: 379, miles: "4,200", color: "Rallye Red", colorClass: "text-rose-400", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Civic/Sedan/color/Rallye%20Red-R513-640-en_US.jpg" },
+            { id: 2, year: 2021, make: "Toyota", model: "RAV4 XLE", price: 27890, payment: 415, miles: "32,150", color: "Cavalry Blue", colorClass: "text-blue-400", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2021/Toyota/RAV4/SUV/color/Cavalry%20Blue-08W7-640-en_US.jpg" },
+            { id: 3, year: 2022, make: "Ford", model: "Explorer XLT", price: 34995, payment: 519, miles: "24,800", color: "Carbonized Gray", colorClass: "text-slate-400", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2022/Ford/Explorer/SUV/color/Carbonized%20Gray%20Metallic-M7-640-en_US.jpg" },
+            { id: 4, year: 2024, make: "Honda", model: "Accord EX", price: 28980, payment: 429, miles: "12", color: "Crystal Black", colorClass: "text-slate-300", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Accord/Sedan/color/Crystal%20Black%20Pearl-NH731P-640-en_US.jpg" },
+            { id: 5, year: 2023, make: "Jeep", model: "Grand Cherokee", price: 38450, payment: 569, miles: "18,400", color: "Bright White", colorClass: "text-white", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2023/Jeep/Grand%20Cherokee/SUV/color/Bright%20White%20Clearcoat-PW7-640-en_US.jpg" },
+            { id: 6, year: 2021, make: "Subaru", model: "Outback Prem.", price: 24995, payment: 369, miles: "41,200", color: "Autumn Green", colorClass: "text-emerald-500", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2021/Subaru/Outback/Wagon/color/Autumn%20Green%20Metallic-T6-640-en_US.jpg" },
+            { id: 7, year: 2023, make: "Chevrolet", model: "Silverado 1500", price: 44800, payment: 659, miles: "15,300", color: "Red Hot", colorClass: "text-red-500", type: "Truck", img: "https://images.dealer.com/ddc/vehicles/2023/Chevrolet/Silverado%201500/Crew%20Cab%20Pickup/color/Red%20Hot-G7C-640-en_US.jpg" },
+            { id: 8, year: 2024, make: "Honda", model: "HR-V LX", price: 26150, payment: 389, miles: "15", color: "Milano Red", colorClass: "text-rose-500", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/HR-V/SUV/color/Milano%20Red-R81-640-en_US.jpg" },
+            { id: 9, year: 2022, make: "Nissan", model: "Altima SV", price: 19890, payment: 299, miles: "34,100", color: "Super Black", colorClass: "text-slate-300", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2022/Nissan/Altima/Sedan/color/Super%20Black-KH3-640-en_US.jpg" },
+            { id: 10, year: 2023, make: "Kia", model: "Telluride S", price: 37900, payment: 559, miles: "21,800", color: "Dark Moss", colorClass: "text-amber-500", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2023/Kia/Telluride/SUV/color/Dark%20Moss-GMS-640-en_US.jpg" },
+            { id: 11, year: 2024, make: "Hyundai", model: "Tucson SEL", price: 29450, payment: 439, miles: "100", color: "Intense Blue", colorClass: "text-blue-500", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2024/Hyundai/Tucson/SUV/color/Intense%20Blue-YP5-640-en_US.jpg" },
+            { id: 12, year: 2020, make: "Ford", model: "F-150 XLT", price: 32800, payment: 489, miles: "52,400", color: "Velocity Blue", colorClass: "text-cyan-400", type: "Truck", img: "https://images.dealer.com/ddc/vehicles/2020/Ford/F-150/SuperCrew%20Cab%20Pickup/color/Velocity%20Blue%20Metallic-E7-640-en_US.jpg" },
+            { id: 13, year: 2024, make: "Honda", model: "CR-V EX-L", price: 34650, payment: 509, miles: "5", color: "Platinum White", colorClass: "text-white", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/CR-V/SUV/color/Platinum%20White%20Pearl-NH883P-640-en_US.jpg" },
+            { id: 14, year: 2021, make: "Mazda", model: "CX-5 Touring", price: 21990, payment: 329, miles: "39,700", color: "Soul Red", colorClass: "text-red-400", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2021/Mazda/CX-5/SUV/color/Soul%20Red%20Crystal%20Metallic-46V-640-en_US.jpg" },
+            { id: 15, year: 2023, make: "GMC", model: "Sierra 1500", price: 41900, payment: 619, miles: "19,200", color: "Onyx Black", colorClass: "text-slate-100", type: "Truck", img: "https://images.dealer.com/ddc/vehicles/2023/GMC/Sierra%201500/Double%20Cab%20Pickup/color/Onyx%20Black-GBA-640-en_US.jpg" },
+            { id: 16, year: 2021, make: "Dodge", model: "Challenger SXT", price: 24850, payment: 369, miles: "28,600", color: "Pitch Black", colorClass: "text-slate-300", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2021/Dodge/Challenger/Coupe/color/Pitch%20Black%20Clearcoat-PX8-640-en_US.jpg" },
+            { id: 17, year: 2024, make: "Honda", model: "Pilot Touring", price: 48600, payment: 719, miles: "8", color: "Sonic Gray", colorClass: "text-teal-400", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Pilot/SUV/color/Sonic%20Gray%20Pearl-NH877P-640-en_US.jpg" },
+            { id: 18, year: 2022, make: "Toyota", model: "Camry SE", price: 23900, payment: 359, miles: "29,400", color: "Predawn Gray", colorClass: "text-slate-400", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2022/Toyota/Camry/Sedan/color/Predawn%20Gray%20Mica-1H1-640-en_US.jpg" },
+            { id: 19, year: 2023, make: "Lexus", model: "RX 350", price: 49950, payment: 739, miles: "14,500", color: "Eminent White", colorClass: "text-slate-100", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2023/Lexus/RX%20350/SUV/color/Eminent%20White%20Pearl-085-640-en_US.jpg" },
+            { id: 20, year: 2020, make: "Jeep", model: "Wrangler UTD", price: 31500, payment: 469, miles: "45,100", color: "Firecracker Red", colorClass: "text-red-500", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2020/Jeep/Wrangler%20Unlimited/SUV/color/Firecracker%20Red%20Clearcoat-PRC-640-en_US.jpg" },
+            { id: 21, year: 2024, make: "Honda", model: "Odyssey EX-L", price: 41200, payment: 609, miles: "25", color: "Modern Steel", colorClass: "text-slate-400", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Odyssey/Mini-Van/color/Modern%20Steel%20Metallic-NH797M-640-en_US.jpg" },
+            { id: 22, year: 2021, make: "Ford", model: "Mustang Eco", price: 22900, payment: 339, miles: "31,800", color: "Rapid Red", colorClass: "text-rose-600", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2021/Ford/Mustang/Coupe/color/Rapid%20Red%20Metallic%20Tinted%20Clearcoat-D4-640-en_US.jpg" },
+            { id: 23, year: 2023, make: "Tesla", model: "Model 3 Base", price: 31990, payment: 479, miles: "22,400", color: "Solid Black", colorClass: "text-slate-400", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2023/Tesla/Model%203/Sedan/color/Solid%20Black-PBSB-640-en_US.jpg" },
+            { id: 24, year: 2024, make: "Honda", model: "Ridgeline RTL", price: 42500, payment: 629, miles: "10", color: "Obsidian Blue", colorClass: "text-blue-600", type: "Truck", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Ridgeline/Crew%20Cab%20Pickup/color/Obsidian%20Blue%20Pearl-B588P-640-en_US.jpg" },
+            { id: 25, year: 2022, make: "Ram", model: "1500 Horn", price: 36900, payment: 549, miles: "38,200", color: "Delmonico Red", colorClass: "text-red-700", type: "Truck", img: "https://images.dealer.com/ddc/vehicles/2022/Ram/1500/Crew%20Cab%20Pickup/color/Delmonico%20Red%20Pearlcoat-PRV-640-en_US.jpg" },
+            { id: 26, year: 2021, make: "Audi", model: "Q5 S-Line", price: 29800, payment: 449, miles: "36,400", color: "Ibis White", colorClass: "text-white", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2021/Audi/Q5/SUV/color/Ibis%20White-T9T9-640-en_US.jpg" },
+            { id: 27, year: 2023, make: "VW", model: "Tiguan SE", price: 25990, payment: 389, miles: "18,900", color: "Pyrite Silver", colorClass: "text-slate-300", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2023/Volkswagen/Tiguan/SUV/color/Pyrite%20Silver%20Metallic-K2K2-640-en_US.jpg" },
+            { id: 28, year: 2024, make: "Honda", model: "Passport TS", price: 44500, payment: 659, miles: "11", color: "Diffused Sky", colorClass: "text-cyan-300", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2024/Honda/Passport/SUV/color/Diffused%20Sky%20Blue-B635M-640-en_US.jpg" },
+            { id: 29, year: 2022, make: "Volvo", model: "XC60 B5", price: 31400, payment: 469, miles: "27,300", color: "Thunder Grey", colorClass: "text-slate-400", type: "SUV", img: "https://images.dealer.com/ddc/vehicles/2022/Volvo/XC60/SUV/color/Thunder%20Grey%20Metallic-728-640-en_US.jpg" },
+            { id: 30, year: 2023, make: "BMW", model: "330i xDrive", price: 35900, payment: 539, miles: "20,100", color: "Portimao Blue", colorClass: "text-blue-500", type: "Car", img: "https://images.dealer.com/ddc/vehicles/2023/BMW/330/Sedan/color/Portimao%20Blue%20Metallic-C31-640-en_US.jpg" }
         ];
 
         const grid = document.getElementById('vehicleGrid');
         const searchInput = document.getElementById('searchInput');
 
-        // Render Cards with Uncompromised Framing & Asset Display
+        // Render Cards with rounded image frames and exact BDC contact links
         function displayVehicles(list) {
             grid.innerHTML = '';
             list.forEach(car => {
                 const card = `
                     <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
-                        <!-- Image Layout Frame: object-contain leaves the vehicle perfectly uncropped -->
-                        <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center p-2">
-                            <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-contain">
-                            <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-[9px] text-slate-300 px-1.5 py-0.5 rounded font-medium">${car.status}</span>
+                        <!-- Image Layout Frame: object-contain with fully rounded edges internally -->
+                        <div class="p-1">
+                            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center p-2 rounded-lg overflow-hidden">
+                                <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-contain">
+                            </div>
                         </div>
                         <div class="p-2 flex-grow flex flex-col justify-between">
                             <div>
@@ -112,10 +113,10 @@
                                 <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $${car.payment}/mo</div>
                             </div>
                         </div>
-                        <!-- Conversion Layout Block -->
+                        <!-- Conversion Layout Block with Cory's Direct BDC Phone -->
                         <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
                             <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
-                            <a href="tel:5551234567" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
+                            <a href="tel:5733564614" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
                         </div>
                     </article>
                 `;
