@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Controls the native mobile browser frame and address bar background color -->
-    <meta name="theme-color" content="#F1F5F9">
+    <!-- Theme color set a shade darker to a premium, distinct pale navy blue tint -->
+    <meta name="theme-color" content="#E2E8F0">
     <title>CarSalesBDC - Premium Mobile SRP</title>
     <!-- Tailwind CSS Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<!-- Global App Background switched to Premium Pale Navy Blue Tint (#F1F5F9) -->
-<body class="bg-slate-100 min-h-screen font-sans antialiased text-slate-800">
+<!-- Main background updated to match the richer pale navy blue shade -->
+<body class="bg-slate-200 min-h-screen font-sans antialiased text-slate-800">
 
     <!-- Sticky Header Area with Brand Title -->
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200/60 p-3 shadow-sm">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-sm">
         <div class="max-w-md mx-auto flex flex-col gap-2.5">
             
             <!-- Business Branding Header -->
             <div class="flex items-center justify-between pb-0.5">
-                <h1 class="text-base font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-                <span class="text-[11px] bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded">A CB Design</span>
+                <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+                <span class="text-xs bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded">A CB Design</span>
             </div>
 
             <!-- Search Input Container -->
@@ -30,18 +30,18 @@
                 <input 
                     type="text" 
                     id="search-input" 
-                    placeholder="Search year, make, color, body type..." 
-                    class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-sm rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition"
+                    placeholder="Search anything (make, model, color, type...)" 
+                    class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition"
                 >
             </div>
             
             <!-- Horizontal Filter Scroll Links -->
             <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
-                <button data-make="All" class="filter-btn shrink-0 bg-blue-600 text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-sm transition">All</button>
-                <button data-make="Honda" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Honda</button>
-                <button data-make="Toyota" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Toyota</button>
-                <button data-make="Ford" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Ford</button>
-                <button data-make="Jeep" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Jeep</button>
+                <button data-make="All" class="filter-btn shrink-0 bg-blue-600 text-white font-semibold text-sm px-4 py-1.5 rounded-full shadow-sm transition">All</button>
+                <button data-make="Honda" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-sm px-4 py-1.5 rounded-full transition">Honda</button>
+                <button data-make="Toyota" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-sm px-4 py-1.5 rounded-full transition">Toyota</button>
+                <button data-make="Ford" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-sm px-4 py-1.5 rounded-full transition">Ford</button>
+                <button data-make="Jeep" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-sm px-4 py-1.5 rounded-full transition">Jeep</button>
             </div>
         </div>
     </header>
@@ -102,7 +102,7 @@
             grid.innerHTML = '';
             list.forEach(car => {
                 const card = `
-                    <article class="bg-white border border-slate-200/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                    <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
                         
                         <!-- Framed In Image Layout Container: Standard 4:3 Ratio with Slight Left Alignment Shift -->
                         <div class="p-2 pb-0">
@@ -111,30 +111,30 @@
                             </div>
                         </div>
 
-                        <!-- Clean Vehicle Profile Details (Enlarged for Premium Readability) -->
+                        <!-- Clean Vehicle Profile Details (Enlarged to text-base and text-xs for premium mobile legibility) -->
                         <div class="p-2.5 flex-grow flex flex-col justify-between">
                             <div>
-                                <h2 class="text-sm font-bold text-slate-800 truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
-                                <div class="flex flex-wrap items-center gap-x-1 mt-1 text-[11px] text-slate-500">
+                                <h2 class="text-base font-bold text-slate-800 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                                <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-xs text-slate-500">
                                     <span>${car.miles} mi</span>
                                     <span>•</span>
-                                    <span class="${car.colorClass} font-semibold truncate max-w-[70px]">${car.color}</span>
+                                    <span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
                                 </div>
                             </div>
-                            <div class="mt-2.5">
+                            <div class="mt-3">
                                 <!-- Price and Body Type Layout Layer -->
                                 <div class="flex items-center justify-between gap-1">
-                                    <div class="text-sm font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
-                                    <span class="text-[9px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
+                                    <div class="text-base font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
+                                    <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
                                 </div>
-                                <div class="text-[10px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
+                                <div class="text-[11px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
                             </div>
                         </div>
 
                         <!-- Primary Action Call to Actions -->
-                        <div class="p-2 pt-0 grid grid-cols-4 gap-1">
-                            <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[9px] py-1.5 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
-                            <a href="tel:5733564614" class="col-span-1 border border-slate-200 hover:border-slate-300 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-[10px]"></i></a>
+                        <div class="p-2 pt-0 grid grid-cols-5 gap-1">
+                            <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-2 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
+                            <a href="tel:5733564614" class="col-span-1 border border-slate-200 hover:border-slate-300 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-xs"></i></a>
                         </div>
                     </article>
                 `;
@@ -142,17 +142,22 @@
             });
         }
 
-        // Process multidimensional logic filters (Includes enhanced color and type cross-referencing)
+        // Deep Global Search: Checks every field in the object against the search term
         function filterVehicles() {
             const filtered = vehicles.filter(car => {
                 const matchesMake = (activeMake === 'All' || car.make === activeMake);
-                const matchesSearch = (
-                    car.make.toLowerCase().includes(searchTerm) ||
-                    car.model.toLowerCase().includes(searchTerm) ||
-                    car.year.toString().includes(searchTerm) ||
-                    car.color.toLowerCase().includes(searchTerm) ||
-                    car.type.toLowerCase().includes(searchTerm)
-                );
+                
+                const masterSearchString = `
+                    ${car.year} 
+                    ${car.make} 
+                    ${car.model} 
+                    ${car.type} 
+                    ${car.color} 
+                    ${car.price} 
+                    ${car.miles}
+                `.toLowerCase();
+
+                const matchesSearch = masterSearchString.includes(searchTerm);
                 return matchesMake && matchesSearch;
             });
             displayVehicles(filtered);
@@ -160,7 +165,7 @@
 
         // Attach Search Input handling
         searchInput.addEventListener('input', (e) => {
-            searchTerm = e.target.value.toLowerCase();
+            searchTerm = e.target.value.toLowerCase().trim();
             filterVehicles();
         });
 
