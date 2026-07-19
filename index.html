@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#E2E8F0">
-    <title>CarSalesBDC - High Performance Mobile SRP</title>
-    <!-- Tailwind CSS Engine -->
+    <title>CarSalesBDC - Lightweight Mobile SRP</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-200 min-h-screen font-sans antialiased text-slate-800">
@@ -15,8 +13,6 @@
     <!-- Sticky Header Area -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-sm">
         <div class="max-w-md mx-auto flex flex-col gap-2.5">
-            
-            <!-- Business Branding Header -->
             <div class="flex items-center justify-between pb-0.5">
                 <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
                 <span class="text-xs bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded">A CB Design</span>
@@ -25,19 +21,13 @@
             <!-- Search Input Container -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input 
-                    type="text" 
-                    id="search-input" 
-                    placeholder="Search 100+ vehicles..." 
-                    class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition"
-                >
+                <input type="text" id="search-input" placeholder="Search 100+ vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
             </div>
 
-            <!-- New Filter and Sort Section -->
+            <!-- Filter and Sort Section -->
             <div class="flex flex-col gap-2 pt-0.5 border-t border-slate-100">
-                <!-- Sorting & Counter Row -->
                 <div class="flex items-center justify-between gap-2">
-                    <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">100 Vehicles</span>
+                    <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
                     <div class="relative flex items-center bg-slate-100 rounded-lg px-2 py-1 border border-slate-200/40">
                         <i class="fa-solid fa-arrow-down-wide-short text-slate-400 text-xs mr-1.5"></i>
                         <select id="sort-select" class="bg-transparent text-xs font-bold text-slate-700 outline-none pr-1 appearance-none cursor-pointer">
@@ -72,118 +62,52 @@
 
     <!-- Main Dynamic Inventory Interface Grid -->
     <main class="max-w-md mx-auto p-3">
-        <div id="vehicle-grid" class="grid grid-cols-2 gap-2">
-            <!-- JavaScript dynamically injects 4:3 cards right here -->
-        </div>
+        <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
     </main>
 
     <script>
-        // High Performance 100-Vehicle Dataset
-        const vehicles = [
-            { id: 1, year: 2024, make: "Honda", model: "Civic Sport", type: "Sedan", price: 25495, payment: 379, miles: "4,200", color: "Rallye Red", colorClass: "text-rose-600", img: "carsalesimage.JPG" },
-            { id: 2, year: 2021, make: "Toyota", model: "RAV4 XLE", type: "SUV", price: 27890, payment: 415, miles: "32,150", color: "Cavalry Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 3, year: 2022, make: "Ford", model: "Explorer XLT", type: "SUV", price: 34995, payment: 519, miles: "24,800", color: "Carbonized Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 4, year: 2024, make: "Honda", model: "Accord EX", type: "Sedan", price: 28980, payment: 429, miles: "12", color: "Crystal Black", colorClass: "text-slate-700", img: "carsalesimage.JPG" },
-            { id: 5, year: 2023, make: "Jeep", model: "Grand Cherokee", type: "SUV", price: 38450, payment: 569, miles: "18,400", color: "Bright White", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 6, year: 2021, make: "Subaru", model: "Outback Prem.", type: "SUV", price: 24995, payment: 369, miles: "41,200", color: "Autumn Green", colorClass: "text-emerald-700", img: "carsalesimage.JPG" },
-            { id: 7, year: 2023, make: "Chevrolet", model: "Silverado 1500", type: "Truck", price: 44800, payment: 659, miles: "15,300", color: "Red Hot", colorClass: "text-red-600", img: "carsalesimage.JPG" },
-            { id: 8, year: 2024, make: "Honda", model: "HR-V LX", type: "SUV", price: 26150, payment: 389, miles: "15", color: "Milano Red", colorClass: "text-rose-600", img: "carsalesimage.JPG" },
-            { id: 9, year: 2022, make: "Nissan", model: "Altima SV", type: "Sedan", price: 19890, payment: 299, miles: "34,100", color: "Super Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 10, year: 2023, make: "Kia", model: "Telluride S", type: "SUV", price: 37900, payment: 559, miles: "21,800", color: "Dark Moss", colorClass: "text-amber-700", img: "carsalesimage.JPG" },
-            { id: 11, year: 2024, make: "Hyundai", model: "Tucson SEL", type: "SUV", price: 29450, payment: 439, miles: "100", color: "Intense Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 12, year: 2020, make: "Ford", model: "F-150 XLT", type: "Truck", price: 32800, payment: 489, miles: "52,400", color: "Velocity Blue", colorClass: "text-cyan-600", img: "carsalesimage.JPG" },
-            { id: 13, year: 2024, make: "Honda", model: "CR-V EX-L", type: "SUV", price: 34650, payment: 509, miles: "5", color: "Platinum White", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 14, year: 2021, make: "Mazda", model: "CX-5 Touring", type: "SUV", price: 21990, payment: 329, miles: "39,700", color: "Soul Red", colorClass: "text-red-600", img: "carsalesimage.JPG" },
-            { id: 15, year: 2023, make: "GMC", model: "Sierra 1500", type: "Truck", price: 41900, payment: 619, miles: "19,200", color: "Onyx Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 16, year: 2021, make: "Dodge", model: "Challenger SXT", type: "Coupe", price: 24850, payment: 369, miles: "28,600", color: "Pitch Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 17, year: 2024, make: "Honda", model: "Pilot Touring", type: "SUV", price: 48600, payment: 719, miles: "8", color: "Sonic Gray", colorClass: "text-teal-600", img: "carsalesimage.JPG" },
-            { id: 18, year: 2022, make: "Toyota", model: "Camry SE", type: "Sedan", price: 23900, payment: 359, miles: "29,400", color: "Predawn Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 19, year: 2023, make: "Lexus", model: "RX 350", type: "SUV", price: 49950, payment: 739, miles: "14,500", color: "Eminent White", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 20, year: 2020, make: "Jeep", model: "Wrangler UTD", type: "SUV", price: 31500, payment: 469, miles: "45,100", color: "Firecracker Red", colorClass: "text-red-600", img: "carsalesimage.JPG" },
-            { id: 21, year: 2024, make: "Honda", model: "Odyssey EX-L", type: "SUV", price: 41200, payment: 609, miles: "25", color: "Modern Steel", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 22, year: 2021, make: "Ford", model: "Mustang Eco", type: "Coupe", price: 22900, payment: 339, miles: "31,800", color: "Rapid Red", colorClass: "text-rose-700", img: "carsalesimage.JPG" },
-            { id: 23, year: 2023, make: "Tesla", model: "Model 3 Base", type: "Sedan", price: 31990, payment: 479, miles: "22,400", color: "Solid Black", colorClass: "text-slate-700", img: "carsalesimage.JPG" },
-            { id: 24, year: 2024, make: "Honda", model: "Ridgeline RTL", type: "Truck", price: 42500, payment: 629, miles: "10", color: "Obsidian Blue", colorClass: "text-blue-700", img: "carsalesimage.JPG" },
-            { id: 25, year: 2022, make: "Ram", model: "1500 Horn", type: "Truck", price: 36900, payment: 549, miles: "38,200", color: "Delmonico Red", colorClass: "text-red-800", img: "carsalesimage.JPG" },
-            { id: 26, year: 2021, make: "Audi", model: "Q5 S-Line", type: "SUV", price: 29800, payment: 449, miles: "36,400", color: "Ibis White", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 27, year: 2023, make: "VW", model: "Tiguan SE", type: "SUV", price: 25990, payment: 389, miles: "18,900", color: "Pyrite Silver", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 28, year: 2024, make: "Honda", model: "Passport TS", type: "SUV", price: 44500, payment: 659, miles: "11", color: "Diffused Sky", colorClass: "text-cyan-600", img: "carsalesimage.JPG" },
-            { id: 29, year: 2022, make: "Volvo", model: "XC60 B5", type: "SUV", price: 31400, payment: 469, miles: "27,300", color: "Thunder Grey", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 30, year: 2023, make: "BMW", model: "330i xDrive", type: "Sedan", price: 35900, payment: 539, miles: "20,100", color: "Portimao Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            // Dynamically Populating remaining items to reach 100 benchmark count...
-            { id: 31, year: 2025, make: "Honda", model: "Civic LX", type: "Sedan", price: 24200, payment: 359, miles: "8", color: "Crystal Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 32, year: 2022, make: "Toyota", model: "Corolla LE", type: "Sedan", price: 21500, payment: 319, miles: "18,200", color: "Classic Silver", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 33, year: 2023, make: "Ford", model: "Escape ST-Line", type: "SUV", price: 28400, payment: 425, miles: "14,100", color: "Rapid Red", colorClass: "text-red-600", img: "carsalesimage.JPG" },
-            { id: 34, year: 2021, make: "Jeep", model: "Cherokee Lat.", type: "SUV", price: 22995, payment: 339, miles: "33,400", color: "Diamond Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 35, year: 2024, make: "Toyota", model: "Tundra SR5", type: "Truck", price: 49950, payment: 729, miles: "45", color: "Midnight Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 36, year: 2022, make: "Honda", model: "Insight EX", type: "Sedan", price: 23800, payment: 349, miles: "26,100", color: "Cosmic Blue", colorClass: "text-blue-700", img: "carsalesimage.JPG" },
-            { id: 37, year: 2023, make: "Chevrolet", model: "Equinox LT", type: "SUV", price: 24500, payment: 365, miles: "19,500", color: "Blue Glow", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 38, year: 2024, make: "Nissan", model: "Rogue SV", type: "SUV", price: 30200, payment: 449, miles: "18", color: "Baja Storm", colorClass: "text-amber-600", img: "carsalesimage.JPG" },
-            { id: 39, year: 2021, make: "Kia", model: "Sorento S", type: "SUV", price: 25900, payment: 385, miles: "29,700", color: "Glacial White", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 40, year: 2024, make: "Subaru", model: "Crosstrek Premium", type: "SUV", price: 27400, payment: 409, miles: "90", color: "Horizon Blue", colorClass: "text-cyan-600", img: "carsalesimage.JPG" },
-            { id: 41, year: 2023, make: "Ford", model: "F-150 Lightning", type: "Truck", price: 58900, payment: 869, miles: "8,300", color: "Antimatter Blue", colorClass: "text-blue-900", img: "carsalesimage.JPG" },
-            { id: 42, year: 2022, make: "Honda", model: "Accord Sport", type: "Sedan", price: 26900, payment: 399, miles: "21,400", color: "San Marino Red", colorClass: "text-red-600", img: "carsalesimage.JPG" },
-            { id: 43, year: 2024, make: "Toyota", model: "Tacoma SR5", type: "Truck", price: 38500, payment: 569, miles: "15", color: "Solar Octane", colorClass: "text-orange-600", img: "carsalesimage.JPG" },
-            { id: 44, year: 2021, make: "Jeep", model: "Compass Trailhawk", type: "SUV", price: 23400, payment: 349, miles: "31,200", color: "Sting-Gray", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 45, year: 2023, make: "BMW", model: "X3 xDrive30i", type: "SUV", price: 41800, payment: 619, miles: "15,600", color: "Alpine White", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 46, year: 2022, make: "Lexus", model: "ES 350 Luxury", type: "Sedan", price: 38900, payment: 579, miles: "23,100", color: "Matador Red", colorClass: "text-rose-700", img: "carsalesimage.JPG" },
-            { id: 47, year: 2024, make: "Honda", model: "HR-V Sport", type: "SUV", price: 28200, payment: 419, miles: "25", color: "Nordic Forest", colorClass: "text-teal-700", img: "carsalesimage.JPG" },
-            { id: 48, year: 2023, make: "Audi", model: "A4 Premium", type: "Sedan", price: 32500, payment: 479, miles: "17,400", color: "Mythos Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 49, year: 2021, make: "Mazda", model: "3 Preferred", type: "Sedan", price: 19400, payment: 289, miles: "42,800", color: "Deep Crystal Blue", colorClass: "text-blue-900", img: "carsalesimage.JPG" },
-            { id: 50, year: 2024, make: "Ford", model: "Bronco Outer Banks", type: "SUV", price: 47900, payment: 709, miles: "300", color: "Eruption Green", colorClass: "text-emerald-800", img: "carsalesimage.JPG" },
-            { id: 51, year: 2023, make: "Honda", model: "Civic Type R", type: "Coupe", price: 43900, payment: 649, miles: "6,200", color: "Championship White", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 52, year: 2022, make: "Toyota", model: "Highlander XLE", type: "SUV", price: 35800, payment: 529, miles: "28,400", color: "Blueprint", colorClass: "text-blue-800", img: "carsalesimage.JPG" },
-            { id: 53, year: 2024, make: "Jeep", model: "Wrangler Rubicon", type: "SUV", price: 54200, payment: 799, miles: "12", color: "Hydro Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 54, year: 2021, make: "Chevrolet", model: "Tahoe LT", type: "SUV", price: 44990, payment: 669, miles: "48,200", color: "Satin Steel", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 55, year: 2023, make: "Nissan", model: "Frontier SV", type: "Truck", price: 31400, payment: 469, miles: "14,500", color: "Tactical Green", colorClass: "text-emerald-700", img: "carsalesimage.JPG" },
-            { id: 56, year: 2024, make: "Honda", model: "CR-V Hybrid Sport", type: "SUV", price: 37100, payment: 549, miles: "40", color: "Canyon River Blue", colorClass: "text-cyan-700", img: "carsalesimage.JPG" },
-            { id: 57, year: 2022, make: "Kia", model: "Sportage Nightfall", type: "SUV", price: 24800, payment: 369, miles: "26,300", color: "Pacific Blue", colorClass: "text-blue-700", img: "carsalesimage.JPG" },
-            { id: 58, year: 2023, make: "Subaru", model: "Forester Wilderness", type: "SUV", price: 32900, payment: 489, miles: "11,200", color: "Geyser Blue", colorClass: "text-indigo-600", img: "carsalesimage.JPG" },
-            { id: 59, year: 2021, make: "Ford", model: "Ranger Lariat", type: "Truck", price: 29995, payment: 445, miles: "36,100", color: "Cactus Gray", colorClass: "text-teal-600", img: "carsalesimage.JPG" },
-            { id: 60, year: 2024, make: "Toyota", model: "Camry Hybrid XLE", type: "Sedan", price: 34200, payment: 509, miles: "18", color: "Wind Chill Pearl", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 61, year: 2022, make: "Honda", model: "Pilot EX-L", type: "SUV", price: 33500, payment: 499, miles: "29,800", color: "Lunar Silver", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 62, year: 2023, make: "Dodge", model: "Charger GT", type: "Sedan", price: 29800, payment: 449, miles: "19,400", color: "Frostbite Blue", colorClass: "text-blue-500", img: "carsalesimage.JPG" },
-            { id: 63, year: 2024, make: "Jeep", model: "Gladiator Willys", type: "Truck", price: 43990, payment: 649, miles: "15", color: "Sarge Green", colorClass: "text-green-700", img: "carsalesimage.JPG" },
-            { id: 64, year: 2021, make: "GMC", model: "Acadia SLE", type: "SUV", price: 23900, payment: 359, miles: "38,500", color: "Ebony Twilight", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 65, year: 2023, make: "Toyota", model: "RAV4 Hybrid", type: "SUV", price: 32400, payment: 479, miles: "16,200", color: "Magnetic Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 66, year: 2022, make: "Ford", model: "Edge SEL", type: "SUV", price: 26500, payment: 395, miles: "24,100", color: "Star White", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 67, year: 2024, make: "Honda", model: "Odyssey Elite", type: "SUV", price: 49800, payment: 739, miles: "35", color: "Radiant Red", colorClass: "text-red-700", img: "carsalesimage.JPG" },
-            { id: 68, year: 2021, make: "Hyundai", model: "Sonata SEL", type: "Sedan", price: 19995, payment: 299, miles: "41,300", color: "Portofino Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 69, year: 2023, make: "Lexus", model: "IS 350 F Sport", type: "Sedan", price: 44900, payment: 669, miles: "12,400", color: "Ultra White", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 70, year: 2024, make: "BMW", model: "430i Gran Coupe", type: "Coupe", price: 48200, payment: 709, miles: "90", color: "Sanremo Green", colorClass: "text-emerald-700", img: "carsalesimage.JPG" },
-            { id: 71, year: 2022, make: "Honda", model: "Passport EX-L", type: "SUV", price: 32900, payment: 489, miles: "27,400", color: "Obsidian Blue", colorClass: "text-blue-800", img: "carsalesimage.JPG" },
-            { id: 72, year: 2023, make: "Toyota", model: "4Runner TRD Pro", type: "SUV", price: 52800, payment: 779, miles: "14,100", color: "Lime Rush", colorClass: "text-green-500", img: "carsalesimage.JPG" },
-            { id: 73, year: 2021, make: "Chevrolet", model: "Colorado Z71", type: "Truck", price: 28900, payment: 429, miles: "35,600", color: "Crush Orange", colorClass: "text-orange-600", img: "carsalesimage.JPG" },
-            { id: 74, year: 2024, make: "Ford", model: "Maverick XLT", type: "Truck", price: 29450, payment: 439, miles: "50", color: "Area 51 Blue", colorClass: "text-cyan-700", img: "carsalesimage.JPG" },
-            { id: 75, year: 2023, make: "Jeep", model: "Compass Latitude", type: "SUV", price: 24900, payment: 369, miles: "17,300", color: "Laser Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 76, year: 2022, make: "Subaru", model: "WRX Base", type: "Sedan", price: 28500, payment: 425, miles: "22,800", color: "WR Blue Pearl", colorClass: "text-blue-700", img: "carsalesimage.JPG" },
-            { id: 77, year: 2024, make: "Honda", model: "Civic EX", type: "Sedan", price: 26950, payment: 399, miles: "15", color: "Meteorite Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 78, year: 2021, make: "Nissan", model: "Murano SV", type: "SUV", price: 21800, payment: 325, miles: "39,100", color: "Pearl White", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 79, year: 2023, make: "Volkswagen", model: "Jetta SE", type: "Sedan", price: 22400, payment: 335, miles: "16,800", color: "Platinum Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 80, year: 2024, make: "Toyota", model: "Corolla Cross XLE", type: "SUV", price: 28900, payment: 429, miles: "20", color: "Celestite Gray", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 81, year: 2022, make: "Ford", model: "Mustang GT", type: "Coupe", price: 36500, payment: 539, miles: "19,500", color: "Shadow Black", colorClass: "text-slate-800", img: "carsalesimage.JPG" },
-            { id: 82, year: 2023, make: "Honda", model: "Ridgeline Sport", type: "Truck", price: 37900, payment: 559, miles: "11,400", color: "Sonic Gray", colorClass: "text-teal-600", img: "carsalesimage.JPG" },
-            { id: 83, year: 2021, make: "Jeep", model: "Grand Cherokee L", type: "SUV", price: 34800, payment: 519, miles: "34,200", color: "Baltic Grey", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 84, year: 2024, make: "Tesla", model: "Model Y LR", type: "SUV", price: 44990, payment: 659, miles: "100", color: "Ultra Red", colorClass: "text-red-700", img: "carsalesimage.JPG" },
-            { id: 85, year: 2022, make: "Toyota", model: "Avalon Touring", type: "Sedan", price: 33400, payment: 495, miles: "25,700", color: "Opulent Amber", colorClass: "text-amber-800", img: "carsalesimage.JPG" },
-            { id: 86, year: 2023, make: "Audi", model: "Q3 Premium", type: "SUV", price: 31900, payment: 475, miles: "15,200", color: "Chronos Gray", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 87, year: 2024, make: "Honda", model: "Accord Hybrid Sport", type: "Sedan", price: 33200, payment: 489, miles: "30", color: "Urban Gray", colorClass: "text-slate-600", img: "carsalesimage.JPG" },
-            { id: 88, year: 2021, make: "Chevrolet", model: "Blazer LT", type: "SUV", price: 22800, payment: 339, miles: "40,100", color: "Cherry Red", colorClass: "text-red-600", img: "carsalesimage.JPG" },
-            { id: 89, year: 2023, make: "Ford", model: "Explorer Timberline", type: "SUV", price: 39900, payment: 589, miles: "18,300", color: "Forged Green", colorClass: "text-emerald-800", img: "carsalesimage.JPG" },
-            { id: 90, year: 2022, make: "Nissan", model: "Sentra SV", type: "Sedan", price: 18900, payment: 279, miles: "29,400", color: "Electric Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 91, year: 2024, make: "Toyota", model: "Prius XLE", type: "Sedan", price: 32500, payment: 479, miles: "15", color: "Cutting Edge Silver", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 92, year: 2023, make: "Jeep", model: "Wrangler 4xe", type: "SUV", price: 49800, payment: 739, miles: "13,100", color: "Earl Grey", colorClass: "text-teal-600", img: "carsalesimage.JPG" },
-            { id: 93, year: 2021, make: "Subaru", model: "Impreza Prem.", type: "Sedan", price: 18500, payment: 275, miles: "33,800", color: "Ice Silver", colorClass: "text-slate-400", img: "carsalesimage.JPG" },
-            { id: 94, year: 2024, make: "Honda", model: "Pilot Elite", type: "SUV", price: 52400, payment: 769, miles: "12", color: "Obsidian Blue", colorClass: "text-blue-800", img: "carsalesimage.JPG" },
-            { id: 95, year: 2022, make: "GMC", model: "Yukon SLT", type: "SUV", price: 54900, payment: 819, miles: "29,100", color: "Saturn Steel", colorClass: "text-slate-500", img: "carsalesimage.JPG" },
-            { id: 96, year: 2023, make: "Ford", model: "F-150 Tremor", type: "Truck", price: 61200, payment: 899, miles: "14,200", color: "Antimatter Blue", colorClass: "text-blue-900", img: "carsalesimage.JPG" },
-            { id: 97, year: 2024, make: "Toyota", model: "Grand Highlander", type: "SUV", price: 46800, payment: 689, miles: "85", color: "Storm Cloud", colorClass: "text-indigo-900", img: "carsalesimage.JPG" },
-            { id: 98, year: 2021, make: "Lexus", model: "NX 300 F Sport", type: "SUV", price: 30900, payment: 459, miles: "35,200", color: "Cadmium Orange", colorClass: "text-orange-700", img: "carsalesimage.JPG" },
-            { id: 99, year: 2024, make: "Honda", model: "Civic Sedan LX", type: "Sedan", price: 24250, payment: 359, miles: "10", color: "Aegean Blue", colorClass: "text-blue-600", img: "carsalesimage.JPG" },
-            { id: 100, year: 2023, make: "Chevrolet", model: "Camaro LT1", type: "Coupe", price: 38900, payment: 579, miles: "11,800", color: "Vivid Orange", colorClass: "text-orange-600", img: "carsalesimage.JPG" }
+        // High-performance dynamic dataset generator to completely bypass file size bloat
+        const makes = ["Honda", "Toyota", "Ford", "Jeep", "Chevrolet", "Nissan", "Kia", "Subaru"];
+        const models = {
+            Honda: ["Civic", "Accord", "CR-V", "Pilot", "Ridgeline"],
+            Toyota: ["Camry", "Corolla", "RAV4", "Highlander", "Tundra"],
+            Ford: ["F-150", "Explorer", "Escape", "Mustang", "Bronco"],
+            Jeep: ["Wrangler", "Grand Cherokee", "Compass", "Gladiator"],
+            Chevrolet: ["Silverado", "Tahoe", "Equinox", "Camaro"],
+            Nissan: ["Altima", "Rogue", "Sentra", "Frontier"],
+            Kia: ["Telluride", "Sorento", "Sportage", "Soul"],
+            Subaru: ["Outback", "Crosstrek", "Forester", "WRX"]
+        };
+        const types = { Civic: "Sedan", Accord: "Sedan", "CR-V": "SUV", Pilot: "SUV", Ridgeline: "Truck", Camry: "Sedan", Corolla: "Sedan", RAV4: "SUV", Highlander: "SUV", Tundra: "Truck", "F-150": "Truck", Explorer: "SUV", Escape: "SUV", Mustang: "Coupe", Bronco: "SUV", Wrangler: "SUV", "Grand Cherokee": "SUV", Compass: "SUV", Gladiator: "Truck", Silverado: "Truck", Tahoe: "SUV", Equinox: "SUV", Camaro: "Coupe", Altima: "Sedan", Rogue: "SUV", Sentra: "Sedan", Frontier: "Truck", Telluride: "SUV", Sorento: "SUV", Sportage: "SUV", Soul: "SUV", Outback: "SUV", Crosstrek: "SUV", Forester: "SUV", WRX: "Sedan" };
+        const colors = [
+            { name: "Rallye Red", class: "text-rose-600" }, { name: "Crystal Black", class: "text-slate-800" },
+            { name: "Bright White", class: "text-slate-400" }, { name: "Sonic Gray", class: "text-teal-600" },
+            { name: "Cavalry Blue", class: "text-blue-600" }
         ];
 
-        // Cache DOM Handles
+        const vehicles = Array.from({ length: 100 }, (_, i) => {
+            const make = makes[i % makes.length];
+            const modelList = models[make];
+            const model = modelList[i % modelList.length];
+            const type = types[model] || "SUV";
+            const colorObj = colors[i % colors.length];
+            const price = 18000 + ((i * 473) % 45000);
+            return {
+                id: i + 1,
+                year: 2020 + (i % 6),
+                make: make,
+                model: model,
+                type: type,
+                price: price,
+                payment: Math.round(price / 68),
+                miles: (50 + ((i * 1234) % 65000)).toLocaleString(),
+                color: colorObj.name,
+                colorClass: colorObj.class,
+                img: "carsalesimage.JPG"
+            };
+        });
+
+        // DOM Handles
         const grid = document.getElementById('vehicle-grid');
         const searchInput = document.getElementById('search-input');
         const makeButtons = document.querySelectorAll('.make-btn');
@@ -191,48 +115,30 @@
         const sortSelect = document.getElementById('sort-select');
         const counter = document.getElementById('vehicle-counter');
 
-        // State Trackers
-        let activeMake = 'All';
-        let activeType = 'All';
-        let searchTerm = '';
-        let currentSort = 'default';
+        let activeMake = 'All', activeType = 'All', searchTerm = '', currentSort = 'default';
 
-        // Render Inventory Interface Setup
         function displayVehicles(list) {
             grid.innerHTML = '';
-            
-            // Update UI count badge dynamically
             counter.innerText = `${list.length} ${list.length === 1 ? 'Vehicle' : 'Vehicles'}`;
 
             if(list.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-2 text-center py-12 text-slate-400 font-medium bg-white rounded-xl border border-dashed border-slate-300">
-                        <i class="fa-solid fa-car-triangle text-2xl mb-2 text-slate-300"></i>
-                        <p>No matching vehicles found.</p>
-                    </div>
-                `;
+                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 font-medium bg-white rounded-xl border border-dashed border-slate-300"><p>No matching vehicles found.</p></div>`;
                 return;
             }
 
             list.forEach(car => {
-                const card = `
+                grid.innerHTML += `
                     <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
-                        
-                        <!-- Framed Image Container Area (4:3 Ratio) -->
                         <div class="p-2 pb-0">
                             <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
                                 <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
                             </div>
                         </div>
-
-                        <!-- Car Profile Typography Details -->
                         <div class="p-2.5 flex-grow flex flex-col justify-between">
                             <div>
                                 <h2 class="text-base font-bold text-slate-800 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
                                 <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-xs text-slate-500">
-                                    <span>${car.miles} mi</span>
-                                    <span>•</span>
-                                    <span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
+                                    <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
                                 </div>
                             </div>
                             <div class="mt-3">
@@ -243,87 +149,51 @@
                                 <div class="text-[11px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
                             </div>
                         </div>
-
-                        <!-- CTA Dynamic Layout Group -->
                         <div class="p-2 pt-0 grid grid-cols-5 gap-1">
                             <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-2 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
                             <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-xs"></i></a>
                         </div>
                     </article>
                 `;
-                grid.innerHTML += card;
             });
         }
 
-        // Processing Pipeline: Filters array first, then runs requested sorting rule
         function processInventory() {
-            // Step 1: Filter Dataset
             let result = vehicles.filter(car => {
                 const matchesMake = (activeMake === 'All' || car.make === activeMake);
                 const matchesType = (activeType === 'All' || car.type === activeType);
-                
-                const masterSearchString = `
-                    ${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}
-                `.toLowerCase();
-
-                const matchesSearch = masterSearchString.includes(searchTerm);
-                return matchesMake && matchesType && matchesSearch;
+                const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
+                return matchesMake && matchesType && masterSearchString.includes(searchTerm);
             });
 
-            // Step 2: Apply Sorting Structure
-            if (currentSort === 'price-low') {
-                result.sort((a, b) => a.price - b.price);
-            } else if (currentSort === 'price-high') {
-                result.sort((a, b) => b.price - a.price);
-            } else if (currentSort === 'year-new') {
-                result.sort((a, b) => b.year - a.year);
-            }
+            if (currentSort === 'price-low') result.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-high') result.sort((a, b) => b.price - a.price);
+            else if (currentSort === 'year-new') result.sort((a, b) => b.year - a.year);
 
             displayVehicles(result);
         }
 
-        // Live Event Listeners Setup
-        searchInput.addEventListener('input', (e) => {
-            searchTerm = e.target.value.toLowerCase().trim();
-            processInventory();
-        });
+        searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase().trim(); processInventory(); });
+        sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
-        sortSelect.addEventListener('change', (e) => {
-            currentSort = e.target.value;
-            processInventory();
-        });
-
-        // Type Filter Pills Toggles
         typeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                typeButtons.forEach(b => {
-                    b.classList.remove('bg-slate-800', 'text-white', 'shadow-sm');
-                    b.classList.add('bg-white', 'text-slate-600', 'border-slate-300');
-                });
-                btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-300');
-                btn.classList.add('bg-slate-800', 'text-white', 'shadow-sm');
-
+                typeButtons.forEach(b => b.classList.replace('bg-slate-800', 'bg-white'));
+                btn.classList.replace('bg-white', 'bg-slate-800');
                 activeType = btn.getAttribute('data-type');
                 processInventory();
             });
         });
 
-        // Brand Filter Badges Toggles
         makeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                makeButtons.forEach(b => {
-                    b.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
-                    b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
-                });
-                btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
-                btn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
-
+                makeButtons.forEach(b => b.classList.replace('bg-blue-600', 'bg-white'));
+                btn.classList.replace('bg-white', 'bg-blue-600');
                 activeMake = btn.getAttribute('data-make');
                 processInventory();
             });
         });
 
-        // Initial Engine Start
         displayVehicles(vehicles);
     </script>
 </body>
