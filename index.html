@@ -13,32 +13,32 @@
 
     <!-- Sticky Header Area with Brand Title -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100 p-3">
-        <div class="max-w-md mx-auto flex flex-col gap-2">
+        <div class="max-w-md mx-auto flex flex-col gap-2.5">
             
             <!-- Business Branding Header -->
-            <div class="flex items-center justify-between pb-1">
-                <h1 class="text-sm font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-                <span class="text-[9px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded">Mobile SRP</span>
+            <div class="flex items-center justify-between pb-0.5">
+                <h1 class="text-base font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+                <span class="text-[11px] bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded">A CB Design</span>
             </div>
 
             <!-- Search Input Container -->
             <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                 <input 
                     type="text" 
                     id="search-input" 
                     placeholder="Search year, make, model..." 
-                    class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-xs rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition"
+                    class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-sm rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition"
                 >
             </div>
             
             <!-- Horizontal Filter Scroll Links -->
-            <div class="flex gap-1 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
-                <button data-make="All" class="filter-btn shrink-0 bg-blue-600 text-white font-medium text-[11px] px-3 py-1 rounded-full shadow-sm transition">All</button>
-                <button data-make="Honda" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-medium text-[11px] px-3 py-1 rounded-full transition">Honda</button>
-                <button data-make="Toyota" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-medium text-[11px] px-3 py-1 rounded-full transition">Toyota</button>
-                <button data-make="Ford" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-medium text-[11px] px-3 py-1 rounded-full transition">Ford</button>
-                <button data-make="Jeep" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-medium text-[11px] px-3 py-1 rounded-full transition">Jeep</button>
+            <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
+                <button data-make="All" class="filter-btn shrink-0 bg-blue-600 text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-sm transition">All</button>
+                <button data-make="Honda" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Honda</button>
+                <button data-make="Toyota" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Toyota</button>
+                <button data-make="Ford" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Ford</button>
+                <button data-make="Jeep" class="filter-btn shrink-0 bg-slate-100 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition">Jeep</button>
             </div>
         </div>
     </header>
@@ -108,19 +108,19 @@
                             </div>
                         </div>
 
-                        <!-- Clean Vehicle Profile Details -->
+                        <!-- Clean Vehicle Profile Details (Enlarged for Premium Readability) -->
                         <div class="p-2.5 flex-grow flex flex-col justify-between">
                             <div>
-                                <h2 class="text-[11px] font-bold text-slate-800 truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
-                                <div class="flex flex-wrap items-center gap-x-1 mt-0.5 text-[9px] text-slate-500">
+                                <h2 class="text-sm font-bold text-slate-800 truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                                <div class="flex flex-wrap items-center gap-x-1 mt-1 text-[11px] text-slate-500">
                                     <span>${car.miles} mi</span>
                                     <span>•</span>
                                     <span class="${car.colorClass} font-semibold">${car.color}</span>
                                 </div>
                             </div>
-                            <div class="mt-2">
-                                <div class="text-xs font-black text-emerald-600 leading-none">$${car.price.toLocaleString()} <span class="text-[8px] font-normal text-slate-400 uppercase tracking-wider">All-In</span></div>
-                                <div class="text-[9px] text-slate-500 mt-0.5 font-medium">Est. $${car.payment}/mo</div>
+                            <div class="mt-2.5">
+                                <div class="text-sm font-black text-emerald-600 leading-none">$${car.price.toLocaleString()} <span class="text-[9px] font-normal text-slate-400 uppercase tracking-wider">All-In</span></div>
+                                <div class="text-[10px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
                             </div>
                         </div>
 
