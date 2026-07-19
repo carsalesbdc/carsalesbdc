@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Controls the native mobile browser frame and address bar background color -->
+    <meta name="theme-color" content="#F1F5F9">
     <title>CarSalesBDC - Premium Mobile SRP</title>
     <!-- Tailwind CSS Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-white min-h-screen font-sans antialiased text-slate-800">
+<!-- Global App Background switched to Premium Pale Navy Blue Tint (#F1F5F9) -->
+<body class="bg-slate-100 min-h-screen font-sans antialiased text-slate-800">
 
     <!-- Sticky Header Area with Brand Title -->
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100 p-3">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200/60 p-3 shadow-sm">
         <div class="max-w-md mx-auto flex flex-col gap-2.5">
             
             <!-- Business Branding Header -->
@@ -99,11 +102,11 @@
             grid.innerHTML = '';
             list.forEach(car => {
                 const card = `
-                    <article class="bg-slate-50 border border-slate-200/60 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                    <article class="bg-white border border-slate-200/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
                         
                         <!-- Framed In Image Layout Container: Standard 4:3 Ratio with Slight Left Alignment Shift -->
                         <div class="p-2 pb-0">
-                            <div class="relative aspect-[4/3] bg-slate-200 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/40">
+                            <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
                                 <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" onerror="console.log('Failed loading image:', this.src)">
                             </div>
                         </div>
@@ -122,7 +125,7 @@
                                 <!-- Price and Body Type Layout Layer -->
                                 <div class="flex items-center justify-between gap-1">
                                     <div class="text-sm font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
-                                    <span class="text-[9px] font-bold bg-slate-200/70 text-slate-600 px-1.5 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
+                                    <span class="text-[9px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
                                 </div>
                                 <div class="text-[10px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
                             </div>
@@ -131,7 +134,7 @@
                         <!-- Primary Action Call to Actions -->
                         <div class="p-2 pt-0 grid grid-cols-4 gap-1">
                             <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[9px] py-1.5 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
-                            <a href="tel:5733564614" class="col-span-1 border border-slate-200 hover:border-slate-300 active:bg-slate-100 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-[10px]"></i></a>
+                            <a href="tel:5733564614" class="col-span-1 border border-slate-200 hover:border-slate-300 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-[10px]"></i></a>
                         </div>
                     </article>
                 `;
