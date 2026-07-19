@@ -87,18 +87,22 @@
         const searchInput = document.getElementById('searchInput');
 
         // Render Cards with rounded image frames and exact BDC contact links
+        // Render Cards with 16:9 standard ratio, slight layout offset, and fully rounded image corners
         function displayVehicles(list) {
             grid.innerHTML = '';
             list.forEach(car => {
                 const card = `
-                    <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg">
-                        <!-- Image Layout Frame: object-contain with fully rounded edges internally -->
-                        <div class="p-1">
-                            <div class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center p-2 rounded-lg overflow-hidden">
-                                <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-contain">
+                    <article class="bg-slate-900/50 border border-slate-900 rounded-xl overflow-hidden flex flex-col justify-between shadow-lg transition transform active:scale-[0.99]">
+                        
+                        <!-- Image Layout Container: Standard 16:9 Aspect Ratio with Custom Offset Styling -->
+                        <div class="p-2 pb-0">
+                            <div class="relative aspect-[16/9] bg-slate-950 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-md border border-slate-800/50">
+                                <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl">
                             </div>
                         </div>
-                        <div class="p-2 flex-grow flex flex-col justify-between">
+
+                        <!-- Vehicle Details Block -->
+                        <div class="p-2.5 flex-grow flex flex-col justify-between">
                             <div>
                                 <h2 class="text-[11px] font-bold text-slate-300 truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
                                 <div class="flex flex-wrap items-center gap-x-1 mt-0.5 text-[9px] text-slate-400">
@@ -112,8 +116,9 @@
                                 <div class="text-[9px] text-slate-400 mt-0.5 font-medium">Est. $${car.payment}/mo</div>
                             </div>
                         </div>
-                        <!-- Conversion Layout Block with Cory's Direct BDC Phone -->
-                        <div class="p-1.5 pt-0 grid grid-cols-4 gap-1">
+
+                        <!-- Action Conversion Buttons -->
+                        <div class="p-2 pt-0 grid grid-cols-4 gap-1">
                             <button class="col-span-3 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-md transition tracking-wide shadow-sm">Check Avail</button>
                             <a href="tel:5733564614" class="col-span-1 border border-slate-800 hover:border-slate-700 active:bg-slate-800 flex items-center justify-center rounded-md text-blue-400"><i class="fa-solid fa-phone text-[10px]"></i></a>
                         </div>
