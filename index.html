@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#E2E8F0">
-    <title>CarSalesBDC - Lightweight Mobile SRP</title>
+    <title>CarSalesBDC - Infinite Scroll Enterprise SRP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -15,13 +15,13 @@
         <div class="max-w-md mx-auto flex flex-col gap-2.5">
             <div class="flex items-center justify-between pb-0.5">
                 <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-                <span class="text-xs bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded">A CB Design</span>
+                <span class="text-xs bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded">Enterprise</span>
             </div>
 
             <!-- Search Input Container -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" id="search-input" placeholder="Search 100+ vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
+                <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
             </div>
 
             <!-- Filter and Sort Section -->
@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <!-- Body Type Filter Horizontal Scroll -->
+                <!-- Body Type Filter -->
                 <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
                     <button data-type="All" class="type-btn shrink-0 bg-slate-800 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm">All Types</button>
                     <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">SUVs</button>
@@ -48,86 +48,80 @@
                     <button data-type="Coupe" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Coupes</button>
                 </div>
             </div>
-            
-            <!-- Brand Filter Scroll Links -->
-            <div class="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-none -mx-3 px-3 border-t border-slate-100 pt-2">
-                <button data-make="All" class="make-btn shrink-0 bg-blue-600 text-white font-semibold text-xs px-4 py-1.5 rounded-full shadow-sm transition">All Brands</button>
-                <button data-make="Honda" class="make-btn shrink-0 bg-white text-slate-600 border border-slate-200 font-semibold text-xs px-4 py-1.5 rounded-full transition">Honda</button>
-                <button data-make="Toyota" class="make-btn shrink-0 bg-white text-slate-600 border border-slate-200 font-semibold text-xs px-4 py-1.5 rounded-full transition">Toyota</button>
-                <button data-make="Ford" class="make-btn shrink-0 bg-white text-slate-600 border border-slate-200 font-semibold text-xs px-4 py-1.5 rounded-full transition">Ford</button>
-                <button data-make="Jeep" class="make-btn shrink-0 bg-white text-slate-600 border border-slate-200 font-semibold text-xs px-4 py-1.5 rounded-full transition">Jeep</button>
-            </div>
         </div>
     </header>
 
-    <!-- Main Dynamic Inventory Interface Grid -->
+    <!-- Main Inventory Interface Grid -->
     <main class="max-w-md mx-auto p-3">
         <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
+        
+        <!-- Infinite Scroll Sentinel Trigger -->
+        <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
+            <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
+        </div>
     </main>
 
     <script>
-        // High-performance dynamic dataset generator to completely bypass file size bloat
+        // Generating a pool of 1,000 cars to simulate a massive multi-location group inventory
         const makes = ["Honda", "Toyota", "Ford", "Jeep", "Chevrolet", "Nissan", "Kia", "Subaru"];
         const models = {
-            Honda: ["Civic", "Accord", "CR-V", "Pilot", "Ridgeline"],
-            Toyota: ["Camry", "Corolla", "RAV4", "Highlander", "Tundra"],
-            Ford: ["F-150", "Explorer", "Escape", "Mustang", "Bronco"],
-            Jeep: ["Wrangler", "Grand Cherokee", "Compass", "Gladiator"],
-            Chevrolet: ["Silverado", "Tahoe", "Equinox", "Camaro"],
-            Nissan: ["Altima", "Rogue", "Sentra", "Frontier"],
-            Kia: ["Telluride", "Sorento", "Sportage", "Soul"],
-            Subaru: ["Outback", "Crosstrek", "Forester", "WRX"]
+            Honda: ["Civic", "Accord", "CR-V", "Pilot", "Ridgeline"], Toyota: ["Camry", "Corolla", "RAV4", "Highlander", "Tundra"],
+            Ford: ["F-150", "Explorer", "Escape", "Mustang", "Bronco"], Jeep: ["Wrangler", "Grand Cherokee", "Compass", "Gladiator"],
+            Chevrolet: ["Silverado", "Tahoe", "Equinox", "Camaro"], Nissan: ["Altima", "Rogue", "Sentra", "Frontier"],
+            Kia: ["Telluride", "Sorento", "Sportage", "Soul"], Subaru: ["Outback", "Crosstrek", "Forester", "WRX"]
         };
         const types = { Civic: "Sedan", Accord: "Sedan", "CR-V": "SUV", Pilot: "SUV", Ridgeline: "Truck", Camry: "Sedan", Corolla: "Sedan", RAV4: "SUV", Highlander: "SUV", Tundra: "Truck", "F-150": "Truck", Explorer: "SUV", Escape: "SUV", Mustang: "Coupe", Bronco: "SUV", Wrangler: "SUV", "Grand Cherokee": "SUV", Compass: "SUV", Gladiator: "Truck", Silverado: "Truck", Tahoe: "SUV", Equinox: "SUV", Camaro: "Coupe", Altima: "Sedan", Rogue: "SUV", Sentra: "Sedan", Frontier: "Truck", Telluride: "SUV", Sorento: "SUV", Sportage: "SUV", Soul: "SUV", Outback: "SUV", Crosstrek: "SUV", Forester: "SUV", WRX: "Sedan" };
-        const colors = [
-            { name: "Rallye Red", class: "text-rose-600" }, { name: "Crystal Black", class: "text-slate-800" },
-            { name: "Bright White", class: "text-slate-400" }, { name: "Sonic Gray", class: "text-teal-600" },
-            { name: "Cavalry Blue", class: "text-blue-600" }
-        ];
+        const colors = [{ name: "Rallye Red", class: "text-rose-600" }, { name: "Crystal Black", class: "text-slate-800" }, { name: "Bright White", class: "text-slate-400" }, { name: "Sonic Gray", class: "text-teal-600" }, { name: "Cavalry Blue", class: "text-blue-600" }];
 
-        const vehicles = Array.from({ length: 100 }, (_, i) => {
+        const allVehicles = Array.from({ length: 1000 }, (_, i) => {
             const make = makes[i % makes.length];
             const modelList = models[make];
             const model = modelList[i % modelList.length];
-            const type = types[model] || "SUV";
-            const colorObj = colors[i % colors.length];
-            const price = 18000 + ((i * 473) % 45000);
+            const price = 19000 + ((i * 797) % 48000);
             return {
                 id: i + 1,
-                year: 2020 + (i % 6),
+                year: 2021 + (i % 5),
                 make: make,
                 model: model,
-                type: type,
+                type: types[model] || "SUV",
                 price: price,
                 payment: Math.round(price / 68),
-                miles: (50 + ((i * 1234) % 65000)).toLocaleString(),
-                color: colorObj.name,
-                colorClass: colorObj.class,
+                miles: (1200 + ((i * 1432) % 72000)).toLocaleString(),
+                color: colors[i % colors.length].name,
+                colorClass: colors[i % colors.length].class,
                 img: "carsalesimage.JPG"
             };
         });
 
+        // Pagination Config
+        const ITEMS_PER_PAGE = 24;
+        let filteredVehicles = [...allVehicles]; 
+        let currentPage = 1;
+
         // DOM Handles
         const grid = document.getElementById('vehicle-grid');
         const searchInput = document.getElementById('search-input');
-        const makeButtons = document.querySelectorAll('.make-btn');
         const typeButtons = document.querySelectorAll('.type-btn');
         const sortSelect = document.getElementById('sort-select');
         const counter = document.getElementById('vehicle-counter');
+        const sentinel = document.getElementById('scroll-sentinel');
+        const spinner = document.getElementById('spinner');
 
-        let activeMake = 'All', activeType = 'All', searchTerm = '', currentSort = 'default';
+        let activeType = 'All', searchTerm = '', currentSort = 'default';
 
-        function displayVehicles(list) {
-            grid.innerHTML = '';
-            counter.innerText = `${list.length} ${list.length === 1 ? 'Vehicle' : 'Vehicles'}`;
+        function renderNextBatch() {
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const batch = filteredVehicles.slice(start, end);
 
-            if(list.length === 0) {
-                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 font-medium bg-white rounded-xl border border-dashed border-slate-300"><p>No matching vehicles found.</p></div>`;
+            if (batch.length === 0 && currentPage === 1) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 bg-white rounded-xl border border-dashed border-slate-300"><p>No vehicles found.</p></div>`;
                 return;
             }
 
-            list.forEach(car => {
-                grid.innerHTML += `
+            let htmlString = '';
+            batch.forEach(car => {
+                htmlString += `
                     <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
                         <div class="p-2 pb-0">
                             <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
@@ -156,23 +150,48 @@
                     </article>
                 `;
             });
+
+            grid.insertAdjacentHTML('beforeend', htmlString);
+            currentPage++;
         }
 
         function processInventory() {
-            let result = vehicles.filter(car => {
-                const matchesMake = (activeMake === 'All' || car.make === activeMake);
+            grid.innerHTML = ''; 
+            currentPage = 1;
+
+            filteredVehicles = allVehicles.filter(car => {
                 const matchesType = (activeType === 'All' || car.type === activeType);
                 const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
-                return matchesMake && matchesType && masterSearchString.includes(searchTerm);
+                return matchesType && masterSearchString.includes(searchTerm);
             });
 
-            if (currentSort === 'price-low') result.sort((a, b) => a.price - b.price);
-            else if (currentSort === 'price-high') result.sort((a, b) => b.price - a.price);
-            else if (currentSort === 'year-new') result.sort((a, b) => b.year - a.year);
+            if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
+            else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
 
-            displayVehicles(result);
+            counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
+            
+            renderNextBatch();
         }
 
+        // Setup Intersection Observer for Infinite Scroll
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                const maxPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE);
+                if (currentPage <= maxPages) {
+                    spinner.classList.remove('hidden');
+                    // Brief deliberate timeout to mimic server fetching delay smoothly
+                    setTimeout(() => {
+                        renderNextBatch();
+                        spinner.classList.add('hidden');
+                    }, 250);
+                }
+            }
+        }, { rootMargin: '150px' });
+
+        observer.observe(sentinel);
+
+        // Input Listeners
         searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase().trim(); processInventory(); });
         sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
@@ -185,16 +204,8 @@
             });
         });
 
-        makeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                makeButtons.forEach(b => b.classList.replace('bg-blue-600', 'bg-white'));
-                btn.classList.replace('bg-white', 'bg-blue-600');
-                activeMake = btn.getAttribute('data-make');
-                processInventory();
-            });
-        });
-
-        displayVehicles(vehicles);
+        // Initialize First Run
+        processInventory();
     </script>
 </body>
 </html>
