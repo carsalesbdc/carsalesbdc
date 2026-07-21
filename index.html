@@ -4,27 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#E2E8F0">
-    <title>CarSalesBDC - Infinite Scroll Enterprise SRP</title>
+    <title>CarSalesBDC - Trojan Horse Enterprise SRP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-200 min-h-screen font-sans antialiased text-slate-800">
 
-    <!-- Sticky Header Area -->
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-sm">
-        <div class="max-w-md mx-auto flex flex-col gap-2.5">
-            <div class="flex items-center justify-between pb-0.5">
-                <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-                <span class="text-xs bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
-            </div>
+    <header class="bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-sm">
+        <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
+            <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+            <span class="text-xs bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+        </div>
+    </header>
 
-            <!-- Search Input Container -->
+    <div class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-md transition-all">
+        <div class="max-w-md mx-auto flex flex-col gap-2.5">
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                 <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
             </div>
 
-            <!-- Filter and Sort Section -->
             <div class="flex flex-col gap-2 pt-0.5 border-t border-slate-100">
                 <div class="flex items-center justify-between gap-2">
                     <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
@@ -39,7 +38,6 @@
                     </div>
                 </div>
 
-                <!-- Body Type Filter -->
                 <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
                     <button data-type="All" class="type-btn shrink-0 bg-slate-800 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm">All Types</button>
                     <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">SUVs</button>
@@ -49,13 +47,11 @@
                 </div>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Inventory Interface Grid -->
-    <main class="max-w-md mx-auto p-3">
+    <main class="max-w-md mx-auto p-3 pb-12">
         <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
         
-        <!-- Infinite Scroll Sentinel Trigger -->
         <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
             <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
         </div>
