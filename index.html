@@ -17,20 +17,20 @@
 
     <div id="scroll-main" class="flex-grow overflow-y-auto relative w-full">
 
-        <header class="bg-white/95 border-b border-slate-300/60 p-3 shadow-sm">
+        <header class="bg-white/95 border-b border-slate-300/60 p-3.5 shadow-sm">
             <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
-                <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-                <span class="text-xs bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+                <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+                <span class="text-sm bg-slate-100 text-slate-900 font-bold px-3 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
             </div>
         </header>
 
-        <div class="bg-white p-3 pb-2 border-b border-slate-200">
-            <div class="max-w-md mx-auto flex flex-col gap-2">
+        <div class="bg-white p-3.5 pb-2.5 border-b border-slate-200">
+            <div class="max-w-md mx-auto flex flex-col gap-2.5">
                 <div class="flex items-center justify-between gap-2">
-                    <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
-                    <div class="relative flex items-center bg-slate-100 rounded-lg px-2 py-1 border border-slate-200/40">
-                        <i class="fa-solid fa-arrow-down-wide-short text-slate-400 text-xs mr-1.5"></i>
-                        <select id="sort-select" class="bg-transparent text-xs font-bold text-slate-700 outline-none pr-1 appearance-none cursor-pointer">
+                    <span id="vehicle-counter" class="text-sm font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
+                    <div class="relative flex items-center bg-slate-100 rounded-lg px-2.5 py-1.5 border border-slate-200/40">
+                        <i class="fa-solid fa-arrow-down-wide-short text-slate-400 text-sm mr-1.5"></i>
+                        <select id="sort-select" class="bg-transparent text-sm font-bold text-slate-700 outline-none pr-1 appearance-none cursor-pointer">
                             <option value="default">Featured</option>
                             <option value="price-low">Price: Low to High</option>
                             <option value="price-high">Price: High to Low</option>
@@ -39,25 +39,25 @@
                     </div>
                 </div>
 
-                <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
-                    <button data-type="All" class="type-btn shrink-0 bg-slate-900 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm">All Types</button>
-                    <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">SUVs</button>
-                    <button data-type="Sedan" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Sedans</button>
-                    <button data-type="Truck" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Trucks</button>
-                    <button data-type="Coupe" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Coupes</button>
+                <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-3.5 px-3.5">
+                    <button data-type="All" class="type-btn shrink-0 bg-slate-900 text-white font-bold text-sm px-4 py-2 rounded-md transition shadow-sm">All Types</button>
+                    <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">SUVs</button>
+                    <button data-type="Sedan" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">Sedans</button>
+                    <button data-type="Truck" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">Trucks</button>
+                    <button data-type="Coupe" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">Coupes</button>
                 </div>
             </div>
         </div>
 
-        <div id="sticky-search-bar" class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-slate-300/60 p-3 shadow-md transition-all duration-300">
+        <div id="sticky-search-bar" class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-slate-300/60 p-3.5 shadow-md transition-all duration-300">
             <div class="max-w-md mx-auto flex flex-col gap-2">
                 <div class="flex items-center gap-2">
                     <div class="relative flex-grow">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base"></i>
+                        <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-10 pr-3 py-2.5 outline-none border border-transparent focus:border-blue-500/50 transition">
                     </div>
-                    <button id="filter-icon-btn" class="hidden shrink-0 bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg transition border border-white/20 active:scale-95">
-                        <i class="fa-solid fa-sliders text-sm"></i>
+                    <button id="filter-icon-btn" class="hidden shrink-0 bg-white/10 hover:bg-white/20 text-white p-3 rounded-lg transition border border-white/20 active:scale-95">
+                        <i class="fa-solid fa-sliders text-base"></i>
                     </button>
                 </div>
                 <div id="active-chips-container" class="hidden flex flex-wrap gap-1.5 pt-0.5"></div>
@@ -65,7 +65,7 @@
         </div>
 
         <main class="max-w-md mx-auto p-3 pb-24">
-            <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
+            <div id="vehicle-grid" class="grid grid-cols-2 gap-2.5"></div>
             
             <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
                 <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
@@ -74,62 +74,62 @@
 
     </div>
 
-    <button id="scroll-to-top-btn" class="fixed bottom-6 right-4 z-50 hidden bg-slate-900 border-2 border-slate-700 text-white w-11 h-11 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.4)] flex items-center justify-center active:bg-slate-700 active:scale-95 transition-all">
-        <i class="fa-solid fa-chevron-up text-base"></i>
+    <button id="scroll-to-top-btn" class="fixed bottom-6 right-4 z-50 hidden bg-slate-900 border-2 border-slate-700 text-white w-12 h-12 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.4)] flex items-center justify-center active:bg-slate-700 active:scale-95 transition-all">
+        <i class="fa-solid fa-chevron-up text-lg"></i>
     </button>
 
     <div id="filter-drawer-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300"></div>
     <div id="filter-drawer" class="fixed top-0 right-0 bottom-0 w-[60%] max-w-xs bg-slate-900 text-white z-50 translate-x-full transition-transform duration-300 shadow-2xl flex flex-col justify-between">
         
-        <div class="p-3 border-b border-slate-800 flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-                <i class="fa-solid fa-sliders text-amber-400 text-xs"></i>
-                <h2 class="font-bold text-xs tracking-tight text-white uppercase">Filters</h2>
+        <div class="p-3.5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-amber-400 text-sm"></i>
+                <h2 class="font-bold text-sm tracking-tight text-white uppercase">Filters</h2>
             </div>
             <button id="close-drawer-btn" class="text-slate-400 hover:text-white p-1 rounded active:bg-slate-800 transition">
-                <i class="fa-solid fa-xmark text-base"></i>
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
-        <div class="p-3 overflow-y-auto flex-grow flex flex-col gap-4 text-xs">
+        <div class="p-3.5 overflow-y-auto flex-grow flex flex-col gap-4 text-sm">
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Body Type</label>
-                <div class="grid grid-cols-2 gap-1.5">
-                    <button data-filter-type="type" data-value="SUV" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">SUV</button>
-                    <button data-filter-type="type" data-value="Sedan" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">Sedan</button>
-                    <button data-filter-type="type" data-value="Truck" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">Truck</button>
-                    <button data-filter-type="type" data-value="Coupe" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">Coupe</button>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Body Type</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button data-filter-type="type" data-value="SUV" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center">SUV</button>
+                    <button data-filter-type="type" data-value="Sedan" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center">Sedan</button>
+                    <button data-filter-type="type" data-value="Truck" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center">Truck</button>
+                    <button data-filter-type="type" data-value="Coupe" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center">Coupe</button>
                 </div>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Max Price</label>
-                <div class="grid grid-cols-1 gap-1.5">
-                    <button data-filter-type="price" data-value="20000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">Under $20k</button>
-                    <button data-filter-type="price" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">Under $30k</button>
-                    <button data-filter-type="price" data-value="40000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">Under $40k</button>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Max Price</label>
+                <div class="grid grid-cols-1 gap-2">
+                    <button data-filter-type="price" data-value="20000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">Under $20k</button>
+                    <button data-filter-type="price" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">Under $30k</button>
+                    <button data-filter-type="price" data-value="40000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">Under $40k</button>
                 </div>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Max Mileage</label>
-                <div class="grid grid-cols-1 gap-1.5">
-                    <button data-filter-type="miles" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">&lt; 30,000 mi</button>
-                    <button data-filter-type="miles" data-value="50000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">&lt; 50,000 mi</button>
-                    <button data-filter-type="miles" data-value="75000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">&lt; 75,000 mi</button>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Max Mileage</label>
+                <div class="grid grid-cols-1 gap-2">
+                    <button data-filter-type="miles" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">&lt; 30,000 mi</button>
+                    <button data-filter-type="miles" data-value="50000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">&lt; 50,000 mi</button>
+                    <button data-filter-type="miles" data-value="75000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">&lt; 75,000 mi</button>
                 </div>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Min Year</label>
-                <div class="grid grid-cols-1 gap-1.5">
-                    <button data-filter-type="year" data-value="2024" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">2024 or Newer</button>
-                    <button data-filter-type="year" data-value="2023" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">2023 or Newer</button>
-                    <button data-filter-type="year" data-value="2022" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md transition text-left">2022 or Newer</button>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Min Year</label>
+                <div class="grid grid-cols-1 gap-2">
+                    <button data-filter-type="year" data-value="2024" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">2024 or Newer</button>
+                    <button data-filter-type="year" data-value="2023" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">2023 or Newer</button>
+                    <button data-filter-type="year" data-value="2022" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md transition text-left">2022 or Newer</button>
                 </div>
             </div>
         </div>
 
-        <div class="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
-            <button id="reset-all-filters-btn" class="text-[11px] font-bold text-slate-400 hover:text-rose-400 transition underline">Reset All</button>
-            <button id="done-drawer-btn" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2 rounded-md transition uppercase">Done</button>
+        <div class="p-3.5 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
+            <button id="reset-all-filters-btn" class="text-xs font-bold text-slate-400 hover:text-rose-400 transition underline">Reset All</button>
+            <button id="done-drawer-btn" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-md transition uppercase">Done</button>
         </div>
     </div>
 
