@@ -43,14 +43,75 @@
     </div>
 
     <div id="sticky-search-bar" class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-slate-300/60 p-3 shadow-md transition-all duration-300">
-        <div class="max-w-md mx-auto flex items-center gap-2">
-            <div class="relative flex-grow">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
+        <div class="max-w-md mx-auto flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
+                </div>
+                <button id="filter-icon-btn" class="hidden shrink-0 bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg transition border border-white/20 active:scale-95">
+                    <i class="fa-solid fa-sliders text-sm"></i>
+                </button>
             </div>
-            <button id="filter-icon-btn" class="hidden shrink-0 bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg transition border border-white/20 active:scale-95">
-                <i class="fa-solid fa-sliders text-sm"></i>
+            <div id="active-chips-container" class="hidden flex flex-wrap gap-1.5 pt-0.5"></div>
+        </div>
+    </div>
+
+    <div id="filter-drawer-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300"></div>
+    <div id="filter-drawer" class="fixed top-0 right-0 bottom-0 w-[60%] max-w-xs bg-slate-900 text-white z-50 translate-x-full transition-transform duration-300 shadow-2xl flex flex-col justify-between">
+        
+        <div class="p-3 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-sliders text-amber-400 text-xs"></i>
+                <h2 class="font-bold text-xs tracking-tight text-white uppercase">Filters</h2>
+            </div>
+            <button id="close-drawer-btn" class="text-slate-400 hover:text-white p-1 rounded active:bg-slate-800 transition">
+                <i class="fa-solid fa-xmark text-base"></i>
             </button>
+        </div>
+
+        <div class="p-3 overflow-y-auto flex-grow flex flex-col gap-4 text-xs">
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Body Type</label>
+                <div class="grid grid-cols-2 gap-1.5">
+                    <button data-filter-type="type" data-value="SUV" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">SUV</button>
+                    <button data-filter-type="type" data-value="Sedan" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">Sedan</button>
+                    <button data-filter-type="type" data-value="Truck" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">Truck</button>
+                    <button data-filter-type="type" data-value="Coupe" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center">Coupe</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Max Price</label>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <button data-filter-type="price" data-value="20000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">Under $20k</button>
+                    <button data-filter-type="price" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">Under $30k</button>
+                    <button data-filter-type="price" data-value="40000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">Under $40k</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Max Mileage</label>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <button data-filter-type="miles" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">&lt; 30,000 mi</button>
+                    <button data-filter-type="miles" data-value="50000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">&lt; 50,000 mi</button>
+                    <button data-filter-type="miles" data-value="75000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">&lt; 75,000 mi</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Min Year</label>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <button data-filter-type="year" data-value="2024" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">2024 or Newer</button>
+                    <button data-filter-type="year" data-value="2023" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-left">2023 or Newer</button>
+                    <button data-filter-type="year" data-value="2022" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md transition text-left">2022 or Newer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
+            <button id="reset-all-filters-btn" class="text-[11px] font-bold text-slate-400 hover:text-rose-400 transition underline">Reset All</button>
+            <button id="done-drawer-btn" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2 rounded-md transition uppercase">Done</button>
         </div>
     </div>
 
@@ -207,10 +268,23 @@
             });
         });
 
-        // Navy Shift & Filter Icon Reveal on Scroll
+       // Filter Variables State
+        let activeMaxPrice = null;
+        let activeMaxMiles = null;
+        let activeMinYear = null;
+
+        // Drawer Handles
         const stickyBar = document.getElementById('sticky-search-bar');
         const filterIconBtn = document.getElementById('filter-icon-btn');
+        const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
+        const drawer = document.getElementById('filter-drawer');
+        const closeDrawerBtn = document.getElementById('close-drawer-btn');
+        const doneDrawerBtn = document.getElementById('done-drawer-btn');
+        const resetAllBtn = document.getElementById('reset-all-filters-btn');
+        const activeChipsContainer = document.getElementById('active-chips-container');
+        const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
 
+        // Scroll listener for Navy shift
         window.addEventListener('scroll', () => {
             if (window.scrollY > 40) {
                 stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
@@ -223,7 +297,146 @@
             }
         }, { passive: true });
 
+        // Drawer Open / Close Logic
+        function openDrawer() {
+            drawerBackdrop.classList.remove('hidden');
+            drawer.classList.remove('translate-x-full');
+        }
+
+        function closeDrawer() {
+            drawer.classList.add('translate-x-full');
+            drawerBackdrop.classList.add('hidden');
+        }
+
+        filterIconBtn.addEventListener('click', openDrawer);
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        doneDrawerBtn.addEventListener('click', closeDrawer);
+        drawerBackdrop.addEventListener('click', closeDrawer);
+
+        // Update Yellow Highlight States & Render Yellow Tiles
+        function updateUIStates() {
+            // 1. Highlight active buttons inside drawer
+            drawerFilterBtns.forEach(btn => {
+                const type = btn.getAttribute('data-filter-type');
+                const val = btn.getAttribute('data-value');
+                let isActive = false;
+
+                if (type === 'type' && activeType === val) isActive = true;
+                if (type === 'price' && activeMaxPrice === Number(val)) isActive = true;
+                if (type === 'miles' && activeMaxMiles === Number(val)) isActive = true;
+                if (type === 'year' && activeMinYear === Number(val)) isActive = true;
+
+                if (isActive) {
+                    btn.className = "drawer-filter-btn border-2 border-amber-400 bg-amber-400 text-slate-950 py-1.5 px-2 rounded-md font-black text-xs transition text-center shadow-sm";
+                } else {
+                    btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center";
+                }
+            });
+
+            // 2. Sync the body type pills at the top of the screen to match
+            typeButtons.forEach(b => {
+                if(b.getAttribute('data-type') === activeType) {
+                    b.className = "type-btn shrink-0 bg-slate-900 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm";
+                } else {
+                    b.className = "type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition";
+                }
+            });
+
+            // 3. Render Yellow Active Tiles under the search bar
+            activeChipsContainer.innerHTML = '';
+            let activeCount = 0;
+
+            if (activeType !== 'All') {
+                activeCount++;
+                activeChipsContainer.innerHTML += `<span class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2 py-0.5 rounded-md shadow-xs">${activeType} <button onclick="clearSingleFilter('type')" class="ml-0.5 font-black hover:text-slate-700">✕</button></span>`;
+            }
+            if (activeMaxPrice) {
+                activeCount++;
+                activeChipsContainer.innerHTML += `<span class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2 py-0.5 rounded-md shadow-xs">Under $${(activeMaxPrice/1000).toFixed(0)}k <button onclick="clearSingleFilter('price')" class="ml-0.5 font-black hover:text-slate-700">✕</button></span>`;
+            }
+            if (activeMaxMiles) {
+                activeCount++;
+                activeChipsContainer.innerHTML += `<span class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2 py-0.5 rounded-md shadow-xs">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <button onclick="clearSingleFilter('miles')" class="ml-0.5 font-black hover:text-slate-700">✕</button></span>`;
+            }
+            if (activeMinYear) {
+                activeCount++;
+                activeChipsContainer.innerHTML += `<span class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2 py-0.5 rounded-md shadow-xs">${activeMinYear}+ <button onclick="clearSingleFilter('year')" class="ml-0.5 font-black hover:text-slate-700">✕</button></span>`;
+            }
+
+            if (activeCount > 0) {
+                activeChipsContainer.classList.remove('hidden');
+            } else {
+                activeChipsContainer.classList.add('hidden');
+            }
+        }
+
+        // Global function to clear a single filter when clicking ✕ on a yellow tile
+        window.clearSingleFilter = function(type) {
+            if (type === 'type') activeType = 'All';
+            if (type === 'price') activeMaxPrice = null;
+            if (type === 'miles') activeMaxMiles = null;
+            if (type === 'year') activeMinYear = null;
+            updateUIStates();
+            processInventory();
+        };
+
+        // Click Handler for all buttons inside the drawer
+        drawerFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.getAttribute('data-filter-type');
+                const val = btn.getAttribute('data-value');
+
+                if (type === 'type') activeType = (activeType === val) ? 'All' : val;
+                if (type === 'price') activeMaxPrice = (activeMaxPrice === Number(val)) ? null : Number(val);
+                if (type === 'miles') activeMaxMiles = (activeMaxMiles === Number(val)) ? null : Number(val);
+                if (type === 'year') activeMinYear = (activeMinYear === Number(val)) ? null : Number(val);
+
+                updateUIStates();
+                processInventory();
+            });
+        });
+
+        // Click Handler for Reset All
+        resetAllBtn.addEventListener('click', () => {
+            activeType = 'All';
+            activeMaxPrice = null;
+            activeMaxMiles = null;
+            activeMinYear = null;
+            updateUIStates();
+            processInventory();
+        });
+
+        // Redefine processInventory to apply Price, Mileage, and Year live
+        function processInventory() {
+            grid.innerHTML = ''; 
+            currentPage = 1;
+
+            filteredVehicles = allVehicles.filter(car => {
+                const matchesType = (activeType === 'All' || car.type === activeType);
+                const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
+                const matchesSearch = masterSearchString.includes(searchTerm);
+
+                // Parse miles string ("45,200 mi" -> 45200)
+                const carMilesNum = Number(car.miles.replace(/,/g, ''));
+
+                const matchesPrice = !activeMaxPrice || (car.price <= activeMaxPrice);
+                const matchesMiles = !activeMaxMiles || (carMilesNum <= activeMaxMiles);
+                const matchesYear = !activeMinYear || (car.year >= activeMinYear);
+
+                return matchesType && matchesSearch && matchesPrice && matchesMiles && matchesYear;
+            });
+
+            if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
+            else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
+
+            counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
+            
+            renderNextBatch();
+        }
+
         // Initial Load
+        updateUIStates();
         processInventory();
     </script>
 </body>
