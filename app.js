@@ -37,7 +37,7 @@ function cleanSearchString(str) {
     return str.toLowerCase().replace(/[-_ \/\\]/g, '');
 }
 
-// Render Vehicle Cards (Updated with Larger Typography)
+// Render Vehicle Cards (Updated: Price is larger, black, and non-bold)
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -67,7 +67,7 @@ function renderNextBatch() {
                         </div>
                         <div class="mt-3">
                             <div class="flex items-center justify-between gap-1">
-                                <div class="text-lg font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
+                                <div class="text-xl font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
                                 <span class="text-xs font-extrabold bg-slate-100 text-slate-700 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
                             </div>
                             <div class="text-xs text-slate-500 mt-1.5 font-bold">Est. $${car.payment}/mo</div>
