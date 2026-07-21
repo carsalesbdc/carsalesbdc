@@ -160,6 +160,12 @@
         let filteredVehicles = [...allVehicles]; 
         let currentPage = 1;
 
+        // Filter Variables State
+        let activeType = 'All', searchTerm = '', currentSort = 'default';
+        let activeMaxPrice = null;
+        let activeMaxMiles = null;
+        let activeMinYear = null;
+
         // DOM Handles
         const grid = document.getElementById('vehicle-grid');
         const searchInput = document.getElementById('search-input');
@@ -169,8 +175,18 @@
         const sentinel = document.getElementById('scroll-sentinel');
         const spinner = document.getElementById('spinner');
 
-        let activeType = 'All', searchTerm = '', currentSort = 'default';
+        // Drawer Handles
+        const stickyBar = document.getElementById('sticky-search-bar');
+        const filterIconBtn = document.getElementById('filter-icon-btn');
+        const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
+        const drawer = document.getElementById('filter-drawer');
+        const closeDrawerBtn = document.getElementById('close-drawer-btn');
+        const doneDrawerBtn = document.getElementById('done-drawer-btn');
+        const resetAllBtn = document.getElementById('reset-all-filters-btn');
+        const activeChipsContainer = document.getElementById('active-chips-container');
+        const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
 
+        // Render Vehicle Cards
         function renderNextBatch() {
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = start + ITEMS_PER_PAGE;
@@ -220,6 +236,7 @@
             currentPage++;
         }
 
+        // Process Inventory Logic
         function processInventory() {
             grid.innerHTML = ''; 
             currentPage = 1;
@@ -227,7 +244,15 @@
             filteredVehicles = allVehicles.filter(car => {
                 const matchesType = (activeType === 'All' || car.type === activeType);
                 const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
-                return matchesType && masterSearchString.includes(searchTerm);
+                const matchesSearch = masterSearchString.includes(searchTerm);
+
+                const carMilesNum = Number(car.miles.replace(/,/g, ''));
+
+                const matchesPrice = !activeMaxPrice || (car.price <= activeMaxPrice);
+                const matchesMiles = !activeMaxMiles || (carMilesNum <= activeMaxMiles);
+                const matchesYear = !activeMinYear || (car.year >= activeMinYear);
+
+                return matchesType && matchesSearch && matchesPrice && matchesMiles && matchesYear;
             });
 
             if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
@@ -239,7 +264,7 @@
             renderNextBatch();
         }
 
-        // Intersection Observer for Infinite Scroll
+        // Infinite Scroll Observer
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 const maxPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE);
@@ -252,40 +277,20 @@
                 }
             }
         }, { rootMargin: '150px' });
-
         observer.observe(sentinel);
 
-        // Input Listeners
+        // Input Listeners for Search & Sort
         searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase().trim(); processInventory(); });
         sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
+        // Body Type Button listener (top row)
         typeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                typeButtons.forEach(b => {
-                    b.className = "type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition";
-                });
-                btn.className = "type-btn shrink-0 bg-slate-900 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm";
-                
                 activeType = btn.getAttribute('data-type');
+                updateUIStates();
                 processInventory();
             });
         });
-
-       // Filter Variables State
-        let activeMaxPrice = null;
-        let activeMaxMiles = null;
-        let activeMinYear = null;
-
-        // Drawer Handles
-        const stickyBar = document.getElementById('sticky-search-bar');
-        const filterIconBtn = document.getElementById('filter-icon-btn');
-        const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
-        const drawer = document.getElementById('filter-drawer');
-        const closeDrawerBtn = document.getElementById('close-drawer-btn');
-        const doneDrawerBtn = document.getElementById('done-drawer-btn');
-        const resetAllBtn = document.getElementById('reset-all-filters-btn');
-        const activeChipsContainer = document.getElementById('active-chips-container');
-        const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
 
         // Scroll listener for Navy shift
         window.addEventListener('scroll', () => {
@@ -365,9 +370,15 @@
                 activeCount++;
                 activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2.5 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeMinYear}+ <span class="font-black opacity-70">✕</span></button>`;
             }
+
+            if (activeCount > 0) {
+                activeChipsContainer.classList.remove('hidden');
+            } else {
+                activeChipsContainer.classList.add('hidden');
+            }
         }
 
-        // Global function to clear a single filter when clicking ✕ on a yellow tile
+        // Global function to clear a single filter when clicking a yellow tile
         window.clearSingleFilter = function(type) {
             if (type === 'type') activeType = 'All';
             if (type === 'price') activeMaxPrice = null;
@@ -403,39 +414,9 @@
             processInventory();
         });
 
-        // Redefine processInventory to apply Price, Mileage, and Year live
-        function processInventory() {
-            grid.innerHTML = ''; 
-            currentPage = 1;
-
-            filteredVehicles = allVehicles.filter(car => {
-                const matchesType = (activeType === 'All' || car.type === activeType);
-                const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
-                const matchesSearch = masterSearchString.includes(searchTerm);
-
-                // Parse miles string ("45,200 mi" -> 45200)
-                const carMilesNum = Number(car.miles.replace(/,/g, ''));
-
-                const matchesPrice = !activeMaxPrice || (car.price <= activeMaxPrice);
-                const matchesMiles = !activeMaxMiles || (carMilesNum <= activeMaxMiles);
-                const matchesYear = !activeMinYear || (car.year >= activeMinYear);
-
-                return matchesType && matchesSearch && matchesPrice && matchesMiles && matchesYear;
-            });
-
-            if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
-            else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
-            else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
-
-            counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
-            
-            renderNextBatch();
-        }
-
         // Initial Load
         updateUIStates();
         processInventory();
     </script>
 </body>
 </html>
- 
