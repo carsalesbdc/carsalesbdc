@@ -52,9 +52,9 @@
         lastScrollY = currentScrollY;
     }, { passive: true });
 
-    // 5. Open Modal Sheet instantly on a single touch/click (using pointerdown to bypass scroll lag)
-    bottomSearch.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
+    // 5. Open Modal Sheet instantly on a single click without blocking scroll interruption
+    bottomSearch.addEventListener('click', (e) => {
+        e.stopPropagation();
         searchModal.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
         searchModal.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
         setTimeout(() => { modalInput.focus(); }, 100);
