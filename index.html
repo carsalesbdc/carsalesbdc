@@ -8,14 +8,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-200 min-h-screen font-sans antialiased text-slate-800">
+<body class="bg-slate-200 h-[100dvh] flex flex-col overflow-hidden font-sans antialiased text-slate-800">
 
-    <header class="bg-white/95 border-b border-slate-300/60 p-3 shadow-sm">
+    <header class="bg-white/95 border-b border-slate-300/60 p-3 shadow-sm shrink-0">
         <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
             <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
             <span class="text-xs bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
         </div>
     </header>
+
+    <div id="scroll-main" class="flex-grow overflow-y-auto w-full relative">
 
     <div class="bg-white p-3 pb-2 border-b border-slate-200">
         <div class="max-w-md mx-auto flex flex-col gap-2">
@@ -122,8 +124,7 @@
             <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
         </div>
     </main>
-
-    <script>
+    </div> <script>
         // Generating pool of 1,000 cars
         const makes = ["Honda", "Toyota", "Ford", "Jeep", "Chevrolet", "Nissan", "Kia", "Subaru"];
         const models = {
@@ -292,9 +293,10 @@
             });
         });
 
-        // Scroll listener for Navy shift
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 40) {
+        // Scroll listener for Navy shift inside new container
+        const scrollContainer = document.getElementById('scroll-main');
+        scrollContainer.addEventListener('scroll', () => {
+            if (scrollContainer.scrollTop > 40) {
                 stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
                 stickyBar.classList.add('bg-slate-900', 'shadow-lg');
                 filterIconBtn.classList.remove('hidden');
