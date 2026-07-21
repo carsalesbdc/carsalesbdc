@@ -12,12 +12,10 @@
 
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-sm">
         <div class="max-w-md mx-auto flex flex-col gap-2.5">
-            
             <div class="flex items-center justify-between pb-1">
                 <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
                 <span class="text-xs bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
             </div>
-
             <div class="flex flex-col gap-2">
                 <div class="flex items-center justify-between gap-2">
                     <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
@@ -31,7 +29,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
                     <button data-type="All" class="type-btn shrink-0 bg-slate-800 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm">All Types</button>
                     <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">SUVs</button>
@@ -43,42 +40,39 @@
         </div>
     </header>
 
-    <main class="max-w-md mx-auto p-3 pb-24"> <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
-        
+    <main class="max-w-md mx-auto p-3 pb-24">
+        <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
         <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
             <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
         </div>
     </main>
 
-    <div id="cb-bottom-search" class="fixed bottom-6 left-4 right-4 max-w-md mx-auto bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-full px-4 py-3.5 flex items-center gap-3 z-[50] transition-transform duration-300 ease-in-out cursor-pointer active:scale-[0.98]">
+    <div id="cb-bottom-search" class="fixed bottom-6 left-4 right-4 max-w-md mx-auto bg-white border-2 border-blue-500 shadow-2xl shadow-blue-900/20 rounded-full px-4 py-3.5 flex items-center gap-3 z-[50] transition-transform duration-300 ease-in-out cursor-pointer select-none">
         <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
-        <span class="text-slate-400 font-medium text-sm">Search 1,000+ vehicles...</span>
+        <span class="text-slate-400 font-medium text-sm">Search vehicles...</span>
     </div>
 
-    <div id="cb-search-modal" class="fixed inset-0 bg-slate-100 z-[9999] flex flex-col transition-opacity duration-200 opacity-0 pointer-events-none">
-        
-        <div class="bg-white px-4 pt-12 pb-4 shadow-sm flex items-center gap-3">
-            <div class="flex-grow relative flex items-center bg-slate-100 rounded-xl px-3 py-2.5">
+    <div id="cb-search-modal" class="fixed inset-x-0 bottom-0 h-[32vh] bg-slate-100 rounded-t-2xl shadow-2xl z-[9999] flex flex-col transition-all duration-300 transform translate-y-full opacity-0 pointer-events-none">
+        <div class="bg-white px-4 pt-3 pb-3 rounded-t-2xl shadow-sm flex items-center gap-3">
+            <div class="flex-grow relative flex items-center bg-slate-100 rounded-xl px-3 py-2">
                 <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-2"></i>
                 <input type="text" id="cb-modal-input" placeholder="Search make, model, style..." class="w-full bg-transparent outline-none text-slate-800 placeholder-slate-400 text-base font-medium">
             </div>
             <button id="cb-cancel-btn" class="text-blue-600 font-bold text-sm px-2 active:text-blue-800 transition">Close</button>
         </div>
-
-        <div class="p-4 flex-grow overflow-y-auto">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Trending Searches</h3>
-            <div class="flex flex-wrap gap-2">
-                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Fast Red Cars</button>
-                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">SUVs under $30k</button>
-                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Honda Accord</button>
-                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">3rd Row Seating</button>
-                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Ford F-150</button>
+        <div class="p-3 flex-grow overflow-y-auto">
+            <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Trending Searches</h3>
+            <div class="flex flex-wrap gap-1.5">
+                <button class="trend-pill bg-white border border-slate-200 text-slate-700 text-xs font-medium px-3 py-1.5 rounded-lg shadow-sm active:bg-slate-50 transition">Fast Red Cars</button>
+                <button class="trend-pill bg-white border border-slate-200 text-slate-700 text-xs font-medium px-3 py-1.5 rounded-lg shadow-sm active:bg-slate-50 transition">SUVs under $30k</button>
+                <button class="trend-pill bg-white border border-slate-200 text-slate-700 text-xs font-medium px-3 py-1.5 rounded-lg shadow-sm active:bg-slate-50 transition">Honda Accord</button>
+                <button class="trend-pill bg-white border border-slate-200 text-slate-700 text-xs font-medium px-3 py-1.5 rounded-lg shadow-sm active:bg-slate-50 transition">3rd Row Seating</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Generating 1,000 cars to simulate a massive multi-location group inventory
+        // Inventory Data Generation (1,000 cars)
         const makes = ["Honda", "Toyota", "Ford", "Jeep", "Chevrolet", "Nissan", "Kia", "Subaru"];
         const models = {
             Honda: ["Civic", "Accord", "CR-V", "Pilot", "Ridgeline"], Toyota: ["Camry", "Corolla", "RAV4", "Highlander", "Tundra"],
@@ -105,17 +99,14 @@
                 miles: (1200 + ((i * 1432) % 72000)).toLocaleString(),
                 color: colors[i % colors.length].name,
                 colorClass: colors[i % colors.length].class,
-                // Using the local 4:3 uploaded image
                 img: "carsalesimage.JPG"
             };
         });
 
-        // Pagination Config
         const ITEMS_PER_PAGE = 24;
-        let filteredVehicles = [...allVehicles]; 
+        let filteredVehicles = [...allVehicles];
         let currentPage = 1;
 
-        // Inventory DOM Handles
         const grid = document.getElementById('vehicle-grid');
         const typeButtons = document.querySelectorAll('.type-btn');
         const sortSelect = document.getElementById('sort-select');
@@ -123,45 +114,61 @@
         const sentinel = document.getElementById('scroll-sentinel');
         const spinner = document.getElementById('spinner');
 
-        // Widget DOM Handles
         const bottomSearch = document.getElementById('cb-bottom-search');
         const searchModal = document.getElementById('cb-search-modal');
         const modalInput = document.getElementById('cb-modal-input');
         const cancelBtn = document.getElementById('cb-cancel-btn');
+        const trendPills = document.querySelectorAll('.trend-pill');
 
         let activeType = 'All', searchTerm = '', currentSort = 'default';
 
-        // Scroll-Aware Logic for Widget (Hide on scroll down, Reveal on scroll up)
+        // Scroll-Aware Logic for Widget
         let lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY + 10) {
-                // Scrolling Down: Hide the bar
+            if (currentScrollY > lastScrollY + 15) {
                 bottomSearch.style.transform = 'translateY(150%)';
-            } else if (currentScrollY < lastScrollY - 10) {
-                // Scrolling Up: Reveal the bar
+            } else if (currentScrollY < lastScrollY - 15) {
                 bottomSearch.style.transform = 'translateY(0)';
             }
             lastScrollY = currentScrollY;
         }, { passive: true });
 
-        // Full-Screen Modal Mechanics
-        bottomSearch.addEventListener('click', () => {
-            searchModal.classList.remove('opacity-0', 'pointer-events-none');
-            searchModal.classList.add('opacity-100', 'pointer-events-auto');
-            setTimeout(() => { modalInput.focus(); }, 200);
+        // Open Modal Sheet instantly on click
+        bottomSearch.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchModal.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+            searchModal.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            setTimeout(() => { modalInput.focus(); }, 100);
         });
 
-        cancelBtn.addEventListener('click', () => {
-            searchModal.classList.remove('opacity-100', 'pointer-events-auto');
-            searchModal.classList.add('opacity-0', 'pointer-events-none');
+        // Close Modal Function
+        function closeModal() {
+            searchModal.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            searchModal.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
             modalInput.blur();
+        }
+
+        cancelBtn.addEventListener('click', closeModal);
+
+        modalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                closeModal();
+            }
         });
 
-        // Wire Modal Input to the Inventory Filter
-        modalInput.addEventListener('input', (e) => { 
-            searchTerm = e.target.value.toLowerCase().trim(); 
-            processInventory(); 
+        trendPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                modalInput.value = pill.innerText;
+                searchTerm = pill.innerText.toLowerCase().trim();
+                processInventory();
+                closeModal();
+            });
+        });
+
+        modalInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase().trim();
+            processInventory();
         });
 
         function renderNextBatch() {
@@ -211,7 +218,7 @@
         }
 
         function processInventory() {
-            grid.innerHTML = ''; 
+            grid.innerHTML = '';
             currentPage = 1;
 
             filteredVehicles = allVehicles.filter(car => {
@@ -225,7 +232,6 @@
             else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
 
             counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
-            
             renderNextBatch();
         }
 
@@ -245,7 +251,6 @@
 
         observer.observe(sentinel);
 
-        // Filter Controls
         sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
         typeButtons.forEach(btn => {
@@ -257,11 +262,7 @@
             });
         });
 
-        // Initialize First Run
-        processInventory();
-    // Initialize First Run
         processInventory();
     </script>
-    <script src="global-search.js"></script>
 </body>
 </html>
