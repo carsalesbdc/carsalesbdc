@@ -19,12 +19,7 @@
 
     <div id="sticky-search-bar" class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-slate-300/60 p-3 shadow-md transition-all duration-300">
         <div class="max-w-md mx-auto flex flex-col gap-2.5">
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
-            </div>
-
-            <div class="flex flex-col gap-2 pt-0.5 border-t border-slate-100">
+            <div class="flex flex-col gap-2 pb-0.5 border-b border-slate-100">
                 <div class="flex items-center justify-between gap-2">
                     <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
                     <div class="relative flex items-center bg-slate-100 rounded-lg px-2 py-1 border border-slate-200/40">
@@ -45,6 +40,16 @@
                     <button data-type="Truck" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Trucks</button>
                     <button data-type="Coupe" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Coupes</button>
                 </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="search-input" placeholder="Search thousands of vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-9 pr-3 py-2 outline-none border border-transparent focus:border-blue-500/50 transition">
+                </div>
+                <button id="filter-icon-btn" class="hidden shrink-0 bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg transition border border-white/20 active:scale-95">
+                    <i class="fa-solid fa-sliders text-sm"></i>
+                </button>
             </div>
         </div>
     </div>
