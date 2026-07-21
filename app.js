@@ -37,7 +37,7 @@ function cleanSearchString(str) {
     return str.toLowerCase().replace(/[-_ \/\\]/g, '');
 }
 
-// Render Vehicle Cards (Updated: Price is larger, black, and non-bold)
+// Render Vehicle Cards
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -61,16 +61,16 @@ function renderNextBatch() {
                     <div class="p-3 flex flex-col justify-between">
                         <div>
                             <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
-                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1.5 text-xs font-bold text-slate-500">
+                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1.5 text-xs font-bold text-slate-600">
                                 <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} truncate max-w-[85px]">${car.color}</span>
                             </div>
                         </div>
                         <div class="mt-3">
                             <div class="flex items-center justify-between gap-1">
-                                <div class="text-xl font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
-                                <span class="text-xs font-extrabold bg-slate-100 text-slate-700 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
+                                <div class="text-lg font-bold text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
+                                <span class="text-[10px] font-extrabold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
                             </div>
-                            <div class="text-xs text-slate-500 mt-1.5 font-bold">Est. $${car.payment}/mo</div>
+                            <div class="text-xs text-slate-500 mt-1.5 font-medium">Est. $${car.payment}/mo</div>
                         </div>
                     </div>
                 </a>
@@ -88,6 +88,11 @@ function renderNextBatch() {
 
 // Process Inventory Logic
 function processInventory() {
+    if (typeof allVehicles === 'undefined' || !Array.isArray(allVehicles)) {
+        counter.innerText = 'Loading Vehicles...';
+        return;
+    }
+
     grid.innerHTML = ''; 
     currentPage = 1;
 
@@ -101,7 +106,7 @@ function processInventory() {
 
         const matchesSearch = cleanedCarString.includes(cleanedSearchTerm);
 
-        const carMilesNum = Number(car.miles.replace(/,/g, ''));
+        const carMilesNum = Number(String(car.miles).replace(/,/g, ''));
 
         const matchesPrice = !activeMaxPrice || (car.price <= activeMaxPrice);
         const matchesMiles = !activeMaxMiles || (carMilesNum <= activeMaxMiles);
@@ -146,7 +151,7 @@ typeButtons.forEach(btn => {
     });
 });
 
-// SCROLL LOGIC: Navy Shift, Filter Reveal, and Scroll-To-Top Arrow
+// SCROLL LOGIC
 scrollContainer.addEventListener('scroll', () => {
     if (scrollContainer.scrollTop > 70) {
         stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
@@ -161,7 +166,6 @@ scrollContainer.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-// Scroll-to-Top Button Click Handler
 scrollToTopBtn.addEventListener('click', () => {
     scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
 });
@@ -182,7 +186,7 @@ closeDrawerBtn.addEventListener('click', closeDrawer);
 doneDrawerBtn.addEventListener('click', closeDrawer);
 drawerBackdrop.addEventListener('click', closeDrawer);
 
-// Update Yellow Highlight States & Render Yellow Tiles
+// Update Yellow Highlight States
 function updateUIStates() {
     drawerFilterBtns.forEach(btn => {
         const type = btn.getAttribute('data-filter-type');
@@ -269,7 +273,15 @@ resetAllBtn.addEventListener('click', () => {
     processInventory();
 });
 
-// Initial Load
-filteredVehicles = [...allVehicles];
-updateUIStates();
-processInventory();
+// Safe Initial Load
+function initApp() {
+    if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
+        filteredVehicles = [...allVehicles];
+        updateUIStates();
+        processInventory();
+    } else {
+        setTimeout(initApp, 100);
+    }
+}
+
+initApp();
