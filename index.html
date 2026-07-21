@@ -8,6 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+        }
         #scroll-main {
             scroll-behavior: smooth;
         }
@@ -27,7 +31,7 @@
         <div class="bg-white p-3.5 pb-2.5 border-b border-slate-200">
             <div class="max-w-md mx-auto flex flex-col gap-2.5">
                 <div class="flex items-center justify-between gap-2">
-                    <span id="vehicle-counter" class="text-sm font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
+                    <span id="vehicle-counter" class="text-sm font-bold text-slate-500 uppercase tracking-wide">Loading Vehicles...</span>
                     <div class="relative flex items-center bg-slate-100 rounded-lg px-2.5 py-1.5 border border-slate-200/40">
                         <i class="fa-solid fa-arrow-down-wide-short text-slate-400 text-sm mr-1.5"></i>
                         <select id="sort-select" class="bg-transparent text-sm font-bold text-slate-700 outline-none pr-1 appearance-none cursor-pointer">
@@ -110,3 +114,30 @@
                 </div>
             </div>
             <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Max Mileage</label>
+                <div class="grid grid-cols-1 gap-2">
+                    <button data-filter-type="miles" data-value="30000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">&lt; 30,000 mi</button>
+                    <button data-filter-type="miles" data-value="50000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">&lt; 50,000 mi</button>
+                    <button data-filter-type="miles" data-value="75000" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">&lt; 75,000 mi</button>
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Min Year</label>
+                <div class="grid grid-cols-1 gap-2">
+                    <button data-filter-type="year" data-value="2024" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">2024 or Newer</button>
+                    <button data-filter-type="year" data-value="2023" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-left">2023 or Newer</button>
+                    <button data-filter-type="year" data-value="2022" class="drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md transition text-left">2022 or Newer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3.5 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
+            <button id="reset-all-filters-btn" class="text-xs font-bold text-slate-400 hover:text-rose-400 transition underline">Reset All</button>
+            <button id="done-drawer-btn" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-md transition uppercase">Done</button>
+        </div>
+    </div>
+
+    <script src="inventory.js?v=5"></script>
+    <script src="app.js?v=5"></script>
+</body>
+</html>
