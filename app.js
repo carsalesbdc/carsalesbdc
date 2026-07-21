@@ -37,14 +37,14 @@ function cleanSearchString(str) {
     return str.toLowerCase().replace(/[-_ \/\\]/g, '');
 }
 
-// Render Vehicle Cards
+// Render Vehicle Cards (Updated with Larger Typography)
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
     const batch = filteredVehicles.slice(start, end);
 
     if (batch.length === 0 && currentPage === 1) {
-        grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 bg-white rounded-xl border border-dashed border-slate-300"><p>No vehicles found.</p></div>`;
+        grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 bg-white rounded-xl border border-dashed border-slate-300"><p class="text-base font-bold">No vehicles found.</p></div>`;
         return;
     }
 
@@ -58,25 +58,25 @@ function renderNextBatch() {
                             <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
                         </div>
                     </div>
-                    <div class="p-2.5 flex flex-col justify-between">
+                    <div class="p-3 flex flex-col justify-between">
                         <div>
-                            <h2 class="text-base font-bold text-slate-800 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
-                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-xs text-slate-500">
-                                <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
+                            <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1.5 text-xs font-bold text-slate-500">
+                                <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} truncate max-w-[85px]">${car.color}</span>
                             </div>
                         </div>
                         <div class="mt-3">
                             <div class="flex items-center justify-between gap-1">
-                                <div class="text-base font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
-                                <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
+                                <div class="text-lg font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
+                                <span class="text-xs font-extrabold bg-slate-100 text-slate-700 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
                             </div>
-                            <div class="text-[11px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
+                            <div class="text-xs text-slate-500 mt-1.5 font-bold">Est. $${car.payment}/mo</div>
                         </div>
                     </div>
                 </a>
-                <div class="p-2 pt-0 grid grid-cols-5 gap-1">
-                    <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-2 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
-                    <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-xs"></i></a>
+                <div class="p-2.5 pt-0 grid grid-cols-5 gap-1.5">
+                    <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
+                    <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-sm"></i></a>
                 </div>
             </article>
         `;
@@ -86,22 +86,19 @@ function renderNextBatch() {
     currentPage++;
 }
 
-// Process Inventory Logic (Hyphen & Space Agnostic Search)
+// Process Inventory Logic
 function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
 
-    // Clean user input once
     const cleanedSearchTerm = cleanSearchString(searchTerm);
 
     filteredVehicles = allVehicles.filter(car => {
         const matchesType = (activeType === 'All' || car.type === activeType);
         
-        // Build raw text string and normalized text string
         const rawString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`;
         const cleanedCarString = cleanSearchString(rawString);
 
-        // Check if normalized search input matches normalized car string
         const matchesSearch = cleanedCarString.includes(cleanedSearchTerm);
 
         const carMilesNum = Number(car.miles.replace(/,/g, ''));
@@ -198,17 +195,17 @@ function updateUIStates() {
         if (type === 'year' && activeMinYear === Number(val)) isActive = true;
 
         if (isActive) {
-            btn.className = "drawer-filter-btn border-2 border-amber-400 bg-amber-400 text-slate-950 py-1.5 px-2 rounded-md font-black text-xs transition text-center shadow-sm";
+            btn.className = "drawer-filter-btn border-2 border-amber-400 bg-amber-400 text-slate-950 py-2 px-2.5 rounded-md font-black text-xs transition text-center shadow-sm";
         } else {
-            btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-1.5 px-2 rounded-md font-bold text-xs transition text-center";
+            btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center";
         }
     });
 
     typeButtons.forEach(b => {
         if(b.getAttribute('data-type') === activeType) {
-            b.className = "type-btn shrink-0 bg-slate-900 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm";
+            b.className = "type-btn shrink-0 bg-slate-900 text-white font-bold text-sm px-4 py-2 rounded-md transition shadow-sm";
         } else {
-            b.className = "type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition";
+            b.className = "type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition";
         }
     });
 
@@ -217,19 +214,19 @@ function updateUIStates() {
 
     if (activeType !== 'All') {
         activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2.5 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeType} <span class="font-black opacity-70">✕</span></button>`;
+        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeType} <span class="font-black opacity-70">✕</span></button>`;
     }
     if (activeMaxPrice) {
         activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2.5 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">Under $${(activeMaxPrice/1000).toFixed(0)}k <span class="font-black opacity-70">✕</span></button>`;
+        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">Under $${(activeMaxPrice/1000).toFixed(0)}k <span class="font-black opacity-70">✕</span></button>`;
     }
     if (activeMaxMiles) {
         activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2.5 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <span class="font-black opacity-70">✕</span></button>`;
+        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <span class="font-black opacity-70">✕</span></button>`;
     }
     if (activeMinYear) {
         activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-bold text-[11px] px-2.5 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeMinYear}+ <span class="font-black opacity-70">✕</span></button>`;
+        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeMinYear}+ <span class="font-black opacity-70">✕</span></button>`;
     }
 
     if (activeCount > 0) {
