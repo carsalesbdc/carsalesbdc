@@ -32,6 +32,11 @@ const resetAllBtn = document.getElementById('reset-all-filters-btn');
 const activeChipsContainer = document.getElementById('active-chips-container');
 const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
 
+// Helper to normalize search text by removing hyphens, spaces, and slashes
+function cleanSearchString(str) {
+    return str.toLowerCase().replace(/[-_ \/\\]/g, '');
+}
+
 // Render Vehicle Cards
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -81,15 +86,23 @@ function renderNextBatch() {
     currentPage++;
 }
 
-// Process Inventory Logic
+// Process Inventory Logic (Hyphen & Space Agnostic Search)
 function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
 
+    // Clean user input once
+    const cleanedSearchTerm = cleanSearchString(searchTerm);
+
     filteredVehicles = allVehicles.filter(car => {
         const matchesType = (activeType === 'All' || car.type === activeType);
-        const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
-        const matchesSearch = masterSearchString.includes(searchTerm);
+        
+        // Build raw text string and normalized text string
+        const rawString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`;
+        const cleanedCarString = cleanSearchString(rawString);
+
+        // Check if normalized search input matches normalized car string
+        const matchesSearch = cleanedCarString.includes(cleanedSearchTerm);
 
         const carMilesNum = Number(car.miles.replace(/,/g, ''));
 
