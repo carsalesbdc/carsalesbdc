@@ -58,7 +58,7 @@
     </main>
 
     <script>
-        // Generating a pool of 1,000 cars to simulate a massive multi-location group inventory
+        // Inventory Dataset Generation (1,000 Vehicles)
         const makes = ["Honda", "Toyota", "Ford", "Jeep", "Chevrolet", "Nissan", "Kia", "Subaru"];
         const models = {
             Honda: ["Civic", "Accord", "CR-V", "Pilot", "Ridgeline"], Toyota: ["Camry", "Corolla", "RAV4", "Highlander", "Tundra"],
@@ -77,10 +77,10 @@
             return {
                 id: i + 1,
                 year: 2021 + (i % 5),
-                make: make,
-                model: model,
+                make,
+                model,
                 type: types[model] || "SUV",
-                price: price,
+                price,
                 payment: Math.round(price / 68),
                 miles: (1200 + ((i * 1432) % 72000)).toLocaleString(),
                 color: colors[i % colors.length].name,
@@ -89,10 +89,11 @@
             };
         });
 
-        // Pagination Config
+        // State Config
         const ITEMS_PER_PAGE = 24;
         let filteredVehicles = [...allVehicles]; 
         let currentPage = 1;
+        let activeType = 'All', searchTerm = '', currentSort = 'default';
 
         // DOM Handles
         const grid = document.getElementById('vehicle-grid');
@@ -103,49 +104,43 @@
         const sentinel = document.getElementById('scroll-sentinel');
         const spinner = document.getElementById('spinner');
 
-        let activeType = 'All', searchTerm = '', currentSort = 'default';
-
         function renderNextBatch() {
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
-            const end = start + ITEMS_PER_PAGE;
-            const batch = filteredVehicles.slice(start, end);
+            const batch = filteredVehicles.slice(start, start + ITEMS_PER_PAGE);
 
             if (batch.length === 0 && currentPage === 1) {
                 grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 bg-white rounded-xl border border-dashed border-slate-300"><p>No vehicles found.</p></div>`;
                 return;
             }
 
-            let htmlString = '';
-            batch.forEach(car => {
-                htmlString += `
-                    <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
-                        <div class="p-2 pb-0">
-                            <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
-                                <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
+            const htmlString = batch.map(car => `
+                <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                    <div class="p-2 pb-0">
+                        <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
+                            <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="p-2.5 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-800 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-xs text-slate-500">
+                                <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
                             </div>
                         </div>
-                        <div class="p-2.5 flex-grow flex flex-col justify-between">
-                            <div>
-                                <h2 class="text-base font-bold text-slate-800 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
-                                <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-xs text-slate-500">
-                                    <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
-                                </div>
+                        <div class="mt-3">
+                            <div class="flex items-center justify-between gap-1">
+                                <div class="text-base font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
+                                <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
                             </div>
-                            <div class="mt-3">
-                                <div class="flex items-center justify-between gap-1">
-                                    <div class="text-base font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
-                                    <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
-                                </div>
-                                <div class="text-[11px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
-                            </div>
+                            <div class="text-[11px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
                         </div>
-                        <div class="p-2 pt-0 grid grid-cols-5 gap-1">
-                            <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-2 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
-                            <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-xs"></i></a>
-                        </div>
-                    </article>
-                `;
-            });
+                    </div>
+                    <div class="p-2 pt-0 grid grid-cols-5 gap-1">
+                        <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-2 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
+                        <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-xs"></i></a>
+                    </div>
+                </article>
+            `).join('');
 
             grid.insertAdjacentHTML('beforeend', htmlString);
             currentPage++;
@@ -166,11 +161,10 @@
             else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
 
             counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
-            
             renderNextBatch();
         }
 
-        // Setup Intersection Observer for Infinite Scroll
+        // Infinite Scroll Observer
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 const maxPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE);
@@ -186,13 +180,19 @@
 
         observer.observe(sentinel);
 
-        // Input Listeners
-        searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase().trim(); processInventory(); });
-        sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
+        // Event Listeners
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase().trim();
+            processInventory();
+        });
+
+        sortSelect.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            processInventory();
+        });
 
         typeButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Update button styles: Selected gets black bg/white text, Unselected gets white bg/dark text
                 typeButtons.forEach(b => {
                     b.className = "type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-md transition";
                 });
@@ -203,7 +203,7 @@
             });
         });
 
-        // Initialize First Run
+        // Initial Load
         processInventory();
     </script>
 </body>
