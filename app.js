@@ -37,7 +37,7 @@ function cleanSearchString(str) {
     return str.toLowerCase().replace(/[-_ \/\\]/g, '');
 }
 
-// Render Vehicle Cards
+// Render Vehicle Cards (UPDATED: Micro Body-Type Badge)
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -68,7 +68,7 @@ function renderNextBatch() {
                         <div class="mt-3">
                             <div class="flex items-center justify-between gap-1">
                                 <div class="text-lg font-bold text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
-                                <span class="text-[10px] font-extrabold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
+                                <span class="text-[9px] font-bold bg-slate-100 text-slate-400 px-1.5 py-[2px] rounded uppercase tracking-wide">${car.type}</span>
                             </div>
                             <div class="text-xs text-slate-500 mt-1.5 font-medium">Est. $${car.payment}/mo</div>
                         </div>
