@@ -37,7 +37,7 @@ function cleanSearchString(str) {
     return str.toLowerCase().replace(/[-_ \/\\]/g, '');
 }
 
-// Render Vehicle Cards (UPDATED: Micro Body-Type Badge)
+// Render Vehicle Cards (UPDATED: Mileage formatting to 100k miles)
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -50,6 +50,11 @@ function renderNextBatch() {
 
     let htmlString = '';
     batch.forEach(car => {
+        
+        // Convert exact miles (e.g., "101,257") into rounded format (e.g., "101k miles")
+        const milesNum = Number(String(car.miles).replace(/,/g, ''));
+        const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
+
         htmlString += `
             <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
                 <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
@@ -62,7 +67,7 @@ function renderNextBatch() {
                         <div>
                             <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
                             <div class="flex flex-wrap items-center gap-x-1.5 mt-1.5 text-xs font-bold text-slate-600">
-                                <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} truncate max-w-[85px]">${car.color}</span>
+                                <span>${formattedMiles}</span><span>•</span><span class="${car.colorClass} truncate max-w-[85px]">${car.color}</span>
                             </div>
                         </div>
                         <div class="mt-3">
