@@ -3,112 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Enterprise Search Injection Demo</title>
+    <meta name="theme-color" content="#E2E8F0">
+    <title>CarSalesBDC - Trojan Horse Enterprise SRP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-white text-slate-800 antialiased font-sans">
+<body class="bg-slate-200 min-h-screen font-sans antialiased text-slate-800">
 
-    <main class="max-w-md mx-auto p-4 h-[200vh]">
-        <div class="bg-slate-200 h-48 rounded-xl flex items-center justify-center mb-6">
-            <h1 class="text-xl font-black text-slate-400">Legacy Dealer Header</h1>
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-300/60 p-3 shadow-sm">
+        <div class="max-w-md mx-auto flex flex-col gap-2.5">
+            
+            <div class="flex items-center justify-between pb-1">
+                <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+                <span class="text-xs bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center justify-between gap-2">
+                    <span id="vehicle-counter" class="text-xs font-bold text-slate-500 uppercase tracking-wide">0 Vehicles</span>
+                    <div class="relative flex items-center bg-slate-100 rounded-lg px-2 py-1 border border-slate-200/40">
+                        <i class="fa-solid fa-arrow-down-wide-short text-slate-400 text-xs mr-1.5"></i>
+                        <select id="sort-select" class="bg-transparent text-xs font-bold text-slate-700 outline-none pr-1 appearance-none cursor-pointer">
+                            <option value="default">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="year-new">Newest Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-3 px-3">
+                    <button data-type="All" class="type-btn shrink-0 bg-slate-800 text-white font-semibold text-xs px-3.5 py-1.5 rounded-md transition shadow-sm">All Types</button>
+                    <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">SUVs</button>
+                    <button data-type="Sedan" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Sedans</button>
+                    <button data-type="Truck" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Trucks</button>
+                    <button data-type="Coupe" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-md transition">Coupes</button>
+                </div>
+            </div>
         </div>
-        <div class="space-y-4">
-            <div class="h-6 w-3/4 bg-slate-100 rounded"></div>
-            <div class="h-4 w-full bg-slate-100 rounded"></div>
-            <div class="h-4 w-5/6 bg-slate-100 rounded"></div>
-            <div class="h-64 w-full bg-slate-50 border border-slate-100 rounded-xl mt-6 flex items-center justify-center">
-                <p class="text-slate-400 text-sm font-medium">Scroll down to hide the search bar.</p>
-            </div>
-            <div class="h-64 w-full bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center">
-                <p class="text-slate-400 text-sm font-medium">Scroll up to reveal the search bar.</p>
-            </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-3 pb-24"> <div id="vehicle-grid" class="grid grid-cols-2 gap-2"></div>
+        
+        <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
+            <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
         </div>
     </main>
 
+    <div id="cb-bottom-search" class="fixed bottom-6 left-4 right-4 max-w-md mx-auto bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-full px-4 py-3.5 flex items-center gap-3 z-[50] transition-transform duration-300 ease-in-out cursor-pointer active:scale-[0.98]">
+        <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
+        <span class="text-slate-400 font-medium text-sm">Search 1,000+ vehicles...</span>
+    </div>
+
+    <div id="cb-search-modal" class="fixed inset-0 bg-slate-100 z-[9999] flex flex-col transition-opacity duration-200 opacity-0 pointer-events-none">
+        
+        <div class="bg-white px-4 pt-12 pb-4 shadow-sm flex items-center gap-3">
+            <div class="flex-grow relative flex items-center bg-slate-100 rounded-xl px-3 py-2.5">
+                <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-2"></i>
+                <input type="text" id="cb-modal-input" placeholder="Search make, model, style..." class="w-full bg-transparent outline-none text-slate-800 placeholder-slate-400 text-base font-medium">
+            </div>
+            <button id="cb-cancel-btn" class="text-blue-600 font-bold text-sm px-2 active:text-blue-800 transition">Close</button>
+        </div>
+
+        <div class="p-4 flex-grow overflow-y-auto">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Trending Searches</h3>
+            <div class="flex flex-wrap gap-2">
+                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Fast Red Cars</button>
+                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">SUVs under $30k</button>
+                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Honda Accord</button>
+                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">3rd Row Seating</button>
+                <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Ford F-150</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        (function() {
-            // 1. Create the Widget HTML Structure
-            const widgetHTML = `
-                <div id="cb-bottom-search" class="fixed bottom-6 left-4 right-4 bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-full px-4 py-3.5 flex items-center gap-3 z-[9000] transition-transform duration-300 ease-in-out cursor-pointer active:scale-[0.98]">
-                    <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
-                    <span class="text-slate-400 font-medium text-sm">Search thousands of vehicles...</span>
-                </div>
+        // Generating 1,000 cars to simulate a massive multi-location group inventory
+        const makes = ["Honda", "Toyota", "Ford", "Jeep", "Chevrolet", "Nissan", "Kia", "Subaru"];
+        const models = {
+            Honda: ["Civic", "Accord", "CR-V", "Pilot", "Ridgeline"], Toyota: ["Camry", "Corolla", "RAV4", "Highlander", "Tundra"],
+            Ford: ["F-150", "Explorer", "Escape", "Mustang", "Bronco"], Jeep: ["Wrangler", "Grand Cherokee", "Compass", "Gladiator"],
+            Chevrolet: ["Silverado", "Tahoe", "Equinox", "Camaro"], Nissan: ["Altima", "Rogue", "Sentra", "Frontier"],
+            Kia: ["Telluride", "Sorento", "Sportage", "Soul"], Subaru: ["Outback", "Crosstrek", "Forester", "WRX"]
+        };
+        const types = { Civic: "Sedan", Accord: "Sedan", "CR-V": "SUV", Pilot: "SUV", Ridgeline: "Truck", Camry: "Sedan", Corolla: "Sedan", RAV4: "SUV", Highlander: "SUV", Tundra: "Truck", "F-150": "Truck", Explorer: "SUV", Escape: "SUV", Mustang: "Coupe", Bronco: "SUV", Wrangler: "SUV", "Grand Cherokee": "SUV", Compass: "SUV", Gladiator: "Truck", Silverado: "Truck", Tahoe: "SUV", Equinox: "SUV", Camaro: "Coupe", Altima: "Sedan", Rogue: "SUV", Sentra: "Sedan", Frontier: "Truck", Telluride: "SUV", Sorento: "SUV", Sportage: "SUV", Soul: "SUV", Outback: "SUV", Crosstrek: "SUV", Forester: "SUV", WRX: "Sedan" };
+        const colors = [{ name: "Rallye Red", class: "text-rose-600" }, { name: "Crystal Black", class: "text-slate-800" }, { name: "Bright White", class: "text-slate-400" }, { name: "Sonic Gray", class: "text-teal-600" }, { name: "Cavalry Blue", class: "text-blue-600" }];
 
-                <div id="cb-search-modal" class="fixed inset-0 bg-slate-100 z-[9999] flex flex-col transition-opacity duration-200 opacity-0 pointer-events-none">
-                    
-                    <div class="bg-white px-4 pt-12 pb-4 shadow-sm flex items-center gap-3">
-                        <div class="flex-grow relative flex items-center bg-slate-100 rounded-xl px-3 py-2.5">
-                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-2"></i>
-                            <input type="text" id="cb-modal-input" placeholder="Search make, model, style..." class="w-full bg-transparent outline-none text-slate-800 placeholder-slate-400 text-base font-medium">
+        const allVehicles = Array.from({ length: 1000 }, (_, i) => {
+            const make = makes[i % makes.length];
+            const modelList = models[make];
+            const model = modelList[i % modelList.length];
+            const price = 19000 + ((i * 797) % 48000);
+            return {
+                id: i + 1,
+                year: 2021 + (i % 5),
+                make: make,
+                model: model,
+                type: types[model] || "SUV",
+                price: price,
+                payment: Math.round(price / 68),
+                miles: (1200 + ((i * 1432) % 72000)).toLocaleString(),
+                color: colors[i % colors.length].name,
+                colorClass: colors[i % colors.length].class,
+                // Using the local 4:3 uploaded image
+                img: "carsalesimage.JPG"
+            };
+        });
+
+        // Pagination Config
+        const ITEMS_PER_PAGE = 24;
+        let filteredVehicles = [...allVehicles]; 
+        let currentPage = 1;
+
+        // Inventory DOM Handles
+        const grid = document.getElementById('vehicle-grid');
+        const typeButtons = document.querySelectorAll('.type-btn');
+        const sortSelect = document.getElementById('sort-select');
+        const counter = document.getElementById('vehicle-counter');
+        const sentinel = document.getElementById('scroll-sentinel');
+        const spinner = document.getElementById('spinner');
+
+        // Widget DOM Handles
+        const bottomSearch = document.getElementById('cb-bottom-search');
+        const searchModal = document.getElementById('cb-search-modal');
+        const modalInput = document.getElementById('cb-modal-input');
+        const cancelBtn = document.getElementById('cb-cancel-btn');
+
+        let activeType = 'All', searchTerm = '', currentSort = 'default';
+
+        // Scroll-Aware Logic for Widget (Hide on scroll down, Reveal on scroll up)
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY + 10) {
+                // Scrolling Down: Hide the bar
+                bottomSearch.style.transform = 'translateY(150%)';
+            } else if (currentScrollY < lastScrollY - 10) {
+                // Scrolling Up: Reveal the bar
+                bottomSearch.style.transform = 'translateY(0)';
+            }
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        // Full-Screen Modal Mechanics
+        bottomSearch.addEventListener('click', () => {
+            searchModal.classList.remove('opacity-0', 'pointer-events-none');
+            searchModal.classList.add('opacity-100', 'pointer-events-auto');
+            setTimeout(() => { modalInput.focus(); }, 200);
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            searchModal.classList.remove('opacity-100', 'pointer-events-auto');
+            searchModal.classList.add('opacity-0', 'pointer-events-none');
+            modalInput.blur();
+        });
+
+        // Wire Modal Input to the Inventory Filter
+        modalInput.addEventListener('input', (e) => { 
+            searchTerm = e.target.value.toLowerCase().trim(); 
+            processInventory(); 
+        });
+
+        function renderNextBatch() {
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const batch = filteredVehicles.slice(start, end);
+
+            if (batch.length === 0 && currentPage === 1) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-400 bg-white rounded-xl border border-dashed border-slate-300"><p>No vehicles found.</p></div>`;
+                return;
+            }
+
+            let htmlString = '';
+            batch.forEach(car => {
+                htmlString += `
+                    <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                        <div class="p-2 pb-0">
+                            <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
+                                <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-contain rounded-xl" loading="lazy">
+                            </div>
                         </div>
-                        <button id="cb-cancel-btn" class="text-blue-600 font-bold text-sm px-2 active:text-blue-800 transition">Cancel</button>
-                    </div>
-
-                    <div class="p-4 flex-grow overflow-y-auto">
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Trending Searches</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Fast Red Cars</button>
-                            <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">SUVs under $30k</button>
-                            <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Honda Accord</button>
-                            <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">3rd Row Seating</button>
-                            <button class="bg-white border border-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg shadow-sm active:bg-slate-50 transition">Ford F-150</button>
+                        <div class="p-2.5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h2 class="text-base font-bold text-slate-800 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                                <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-xs text-slate-500">
+                                    <span>${car.miles} mi</span><span>•</span><span class="${car.colorClass} font-semibold truncate max-w-[85px]">${car.color}</span>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="flex items-center justify-between gap-1">
+                                    <div class="text-base font-black text-emerald-600 leading-none">$${car.price.toLocaleString()}</div>
+                                    <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded uppercase tracking-wider">${car.type}</span>
+                                </div>
+                                <div class="text-[11px] text-slate-500 mt-1 font-medium">Est. $${car.payment}/mo</div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            `;
+                        <div class="p-2 pt-0 grid grid-cols-5 gap-1">
+                            <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-[10px] py-2 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
+                            <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-xs"></i></a>
+                        </div>
+                    </article>
+                `;
+            });
 
-            // 2. Inject Widget into the DOM
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = widgetHTML;
-            document.body.appendChild(wrapper);
+            grid.insertAdjacentHTML('beforeend', htmlString);
+            currentPage++;
+        }
 
-            // 3. Cache DOM Elements
-            const bottomSearch = document.getElementById('cb-bottom-search');
-            const searchModal = document.getElementById('cb-search-modal');
-            const modalInput = document.getElementById('cb-modal-input');
-            const cancelBtn = document.getElementById('cb-cancel-btn');
+        function processInventory() {
+            grid.innerHTML = ''; 
+            currentPage = 1;
 
-            // 4. Scroll-Aware Logic (Dynamic Hide/Reveal)
-            let lastScrollY = window.scrollY;
+            filteredVehicles = allVehicles.filter(car => {
+                const matchesType = (activeType === 'All' || car.type === activeType);
+                const masterSearchString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`.toLowerCase();
+                return matchesType && masterSearchString.includes(searchTerm);
+            });
+
+            if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
+            else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
+
+            counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
             
-            window.addEventListener('scroll', () => {
-                const currentScrollY = window.scrollY;
-                
-                // Add a 10px buffer to prevent jittery hiding on tiny thumb movements
-                if (currentScrollY > lastScrollY + 10) {
-                    // Scrolling Down: Hide the bar (push it down 150%)
-                    bottomSearch.style.transform = 'translateY(150%)';
-                } else if (currentScrollY < lastScrollY - 10) {
-                    // Scrolling Up: Reveal the bar (bring it back to 0)
-                    bottomSearch.style.transform = 'translateY(0)';
+            renderNextBatch();
+        }
+
+        // Infinite Scroll Observer
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                const maxPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE);
+                if (currentPage <= maxPages) {
+                    spinner.classList.remove('hidden');
+                    setTimeout(() => {
+                        renderNextBatch();
+                        spinner.classList.add('hidden');
+                    }, 250);
                 }
-                
-                lastScrollY = currentScrollY;
-            }, { passive: true });
+            }
+        }, { rootMargin: '150px' });
 
-            // 5. Full-Screen Modal Mechanics
-            bottomSearch.addEventListener('click', () => {
-                // Fade in the modal
-                searchModal.classList.remove('opacity-0', 'pointer-events-none');
-                searchModal.classList.add('opacity-100', 'pointer-events-auto');
-                
-                // Auto-focus the input after the transition completes
-                setTimeout(() => {
-                    modalInput.focus();
-                }, 200);
-            });
+        observer.observe(sentinel);
 
-            cancelBtn.addEventListener('click', () => {
-                // Fade out the modal
-                searchModal.classList.remove('opacity-100', 'pointer-events-auto');
-                searchModal.classList.add('opacity-0', 'pointer-events-none');
-                
-                // Clear the input and remove focus
-                modalInput.value = '';
-                modalInput.blur();
+        // Filter Controls
+        sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
+
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeButtons.forEach(b => b.classList.replace('bg-slate-800', 'bg-white'));
+                btn.classList.replace('bg-white', 'bg-slate-800');
+                activeType = btn.getAttribute('data-type');
+                processInventory();
             });
-        })();
+        });
+
+        // Initialize First Run
+        processInventory();
     </script>
 </body>
 </html>
