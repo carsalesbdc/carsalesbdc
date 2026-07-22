@@ -26,8 +26,10 @@
 </head>
 <body class="bg-slate-200 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
 
+    <!-- THE SCROLLING CONTAINER -->
     <div id="scroll-main" class="flex-grow overflow-y-auto relative w-full">
 
+        <!-- Header -->
         <header class="bg-white/95 border-b border-slate-300/60 p-3.5 shadow-sm">
             <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
                 <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
@@ -35,10 +37,11 @@
             </div>
         </header>
 
+        <!-- Sort & Smart Quick-Filter Pills -->
         <div class="bg-white p-3.5 pb-2.5 border-b border-slate-200">
             <div class="max-w-md mx-auto flex flex-col gap-2.5">
                 <div class="flex items-center justify-between gap-2">
-                    <span id="vehicle-counter" class="text-sm font-bold text-slate-500 uppercase tracking-wide">Loading Vehicles...</span>
+                    <span id="vehicle-counter" class="text-sm font-bold text-slate-500 uppercase tracking-wide">Loading...</span>
                     <div class="relative flex items-center bg-slate-100 rounded-lg px-2.5 py-1.5 border border-slate-200/40">
                         <i class="fa-solid fa-arrow-down-wide-short text-slate-400 text-sm mr-1.5"></i>
                         <select id="sort-select" class="bg-transparent text-sm font-bold text-slate-700 outline-none pr-1 appearance-none cursor-pointer">
@@ -50,6 +53,7 @@
                     </div>
                 </div>
 
+                <!-- Stackable Quick-Filter Pills Row -->
                 <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-3.5 px-3.5 items-center">
                     <button data-quick="suv" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">SUVs</button>
                     <button data-quick="truck" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">Trucks</button>
@@ -62,6 +66,7 @@
             </div>
         </div>
 
+        <!-- Sticky Search Bar -->
         <div id="sticky-search-bar" class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-slate-300/60 p-3.5 shadow-md transition-all duration-300">
             <div class="max-w-md mx-auto flex flex-col gap-2">
                 <div class="flex items-center gap-2">
@@ -78,10 +83,10 @@
                         <i class="fa-solid fa-sliders text-base"></i>
                     </button>
                 </div>
-                <div id="active-chips-container" class="hidden flex flex-wrap gap-1.5 pt-0.5"></div>
             </div>
         </div>
 
+        <!-- Inventory Grid Container -->
         <main class="max-w-md mx-auto p-3 pb-24">
             <div id="vehicle-grid" class="grid grid-cols-2 gap-2.5"></div>
             
@@ -92,10 +97,12 @@
 
     </div>
 
+    <!-- Scroll to Top Button -->
     <button id="scroll-to-top-btn" class="fixed bottom-6 right-4 z-50 hidden bg-slate-900 border-2 border-slate-700 text-white w-12 h-12 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.4)] flex items-center justify-center active:bg-slate-700 active:scale-95 transition-all">
         <i class="fa-solid fa-chevron-up text-lg"></i>
     </button>
 
+    <!-- Slide-Out Filter Drawer (FIXED) -->
     <div id="filter-drawer-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300"></div>
     <div id="filter-drawer" class="fixed top-0 right-0 bottom-0 w-[60%] max-w-xs bg-slate-900 text-white z-50 translate-x-full transition-transform duration-300 shadow-2xl flex flex-col justify-between">
         
@@ -151,7 +158,8 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="inventory.js"></script>
-    <script src="app.js?v=12"></script>
+    <script src="app.js?v=13"></script>
 </body>
 </html>
