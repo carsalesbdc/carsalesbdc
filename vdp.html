@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#E2E8F0">
+    <title>Vehicle Details - CarSalesBDC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
+
+    <!-- Sticky Header -->
+    <header class="bg-white/95 backdrop-blur-sm border-b border-slate-300/60 p-3 shadow-sm z-50 flex items-center justify-between">
+        <a href="index.html" class="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-2 active:scale-95 transition">
+            <i class="fa-solid fa-chevron-left"></i> Back
+        </a>
+        <h1 class="text-base font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+    </header>
+
+    <!-- Main Scrollable VDP Content -->
+    <main class="flex-grow overflow-y-auto relative w-full pb-24">
+        
+        <!-- Image Area Placeholder -->
+        <div class="w-full aspect-[4/3] bg-slate-300 relative flex items-center justify-center">
+            <i class="fa-solid fa-car text-6xl text-slate-400"></i>
+            <!-- Trust Badges will eventually overlay here -->
+        </div>
+
+        <!-- Vehicle Header Info -->
+        <div class="bg-white p-4 border-b border-slate-200 shadow-sm">
+            <h1 class="text-2xl font-black text-slate-900 leading-tight" id="vdp-title">Loading Vehicle...</h1>
+            <p class="text-sm font-bold text-slate-500 mt-1" id="vdp-miles-color">-- miles • -- color</p>
+            
+            <div class="mt-4 flex items-end justify-between">
+                <div>
+                    <div class="text-3xl font-normal text-slate-900 leading-none" id="vdp-price">$0</div>
+                    <div class="text-sm text-slate-500 mt-1 font-medium" id="vdp-payment">Est. $0/mo</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Details Section (To be built out) -->
+        <div class="p-4 text-center text-slate-500 text-sm mt-4">
+            <p>Full VDP features and integrations coming next.</p>
+        </div>
+
+    </main>
+
+    <!-- Fixed Bottom Action Bar -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-3 pb-6 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50">
+        <div class="max-w-md mx-auto flex gap-2">
+            <a href="tel:5733564614" class="w-14 h-12 flex-shrink-0 bg-slate-100 border border-slate-300 text-slate-700 flex items-center justify-center rounded-lg active:bg-slate-200 transition">
+                <i class="fa-solid fa-phone text-lg"></i>
+            </a>
+            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-bold text-base h-12 rounded-lg transition shadow-sm">
+                Is It Here?
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
