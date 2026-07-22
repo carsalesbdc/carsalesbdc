@@ -37,7 +37,7 @@ function cleanSearchString(str) {
     return str.toLowerCase().replace(/[-_ \/\\]/g, '');
 }
 
-// Render Vehicle Cards (UPDATED: Mileage formatting to 100k miles)
+// Render Vehicle Cards (UPDATED: Explicit 500x375 image dimensions for scroll performance)
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -51,7 +51,6 @@ function renderNextBatch() {
     let htmlString = '';
     batch.forEach(car => {
         
-        // Convert exact miles (e.g., "101,257") into rounded format (e.g., "101k miles")
         const milesNum = Number(String(car.miles).replace(/,/g, ''));
         const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
 
@@ -60,7 +59,7 @@ function renderNextBatch() {
                 <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
                     <div class="p-2 pb-0">
                         <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
-                            <img src="${car.img}" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
+                            <img src="${car.img}" width="500" height="375" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
                         </div>
                     </div>
                     <div class="p-3 flex flex-col justify-between">
