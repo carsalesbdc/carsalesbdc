@@ -19,25 +19,50 @@ const counter = document.getElementById('vehicle-counter');
 const sentinel = document.getElementById('scroll-sentinel');
 const spinner = document.getElementById('spinner');
 
-// Nav / Drawer Handles
-const stickyBar = document.getElementById('sticky-search-bar');
-const filterIconBtn = document.getElementById('filter-icon-btn');
-const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+// ==========================================
+// THE AUTOMOTIVE SLANG DICTIONARY
+// ==========================================
+const slangDictionary = {
+    'chevy': 'chevrolet',
+    'vw': 'volkswagen',
+    'bimmer': 'bmw',
+    'suby': 'subaru',
+    'soob': 'subaru',
+    'yota': 'toyota',
+    'lex': 'lexus',
+    'merc': 'mercedes',
+    'caddy': 'cadillac',
+    'acord': 'accord',       // Typo catch
+    'forerunner': '4runner', // Typo catch
+    'sintra': 'sentra',      // Typo catch
+    'awd': 'all wheel drive',
+    '4x4': 'four wheel drive',
+    'nav': 'navigation',
+    'leather': 'leather seats'
+};
 
-const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
-const drawer = document.getElementById('filter-drawer');
-const closeDrawerBtn = document.getElementById('close-drawer-btn');
-const doneDrawerBtn = document.getElementById('done-drawer-btn');
-const resetAllBtn = document.getElementById('reset-all-filters-btn');
-const activeChipsContainer = document.getElementById('active-chips-container');
-const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
-
-// Helper to normalize search text by removing hyphens, spaces, and slashes
+// Helper to normalize search text and translate slang
 function cleanSearchString(str) {
-    return str.toLowerCase().replace(/[-_ \/\\]/g, '');
-}
+    // 1. Remove hyphens, spaces, and slashes
+    let cleaned = str.toLowerCase().replace(/[-_ \/\\]/g, '');
+    
+    // 2. Check if the exact typed word is in our slang dictionary
+    // We check the original lowercased string before stripping spaces for multi-word slang
+    let rawLower = str.toLowerCase().trim();
+    if (slangDictionary[rawLower]) {
+        return slangDictionary[rawLower].replace(/[-_ \/\\]/g, '');
+    }
+    
+    // 3. Check if the stripped version is in the dictionary (e.g. "v w" -> "vw")
+    if (slangDictionary[cleaned]) {
+        return slangDictionary[cleaned].replace(/[-_ \/\\]/g, '');
+    }
 
-// Render Vehicle Cards (UPDATED: Explicit 500x375 image dimensions for scroll performance)
+    return cleaned;
+}
+// ==========================================
+
+// Render Vehicle Cards
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -50,7 +75,6 @@ function renderNextBatch() {
 
     let htmlString = '';
     batch.forEach(car => {
-        
         const milesNum = Number(String(car.miles).replace(/,/g, ''));
         const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
 
@@ -100,6 +124,7 @@ function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
 
+    // The typed text is cleaned and translated via the slang dictionary here
     const cleanedSearchTerm = cleanSearchString(searchTerm);
 
     filteredVehicles = allVehicles.filter(car => {
