@@ -15,6 +15,13 @@
         #scroll-main {
             scroll-behavior: smooth;
         }
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-slate-200 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
@@ -43,12 +50,14 @@
                     </div>
                 </div>
 
-                <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-3.5 px-3.5">
-                    <button data-type="All" class="type-btn shrink-0 bg-slate-900 text-white font-bold text-sm px-4 py-2 rounded-md transition shadow-sm">All Types</button>
-                    <button data-type="SUV" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">SUVs</button>
-                    <button data-type="Sedan" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">Sedans</button>
-                    <button data-type="Truck" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">Trucks</button>
-                    <button data-type="Coupe" class="type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition">Coupes</button>
+                <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-3.5 px-3.5 items-center">
+                    <button data-quick="suv" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">SUVs</button>
+                    <button data-quick="truck" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">Trucks</button>
+                    <button data-quick="lowmiles" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">Low Miles</button>
+                    <button data-quick="under25k" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">Under $25k</button>
+                    <button data-quick="newarrival" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">New Arrivals</button>
+                    <button data-quick="under500mo" class="quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">Under $500/mo</button>
+                    <button id="clear-quick-btn" class="hidden shrink-0 bg-rose-50 text-rose-600 border border-rose-200 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs">Clear</button>
                 </div>
             </div>
         </div>
@@ -143,6 +152,6 @@
     </div>
 
     <script src="inventory.js"></script>
-    <script src="app.js?v=11"></script>
+    <script src="app.js?v=12"></script>
 </body>
 </html>
