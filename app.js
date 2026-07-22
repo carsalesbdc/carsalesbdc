@@ -4,7 +4,15 @@ let filteredVehicles = [];
 let currentPage = 1;
 
 // Filter Variables State
-let activeType = 'All', searchTerm = '', currentSort = 'default';
+let searchTerm = '', currentSort = 'default';
+let activeQuickFilters = {
+    suv: false,
+    truck: false,
+    lowmiles: false,
+    under25k: false,
+    newarrival: false,
+    under500mo: false
+};
 let activeMaxPrice = null;
 let activeMaxMiles = null;
 let activeMinYear = null;
@@ -13,13 +21,14 @@ let activeMinYear = null;
 const scrollContainer = document.getElementById('scroll-main');
 const grid = document.getElementById('vehicle-grid');
 const searchInput = document.getElementById('search-input');
-const typeButtons = document.querySelectorAll('.type-btn');
+const quickButtons = document.querySelectorAll('.quick-btn');
+const clearQuickBtn = document.getElementById('clear-quick-btn');
 const sortSelect = document.getElementById('sort-select');
 const counter = document.getElementById('vehicle-counter');
 const sentinel = document.getElementById('scroll-sentinel');
 const spinner = document.getElementById('spinner');
 const stickyBar = document.getElementById('sticky-search-bar');
-const callIconBtn = document.getElementById('call-icon-btn'); // NEW CALL BUTTON HANDLE
+const callIconBtn = document.getElementById('call-icon-btn');
 const filterIconBtn = document.getElementById('filter-icon-btn');
 const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
@@ -59,7 +68,7 @@ function cleanSearchString(str) {
     return cleaned;
 }
 
-// Render Vehicle Cards (UPDATED: 100% Full-Width CTA)
+// Render Vehicle Cards
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -72,7 +81,6 @@ function renderNextBatch() {
 
     let htmlString = '';
     batch.forEach(car => {
-        // Format miles (e.g. 101,257 -> 101k miles)
         const milesNum = Number(String(car.miles).replace(/,/g, ''));
         const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
 
@@ -112,7 +120,7 @@ function renderNextBatch() {
     currentPage++;
 }
 
-// Process Inventory Logic
+// Process Inventory & Stackable Quick Filters Logic
 function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
@@ -120,20 +128,26 @@ function processInventory() {
     const cleanedSearchTerm = cleanSearchString(searchTerm);
 
     filteredVehicles = allVehicles.filter(car => {
-        const matchesType = (activeType === 'All' || car.type === activeType);
-        
+        const carMilesNum = Number(String(car.miles).replace(/,/g, ''));
+        const carDaysOnLot = Number(car.daysOnLot || 0); // vAuto age field fallback
+
+        // Stackable Quick Filter checks
+        if (activeQuickFilters.suv && car.type !== 'SUV') return false;
+        if (activeQuickFilters.truck && car.type !== 'Truck') return false;
+        if (activeQuickFilters.lowmiles && carMilesNum >= 60000) return false;
+        if (activeQuickFilters.under25k && car.price > 25000) return false;
+        if (activeQuickFilters.newarrival && carDaysOnLot > 30) return false; // New arrival threshold: <= 30 days
+        if (activeQuickFilters.under500mo && car.payment > 500) return false;
+
         const rawString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`;
         const cleanedCarString = cleanSearchString(rawString);
-
         const matchesSearch = cleanedCarString.includes(cleanedSearchTerm);
-
-        const carMilesNum = Number(String(car.miles).replace(/,/g, ''));
 
         const matchesPrice = !activeMaxPrice || (car.price <= activeMaxPrice);
         const matchesMiles = !activeMaxMiles || (carMilesNum <= activeMaxMiles);
         const matchesYear = !activeMinYear || (car.year >= activeMinYear);
 
-        return matchesType && matchesSearch && matchesPrice && matchesMiles && matchesYear;
+        return matchesSearch && matchesPrice && matchesMiles && matchesYear;
     });
 
     if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
@@ -143,7 +157,44 @@ function processInventory() {
     counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
     
     renderNextBatch();
+    updateQuickFilterUI();
 }
+
+// Update Quick Filter UI Highlights & Clear Button Visibility
+function updateQuickFilterUI() {
+    let anyActive = false;
+
+    quickButtons.forEach(btn => {
+        const key = btn.getAttribute('data-quick');
+        if (activeQuickFilters[key]) {
+            anyActive = true;
+            btn.className = "quick-btn shrink-0 border-2 border-slate-900 bg-slate-900 text-white font-bold text-xs px-3 py-2 rounded-md transition shadow-xs";
+        } else {
+            btn.className = "quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs";
+        }
+    });
+
+    if (anyActive) {
+        clearQuickBtn.classList.remove('hidden');
+    } else {
+        clearQuickBtn.classList.add('hidden');
+    }
+}
+
+// Quick Filter Button Click Listeners (Stackable)
+quickButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-quick');
+        activeQuickFilters[key] = !activeQuickFilters[key];
+        processInventory();
+    });
+});
+
+// Clear Quick Filters Button
+clearQuickBtn.addEventListener('click', () => {
+    Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false);
+    processInventory();
+});
 
 // Infinite Scroll Observer
 const observer = new IntersectionObserver((entries) => {
@@ -164,27 +215,19 @@ observer.observe(sentinel);
 searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase().trim(); processInventory(); });
 sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
-typeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        activeType = btn.getAttribute('data-type');
-        updateUIStates();
-        processInventory();
-    });
-});
-
-// SCROLL LOGIC (UPDATED: Triggers Call Icon Visibility)
+// SCROLL LOGIC
 scrollContainer.addEventListener('scroll', () => {
     if (scrollContainer.scrollTop > 70) {
         stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
         stickyBar.classList.add('bg-slate-900', 'shadow-lg');
         filterIconBtn.classList.remove('hidden');
-        callIconBtn.classList.remove('hidden'); // SHOW CALL BUTTON
+        callIconBtn.classList.remove('hidden');
         scrollToTopBtn.classList.remove('hidden');
     } else {
         stickyBar.classList.remove('bg-slate-900', 'shadow-lg');
         stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
         filterIconBtn.classList.add('hidden');
-        callIconBtn.classList.add('hidden'); // HIDE CALL BUTTON
+        callIconBtn.classList.add('hidden');
         scrollToTopBtn.classList.add('hidden');
     }
 }, { passive: true });
@@ -209,90 +252,11 @@ closeDrawerBtn.addEventListener('click', closeDrawer);
 doneDrawerBtn.addEventListener('click', closeDrawer);
 drawerBackdrop.addEventListener('click', closeDrawer);
 
-// Update Yellow Highlight States
-function updateUIStates() {
-    drawerFilterBtns.forEach(btn => {
-        const type = btn.getAttribute('data-filter-type');
-        const val = btn.getAttribute('data-value');
-        let isActive = false;
-
-        if (type === 'type' && activeType === val) isActive = true;
-        if (type === 'price' && activeMaxPrice === Number(val)) isActive = true;
-        if (type === 'miles' && activeMaxMiles === Number(val)) isActive = true;
-        if (type === 'year' && activeMinYear === Number(val)) isActive = true;
-
-        if (isActive) {
-            btn.className = "drawer-filter-btn border-2 border-amber-400 bg-amber-400 text-slate-950 py-2 px-2.5 rounded-md font-black text-xs transition text-center shadow-sm";
-        } else {
-            btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center";
-        }
-    });
-
-    typeButtons.forEach(b => {
-        if(b.getAttribute('data-type') === activeType) {
-            b.className = "type-btn shrink-0 bg-slate-900 text-white font-bold text-sm px-4 py-2 rounded-md transition shadow-sm";
-        } else {
-            b.className = "type-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-sm px-4 py-2 rounded-md transition";
-        }
-    });
-
-    activeChipsContainer.innerHTML = '';
-    let activeCount = 0;
-
-    if (activeType !== 'All') {
-        activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeType} <span class="font-black opacity-70">✕</span></button>`;
-    }
-    if (activeMaxPrice) {
-        activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">Under $${(activeMaxPrice/1000).toFixed(0)}k <span class="font-black opacity-70">✕</span></button>`;
-    }
-    if (activeMaxMiles) {
-        activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <span class="font-black opacity-70">✕</span></button>`;
-    }
-    if (activeMinYear) {
-        activeCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearSingleFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-md shadow-xs active:scale-95 transition cursor-pointer">${activeMinYear}+ <span class="font-black opacity-70">✕</span></button>`;
-    }
-
-    if (activeCount > 0) {
-        activeChipsContainer.classList.remove('hidden');
-    } else {
-        activeChipsContainer.classList.add('hidden');
-    }
-}
-
-window.clearSingleFilter = function(type) {
-    if (type === 'type') activeType = 'All';
-    if (type === 'price') activeMaxPrice = null;
-    if (type === 'miles') activeMaxMiles = null;
-    if (type === 'year') activeMinYear = null;
-    updateUIStates();
-    processInventory();
-};
-
-drawerFilterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const type = btn.getAttribute('data-filter-type');
-        const val = btn.getAttribute('data-value');
-
-        if (type === 'type') activeType = (activeType === val) ? 'All' : val;
-        if (type === 'price') activeMaxPrice = (activeMaxPrice === Number(val)) ? null : Number(val);
-        if (type === 'miles') activeMaxMiles = (activeMaxMiles === Number(val)) ? null : Number(val);
-        if (type === 'year') activeMinYear = (activeMinYear === Number(val)) ? null : Number(val);
-
-        updateUIStates();
-        processInventory();
-    });
-});
-
 resetAllBtn.addEventListener('click', () => {
-    activeType = 'All';
     activeMaxPrice = null;
     activeMaxMiles = null;
     activeMinYear = null;
-    updateUIStates();
+    Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false);
     processInventory();
 });
 
@@ -300,7 +264,6 @@ resetAllBtn.addEventListener('click', () => {
 function initApp() {
     if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
         filteredVehicles = [...allVehicles];
-        updateUIStates();
         processInventory();
     } else {
         setTimeout(initApp, 100);
