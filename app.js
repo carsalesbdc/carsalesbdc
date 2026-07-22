@@ -19,6 +19,7 @@ const counter = document.getElementById('vehicle-counter');
 const sentinel = document.getElementById('scroll-sentinel');
 const spinner = document.getElementById('spinner');
 const stickyBar = document.getElementById('sticky-search-bar');
+const callIconBtn = document.getElementById('call-icon-btn'); // NEW CALL BUTTON HANDLE
 const filterIconBtn = document.getElementById('filter-icon-btn');
 const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
@@ -58,7 +59,7 @@ function cleanSearchString(str) {
     return cleaned;
 }
 
-// Render Vehicle Cards
+// Render Vehicle Cards (UPDATED: 100% Full-Width CTA)
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -99,9 +100,9 @@ function renderNextBatch() {
                         </div>
                     </div>
                 </a>
-                <div class="p-2.5 pt-0 grid grid-cols-5 gap-1.5">
-                    <button class="col-span-4 bg-blue-600 active:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-md transition tracking-wide shadow-sm truncate">Check Availability</button>
-                    <a href="tel:5733564614" class="col-span-1 border border-slate-200 active:bg-slate-50 flex items-center justify-center rounded-md text-blue-600"><i class="fa-solid fa-phone text-sm"></i></a>
+                
+                <div class="p-2.5 pt-0">
+                    <button class="w-full bg-blue-600 active:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-md transition tracking-wide shadow-sm truncate">Is It Here?</button>
                 </div>
             </article>
         `;
@@ -171,17 +172,19 @@ typeButtons.forEach(btn => {
     });
 });
 
-// SCROLL LOGIC
+// SCROLL LOGIC (UPDATED: Triggers Call Icon Visibility)
 scrollContainer.addEventListener('scroll', () => {
     if (scrollContainer.scrollTop > 70) {
         stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
         stickyBar.classList.add('bg-slate-900', 'shadow-lg');
         filterIconBtn.classList.remove('hidden');
+        callIconBtn.classList.remove('hidden'); // SHOW CALL BUTTON
         scrollToTopBtn.classList.remove('hidden');
     } else {
         stickyBar.classList.remove('bg-slate-900', 'shadow-lg');
         stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
         filterIconBtn.classList.add('hidden');
+        callIconBtn.classList.add('hidden'); // HIDE CALL BUTTON
         scrollToTopBtn.classList.add('hidden');
     }
 }, { passive: true });
