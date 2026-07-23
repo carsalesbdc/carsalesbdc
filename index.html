@@ -90,6 +90,18 @@
         </div>
 
         <main class="max-w-md mx-auto p-3 pb-24">
+            
+            <div id="continue-shopping-container" class="hidden mb-6 mt-1">
+                <div class="flex items-center justify-between mb-2.5 px-1">
+                    <h2 class="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock-rotate-left text-blue-600"></i> Continue Shopping
+                    </h2>
+                    <button id="clear-history-btn" class="text-[10px] font-bold text-slate-400 hover:text-rose-500 uppercase tracking-wide transition">Clear</button>
+                </div>
+                <div id="viewed-cars-scroll" class="flex gap-3 overflow-x-auto pb-2 scrollbar-none px-1 -mx-1 snap-x snap-mandatory">
+                    </div>
+            </div>
+
             <div id="vehicle-grid" class="grid grid-cols-2 gap-2.5"></div>
             
             <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
@@ -159,6 +171,6 @@
     </div>
 
     <script src="inventory.js"></script>
-    <script src="app.js?v=14"></script>
+    <script src="app.js?v=15"></script>
 </body>
 </html>
