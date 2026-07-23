@@ -11,6 +11,7 @@
         html, body {
             touch-action: manipulation;
             -webkit-text-size-adjust: 100%;
+            background-color: #E2E8F0; /* Prevents white flash at very bottom */
         }
     </style>
 </head>
@@ -27,15 +28,13 @@
         </button>
     </header>
 
-    <main class="flex-grow overflow-y-auto relative w-full pb-28 bg-white" id="vdp-scroll">
+    <main class="flex-grow overflow-y-auto relative w-full pb-[100px] bg-white" id="vdp-scroll">
         
         <div class="relative w-full aspect-[4/3] bg-slate-200 overflow-hidden border-b border-slate-200">
             <img id="vdp-image" src="" alt="Vehicle" class="w-full h-full object-cover hidden">
-            
             <div id="vdp-image-skeleton" class="absolute inset-0 flex items-center justify-center animate-pulse bg-slate-200">
                 <i class="fa-solid fa-car text-5xl text-slate-300"></i>
             </div>
-            
             <div class="absolute bottom-3 left-3 hidden">
                 <span class="bg-white/95 backdrop-blur shadow-sm text-slate-800 font-bold text-xs px-2.5 py-1 rounded border border-slate-200">
                     <i class="fa-solid fa-shield-halved text-blue-600 mr-1"></i> CarFax 1-Owner
@@ -70,7 +69,7 @@
             </p>
         </div>
 
-        <div class="flex flex-col bg-white">
+        <div class="flex flex-col bg-white border-b border-slate-200">
             <button class="accordion-btn flex items-center justify-between p-4.5 py-4 border-b border-slate-200 bg-white hover:bg-slate-50 transition active:bg-slate-100">
                 <span class="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
                     <i class="fa-solid fa-wrench text-slate-400 w-5"></i> Specifications
@@ -91,13 +90,13 @@
                 <p class="font-medium italic text-slate-400">Placeholder for OEM equipment & packages (Leather, Sunroof, Nav).</p>
             </div>
 
-            <button class="accordion-btn flex items-center justify-between p-4.5 py-4 border-b border-slate-200 bg-white hover:bg-slate-50 transition active:bg-slate-100">
+            <button class="accordion-btn flex items-center justify-between p-4.5 py-4 bg-white hover:bg-slate-50 transition active:bg-slate-100">
                 <span class="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
                     <i class="fa-solid fa-file-shield text-slate-400 w-5"></i> History & Trust
                 </span>
                 <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
             </button>
-            <div class="accordion-content hidden px-4 py-4 bg-slate-50/80 text-sm text-slate-600 border-b border-slate-200">
+            <div class="accordion-content hidden px-4 py-4 bg-slate-50/80 text-sm text-slate-600 border-t border-slate-200">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white rounded shadow-sm border border-slate-200 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-check text-green-500 text-xl"></i>
@@ -107,14 +106,20 @@
             </div>
         </div>
 
+        <div class="bg-slate-100 p-3 pt-6 pb-6">
+            <h2 class="text-sm font-black text-slate-900 uppercase tracking-wider mb-3 px-1">Vehicles You Might Like</h2>
+            <div id="vdp-mini-srp" class="grid grid-cols-2 gap-2.5">
+                </div>
+        </div>
+
     </main>
 
-    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-3 pb-6 shadow-[0_-8px_20px_rgba(0,0,0,0.06)] z-50">
+    <div class="fixed bottom-0 left-0 w-full bg-[#E2E8F0] border-t border-slate-300/60 p-2.5 pb-5 shadow-[0_-8px_20px_rgba(0,0,0,0.06)] z-50">
         <div class="max-w-md mx-auto flex gap-2.5">
-            <a href="tel:5733564614" class="w-[60px] h-[54px] flex-shrink-0 bg-white border-2 border-slate-300 text-slate-700 flex items-center justify-center rounded-xl active:bg-slate-100 transition shadow-sm">
+            <a href="tel:5733564614" class="w-[60px] h-[52px] flex-shrink-0 bg-white border border-slate-300 text-slate-700 flex items-center justify-center rounded-xl active:bg-slate-100 transition shadow-sm">
                 <i class="fa-solid fa-phone text-xl"></i>
             </a>
-            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-black text-lg tracking-wide h-[54px] rounded-xl transition shadow-sm flex justify-center items-center gap-2">
+            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-black text-lg tracking-wide h-[52px] rounded-xl transition shadow-sm flex justify-center items-center gap-2">
                 Is It Here? <i class="fa-solid fa-arrow-right text-sm opacity-80"></i>
             </button>
         </div>
@@ -123,7 +128,7 @@
     <script src="inventory.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Accordion Toggle
+            // 1. Accordion Toggle
             const accordions = document.querySelectorAll('.accordion-btn');
             accordions.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -134,14 +139,16 @@
                 });
             });
 
-            // Dynamic Vehicle Data
             const urlParams = new URLSearchParams(window.location.search);
             const carId = urlParams.get('id');
             let currentCarTitle = "Check out this vehicle";
+            let currentCarType = "SUV"; // Fallback
 
             if (carId && typeof allVehicles !== 'undefined') {
                 const car = allVehicles.find(v => String(v.id) === String(carId));
+                
                 if (car) {
+                    currentCarType = car.type;
                     currentCarTitle = `${car.year} ${car.make} ${car.model}`;
                     document.getElementById('vdp-title').innerText = currentCarTitle;
                     
@@ -158,34 +165,79 @@
                         skeletonEl.classList.add('hidden');
                         imgEl.classList.remove('hidden');
                     };
+
+                    // 2. TRACKING ENGINE: Save to localStorage
+                    try {
+                        let viewed = JSON.parse(localStorage.getItem('viewedCars')) || [];
+                        // Remove if already exists so it jumps to front
+                        viewed = viewed.filter(id => id !== String(car.id));
+                        viewed.push(String(car.id));
+                        // Keep history at 15 cars max to save space
+                        if (viewed.length > 15) viewed.shift();
+                        localStorage.setItem('viewedCars', JSON.stringify(viewed));
+                    } catch (e) {
+                        console.error("Local storage error:", e);
+                    }
                 }
             }
 
-            // Functional Share Button Logic
+            // 3. MINI-SRP BUILDER ("Vehicles You Might Like")
+            if (typeof allVehicles !== 'undefined') {
+                // Find up to 8 cars of same body type, EXCLUDING the current car
+                const similarCars = allVehicles
+                    .filter(c => c.type === currentCarType && String(c.id) !== String(carId))
+                    .slice(0, 8); // Grab up to 8
+
+                if (similarCars.length > 0) {
+                    const gridContainer = document.getElementById('vdp-mini-srp');
+                    let miniSrpHtml = '';
+                    
+                    similarCars.forEach(simCar => {
+                        const simMiles = Math.round(Number(String(simCar.miles).replace(/,/g, '')) / 1000) + 'k mi';
+                        miniSrpHtml += `
+                            <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                                <a href="vdp.html?id=${simCar.id}" class="block cursor-pointer flex-grow">
+                                    <div class="p-2 pb-0">
+                                        <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
+                                            <img src="${simCar.img}" alt="Vehicle" class="w-full h-full object-cover rounded-xl" loading="lazy">
+                                        </div>
+                                    </div>
+                                    <div class="p-3 flex flex-col justify-between">
+                                        <div>
+                                            <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${simCar.year} ${simCar.make}</h2>
+                                            <h3 class="text-[13px] font-bold text-slate-600 truncate leading-tight">${simCar.model}</h3>
+                                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-[11px] font-bold text-slate-400">
+                                                <span>${simMiles}</span><span>•</span><span class="${simCar.colorClass} truncate max-w-[50px]">${simCar.color}</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2.5">
+                                            <div class="text-lg font-normal text-slate-900 leading-none">$${simCar.price.toLocaleString()}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+                        `;
+                    });
+                    gridContainer.innerHTML = miniSrpHtml;
+                } else {
+                    // Hide section if no similar cars found
+                    document.getElementById('vdp-mini-srp').parentElement.classList.add('hidden');
+                }
+            }
+
+            // 4. Functional Share Button
             const shareBtn = document.getElementById('vdp-share-btn');
             shareBtn.addEventListener('click', async () => {
-                const shareData = {
-                    title: currentCarTitle,
-                    text: `Take a look at this ${currentCarTitle}:`,
-                    url: window.location.href
-                };
-
+                const shareData = { title: currentCarTitle, text: `Take a look at this ${currentCarTitle}:`, url: window.location.href };
                 if (navigator.share) {
-                    try {
-                        await navigator.share(shareData);
-                    } catch (err) {
-                        // User canceled or failed silently
-                    }
+                    try { await navigator.share(shareData); } catch (err) {}
                 } else {
-                    // Fallback: Copy URL to Clipboard
                     try {
                         await navigator.clipboard.writeText(window.location.href);
-                        const originalHTML = shareBtn.innerHTML;
+                        const origHTML = shareBtn.innerHTML;
                         shareBtn.innerHTML = `<i class="fa-solid fa-check text-green-600 text-xs"></i> Copied!`;
-                        setTimeout(() => { shareBtn.innerHTML = originalHTML; }, 2000);
-                    } catch (err) {
-                        alert('Link: ' + window.location.href);
-                    }
+                        setTimeout(() => { shareBtn.innerHTML = origHTML; }, 2000);
+                    } catch (err) { alert('Link: ' + window.location.href); }
                 }
             });
         });
