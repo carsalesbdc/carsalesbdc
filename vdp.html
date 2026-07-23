@@ -7,57 +7,178 @@
     <title>Vehicle Details - CarSalesBDC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html, body {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
 </head>
 <body class="bg-slate-100 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
 
-    <!-- Sticky Header -->
-    <header class="bg-white/95 backdrop-blur-sm border-b border-slate-300/60 p-3 shadow-sm z-50 flex items-center justify-between">
-        <a href="index.html" class="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-2 active:scale-95 transition">
-            <i class="fa-solid fa-chevron-left"></i> Back
+    <header class="bg-white border-b border-slate-300/60 p-3 shadow-sm z-40 flex items-center justify-between">
+        <a href="index.html" class="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-2 active:scale-95 transition px-2 py-1">
+            <i class="fa-solid fa-chevron-left text-sm"></i> Back
         </a>
-        <h1 class="text-base font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+        <h1 class="text-sm font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+        <button class="text-slate-400 hover:text-slate-700 active:scale-95 transition px-2 py-1">
+            <i class="fa-solid fa-share-nodes text-lg"></i>
+        </button>
     </header>
 
-    <!-- Main Scrollable VDP Content -->
-    <main class="flex-grow overflow-y-auto relative w-full pb-24">
+    <main class="flex-grow overflow-y-auto relative w-full pb-28 bg-white" id="vdp-scroll">
         
-        <!-- Image Area Placeholder -->
-        <div class="w-full aspect-[4/3] bg-slate-300 relative flex items-center justify-center">
-            <i class="fa-solid fa-car text-6xl text-slate-400"></i>
-            <!-- Trust Badges will eventually overlay here -->
+        <div class="relative w-full aspect-[4/3] bg-slate-200 overflow-hidden border-b border-slate-200">
+            <img id="vdp-image" src="" alt="Vehicle" class="w-full h-full object-cover hidden">
+            
+            <div id="vdp-image-skeleton" class="absolute inset-0 flex items-center justify-center animate-pulse bg-slate-200">
+                <i class="fa-solid fa-car text-5xl text-slate-300"></i>
+            </div>
+            
+            <div class="absolute bottom-3 left-3 hidden">
+                <span class="bg-white/95 backdrop-blur shadow-sm text-slate-800 font-bold text-xs px-2.5 py-1 rounded border border-slate-200">
+                    <i class="fa-solid fa-shield-halved text-blue-600 mr-1"></i> CarFax 1-Owner
+                </span>
+            </div>
         </div>
 
-        <!-- Vehicle Header Info -->
-        <div class="bg-white p-4 border-b border-slate-200 shadow-sm">
-            <h1 class="text-2xl font-black text-slate-900 leading-tight" id="vdp-title">Loading Vehicle...</h1>
-            <p class="text-sm font-bold text-slate-500 mt-1" id="vdp-miles-color">-- miles • -- color</p>
+        <div class="p-4 border-b border-slate-200 shadow-sm relative">
+            <h1 id="vdp-title" class="text-2xl font-black text-slate-900 leading-tight tracking-tight">Loading Vehicle...</h1>
+            <div class="flex items-center gap-1.5 mt-1 text-sm font-bold text-slate-500">
+                <span id="vdp-miles">-- miles</span> <span>•</span> <span id="vdp-color" class="truncate capitalize">-- color</span>
+            </div>
             
             <div class="mt-4 flex items-end justify-between">
                 <div>
-                    <div class="text-3xl font-normal text-slate-900 leading-none" id="vdp-price">$0</div>
-                    <div class="text-sm text-slate-500 mt-1 font-medium" id="vdp-payment">Est. $0/mo</div>
+                    <div id="vdp-price" class="text-[32px] font-normal text-slate-900 leading-none">$0</div>
+                    <div class="flex items-center gap-1.5 mt-2">
+                        <span id="vdp-payment" class="text-sm font-black text-slate-500">Est. $0/mo</span>
+                        <button class="text-[10px] font-extrabold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded uppercase tracking-wide">Customize</button>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Details Section (To be built out) -->
-        <div class="p-4 text-center text-slate-500 text-sm mt-4">
-            <p>Full VDP features and integrations coming next.</p>
+        <div class="p-4 border-b border-slate-200 bg-slate-50/50">
+            <h2 class="text-xs font-black uppercase text-slate-900 tracking-wider mb-2.5 flex items-center gap-2">
+                <i class="fa-solid fa-comment-dots text-blue-600 text-lg"></i> Dealer Notes
+            </h2>
+            <p class="text-[15px] text-slate-700 leading-relaxed font-medium">
+                This pristine vehicle was previously owned by a retired ninja who only drove it to the grocery store on alternating Tuesdays to buy organic celery. It has never seen rain, fear, or a speed limit under 45mph. The cupholders are currently haunted by the ghost of a spilled macchiato, but the sheer horsepower makes up for it. <br><br>
+                <span class="font-bold text-slate-900 bg-amber-200/60 px-1.5 py-0.5 rounded shadow-sm">(If you are reading this, ask for the 'Ninja Discount' when you call).</span>
+            </p>
+        </div>
+
+        <div class="flex flex-col bg-white">
+            
+            <button class="accordion-btn flex items-center justify-between p-4.5 py-4 border-b border-slate-200 bg-white hover:bg-slate-50 transition active:bg-slate-100">
+                <span class="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-wrench text-slate-400 w-5"></i> Specifications
+                </span>
+                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+            </button>
+            <div class="accordion-content hidden px-4 py-3.5 bg-slate-50/80 text-sm text-slate-600 border-b border-slate-200">
+                <p class="font-medium italic text-slate-400">Placeholder for vAuto specs (Engine, Transmission, Drivetrain, MPG).</p>
+            </div>
+
+            <button class="accordion-btn flex items-center justify-between p-4.5 py-4 border-b border-slate-200 bg-white hover:bg-slate-50 transition active:bg-slate-100">
+                <span class="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-star text-slate-400 w-5"></i> Premium Features
+                </span>
+                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+            </button>
+            <div class="accordion-content hidden px-4 py-3.5 bg-slate-50/80 text-sm text-slate-600 border-b border-slate-200">
+                <p class="font-medium italic text-slate-400">Placeholder for OEM equipment & packages (Leather, Sunroof, Nav).</p>
+            </div>
+
+            <button class="accordion-btn flex items-center justify-between p-4.5 py-4 border-b border-slate-200 bg-white hover:bg-slate-50 transition active:bg-slate-100">
+                <span class="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-file-shield text-slate-400 w-5"></i> History & Trust
+                </span>
+                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+            </button>
+            <div class="accordion-content hidden px-4 py-4 bg-slate-50/80 text-sm text-slate-600 border-b border-slate-200">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded shadow-sm border border-slate-200 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-check text-green-500 text-xl"></i>
+                    </div>
+                    <p class="font-bold text-slate-700">CarFax/AutoCheck integration module will go here.</p>
+                </div>
+            </div>
+
         </div>
 
     </main>
 
-    <!-- Fixed Bottom Action Bar -->
-    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-3 pb-6 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50">
-        <div class="max-w-md mx-auto flex gap-2">
-            <a href="tel:5733564614" class="w-14 h-12 flex-shrink-0 bg-slate-100 border border-slate-300 text-slate-700 flex items-center justify-center rounded-lg active:bg-slate-200 transition">
-                <i class="fa-solid fa-phone text-lg"></i>
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-3 pb-6 shadow-[0_-8px_20px_rgba(0,0,0,0.06)] z-50">
+        <div class="max-w-md mx-auto flex gap-2.5">
+            <a href="tel:5733564614" class="w-[60px] h-[54px] flex-shrink-0 bg-white border-2 border-slate-300 text-slate-700 flex items-center justify-center rounded-xl active:bg-slate-100 transition shadow-sm">
+                <i class="fa-solid fa-phone text-xl"></i>
             </a>
-            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-bold text-base h-12 rounded-lg transition shadow-sm">
-                Is It Here?
+            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-black text-lg tracking-wide h-[54px] rounded-xl transition shadow-sm flex justify-center items-center gap-2">
+                Is It Here? <i class="fa-solid fa-arrow-right text-sm opacity-80"></i>
             </button>
         </div>
     </div>
 
+    <script src="inventory.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Accordion Toggle Logic
+            const accordions = document.querySelectorAll('.accordion-btn');
+            accordions.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const content = btn.nextElementSibling;
+                    const icon = btn.querySelector('i.fa-chevron-down');
+                    
+                    content.classList.toggle('hidden');
+                    if(content.classList.contains('hidden')) {
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // 2. Dynamic Vehicle Data Injection
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = urlParams.get('id');
+
+            // Wait for inventory.js to be available
+            if (carId && typeof allVehicles !== 'undefined') {
+                // Find the exact car clicked on the SRP
+                const car = allVehicles.find(v => String(v.id) === String(carId));
+                
+                if (car) {
+                    // Populate Identity
+                    document.getElementById('vdp-title').innerText = `${car.year} ${car.make} ${car.model}`;
+                    
+                    // Format Miles perfectly
+                    const milesNum = Number(String(car.miles).replace(/,/g, ''));
+                    const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
+                    document.getElementById('vdp-miles').innerText = formattedMiles;
+                    
+                    document.getElementById('vdp-color').innerText = car.color;
+                    
+                    // Populate Financials
+                    document.getElementById('vdp-price').innerText = '$' + car.price.toLocaleString();
+                    document.getElementById('vdp-payment').innerText = 'Est. $' + car.payment + '/mo';
+
+                    // Load Image seamlessly
+                    const imgEl = document.getElementById('vdp-image');
+                    const skeletonEl = document.getElementById('vdp-image-skeleton');
+                    
+                    imgEl.src = car.img;
+                    imgEl.onload = () => {
+                        skeletonEl.classList.add('hidden'); // Hide the pulsing icon
+                        imgEl.classList.remove('hidden');   // Show the actual image
+                    };
+                } else {
+                    document.getElementById('vdp-title').innerText = "Vehicle Not Found";
+                    document.getElementById('vdp-image-skeleton').innerHTML = '<i class="fa-solid fa-triangle-exclamation text-4xl text-rose-300"></i>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
