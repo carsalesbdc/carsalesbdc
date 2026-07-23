@@ -27,6 +27,7 @@ let activeMinYear = null;
 const scrollContainer = document.getElementById('scroll-main');
 const grid = document.getElementById('vehicle-grid');
 const searchInput = document.getElementById('search-input');
+const clearSearchBtn = document.getElementById('clear-search-btn'); // NEW Handle
 const quickButtons = document.querySelectorAll('.quick-btn');
 const clearQuickBtn = document.getElementById('clear-quick-btn');
 const sortSelect = document.getElementById('sort-select');
@@ -43,6 +44,7 @@ const closeDrawerBtn = document.getElementById('close-drawer-btn');
 const doneDrawerBtn = document.getElementById('done-drawer-btn');
 const resetAllBtn = document.getElementById('reset-all-filters-btn');
 const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
+const activeChipsContainer = document.getElementById('active-chips-container'); // NEW Handle
 
 // Automotive Slang Dictionary
 const slangDictionary = {
@@ -148,10 +150,20 @@ function processInventory() {
         return true;
     });
 
-    // Apply Sorting
-    if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
-    else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
-    else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
+    // UPDATED Sorting Engine
+    if (currentSort === 'price-low') {
+        filteredVehicles.sort((a, b) => a.price - b.price);
+    } else if (currentSort === 'price-high') {
+        filteredVehicles.sort((a, b) => b.price - a.price);
+    } else if (currentSort === 'miles-low') {
+        filteredVehicles.sort((a, b) => Number(String(a.miles).replace(/,/g, '')) - Number(String(b.miles).replace(/,/g, '')));
+    } else if (currentSort === 'miles-high') {
+        filteredVehicles.sort((a, b) => Number(String(b.miles).replace(/,/g, '')) - Number(String(a.miles).replace(/,/g, '')));
+    } else if (currentSort === 'year-new') {
+        filteredVehicles.sort((a, b) => b.year - a.year);
+    } else if (currentSort === 'year-old') {
+        filteredVehicles.sort((a, b) => a.year - b.year);
+    }
 
     counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
     
@@ -159,9 +171,9 @@ function processInventory() {
     updateUIStates();
 }
 
-// Master UI State Updater (Fixes the broken drawer bug)
+// Master UI State Updater
 function updateUIStates() {
-    // Update Quick Filter Buttons Visuals
+    // Quick Filter Buttons
     let anyQuickActive = false;
     quickButtons.forEach(btn => {
         const key = btn.getAttribute('data-quick');
@@ -172,11 +184,10 @@ function updateUIStates() {
             btn.className = "quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs";
         }
     });
-
     if (anyQuickActive) clearQuickBtn.classList.remove('hidden');
     else clearQuickBtn.classList.add('hidden');
 
-    // Update Drawer Button Visuals
+    // Drawer Buttons Styling
     drawerFilterBtns.forEach(btn => {
         const type = btn.getAttribute('data-filter-type');
         const val = btn.getAttribute('data-value');
@@ -193,7 +204,43 @@ function updateUIStates() {
             btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center";
         }
     });
+
+    // GENERATE YELLOW ACTIVE CHIPS (Attached to sticky bar)
+    activeChipsContainer.innerHTML = '';
+    let activeDrawerCount = 0;
+
+    if (activeDrawerType !== 'All') {
+        activeDrawerCount++;
+        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeDrawerType} <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
+    }
+    if (activeMaxPrice) {
+        activeDrawerCount++;
+        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">Under $${(activeMaxPrice/1000).toFixed(0)}k <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
+    }
+    if (activeMaxMiles) {
+        activeDrawerCount++;
+        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
+    }
+    if (activeMinYear) {
+        activeDrawerCount++;
+        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeMinYear}+ <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
+    }
+
+    if (activeDrawerCount > 0) {
+        activeChipsContainer.classList.remove('hidden');
+    } else {
+        activeChipsContainer.classList.add('hidden');
+    }
 }
+
+// Global function to clear individual drawer chips
+window.clearDrawerFilter = function(filterKey) {
+    if (filterKey === 'type') activeDrawerType = 'All';
+    if (filterKey === 'price') activeMaxPrice = null;
+    if (filterKey === 'miles') activeMaxMiles = null;
+    if (filterKey === 'year') activeMinYear = null;
+    processInventory(); 
+};
 
 // Listeners: Quick Filters
 quickButtons.forEach(btn => {
@@ -209,7 +256,7 @@ clearQuickBtn.addEventListener('click', () => {
     processInventory();
 });
 
-// Listeners: Drawer Filters (Restored Functionality)
+// Listeners: Drawer Filters 
 drawerFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const type = btn.getAttribute('data-filter-type');
@@ -248,23 +295,39 @@ const observer = new IntersectionObserver((entries) => {
 }, { root: scrollContainer, rootMargin: '150px' });
 observer.observe(sentinel);
 
-// Listeners: Search & Sort
-searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase().trim(); processInventory(); });
+// Listeners: Search & Clear Search
+searchInput.addEventListener('input', (e) => { 
+    searchTerm = e.target.value.toLowerCase().trim(); 
+    if (searchTerm.length > 0) {
+        clearSearchBtn.classList.remove('hidden');
+    } else {
+        clearSearchBtn.classList.add('hidden');
+    }
+    processInventory(); 
+});
+
+clearSearchBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchTerm = '';
+    clearSearchBtn.classList.add('hidden');
+    processInventory();
+    searchInput.focus(); // keep keyboard open for UX
+});
+
+// Listeners: Sort
 sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
-// Scroll Logic: Sticky Bar Updates
+// Scroll Logic: Sticky Bar Updates (Filter Button style adapts)
 scrollContainer.addEventListener('scroll', () => {
     if (scrollContainer.scrollTop > 70) {
         stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
         stickyBar.classList.add('bg-slate-900', 'shadow-lg');
-        filterIconBtn.classList.remove('hidden');
-        callIconBtn.classList.remove('hidden');
+        filterIconBtn.className = "shrink-0 bg-white/10 hover:bg-white/20 text-white w-[46px] h-[46px] flex items-center justify-center rounded-lg transition border border-white/20 active:scale-95";
         scrollToTopBtn.classList.remove('hidden');
     } else {
         stickyBar.classList.remove('bg-slate-900', 'shadow-lg');
         stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
-        filterIconBtn.classList.add('hidden');
-        callIconBtn.classList.add('hidden');
+        filterIconBtn.className = "shrink-0 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 w-[46px] h-[46px] flex items-center justify-center rounded-lg transition shadow-sm active:scale-95";
         scrollToTopBtn.classList.add('hidden');
     }
 }, { passive: true });
