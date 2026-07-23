@@ -14,15 +14,16 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
+<body class="bg-slate-200 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
 
     <header class="bg-white border-b border-slate-300/60 p-3 shadow-sm z-40 flex items-center justify-between">
         <a href="index.html" class="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-2 active:scale-95 transition px-2 py-1">
             <i class="fa-solid fa-chevron-left text-sm"></i> Back
         </a>
         <h1 class="text-sm font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-        <button class="text-slate-400 hover:text-slate-700 active:scale-95 transition px-2 py-1">
-            <i class="fa-solid fa-share-nodes text-lg"></i>
+        
+        <button id="vdp-share-btn" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-3 py-1.5 rounded-md border border-slate-300/60 active:scale-95 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-up-from-bracket text-slate-600 text-xs"></i> Share
         </button>
     </header>
 
@@ -70,7 +71,6 @@
         </div>
 
         <div class="flex flex-col bg-white">
-            
             <button class="accordion-btn flex items-center justify-between p-4.5 py-4 border-b border-slate-200 bg-white hover:bg-slate-50 transition active:bg-slate-100">
                 <span class="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
                     <i class="fa-solid fa-wrench text-slate-400 w-5"></i> Specifications
@@ -105,7 +105,6 @@
                     <p class="font-bold text-slate-700">CarFax/AutoCheck integration module will go here.</p>
                 </div>
             </div>
-
         </div>
 
     </main>
@@ -124,60 +123,71 @@
     <script src="inventory.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. Accordion Toggle Logic
+            // Accordion Toggle
             const accordions = document.querySelectorAll('.accordion-btn');
             accordions.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const content = btn.nextElementSibling;
                     const icon = btn.querySelector('i.fa-chevron-down');
-                    
                     content.classList.toggle('hidden');
-                    if(content.classList.contains('hidden')) {
-                        icon.style.transform = 'rotate(0deg)';
-                    } else {
-                        icon.style.transform = 'rotate(180deg)';
-                    }
+                    icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
                 });
             });
 
-            // 2. Dynamic Vehicle Data Injection
+            // Dynamic Vehicle Data
             const urlParams = new URLSearchParams(window.location.search);
             const carId = urlParams.get('id');
+            let currentCarTitle = "Check out this vehicle";
 
-            // Wait for inventory.js to be available
             if (carId && typeof allVehicles !== 'undefined') {
-                // Find the exact car clicked on the SRP
                 const car = allVehicles.find(v => String(v.id) === String(carId));
-                
                 if (car) {
-                    // Populate Identity
-                    document.getElementById('vdp-title').innerText = `${car.year} ${car.make} ${car.model}`;
+                    currentCarTitle = `${car.year} ${car.make} ${car.model}`;
+                    document.getElementById('vdp-title').innerText = currentCarTitle;
                     
-                    // Format Miles perfectly
                     const milesNum = Number(String(car.miles).replace(/,/g, ''));
-                    const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
-                    document.getElementById('vdp-miles').innerText = formattedMiles;
-                    
+                    document.getElementById('vdp-miles').innerText = Math.round(milesNum / 1000) + 'k miles';
                     document.getElementById('vdp-color').innerText = car.color;
-                    
-                    // Populate Financials
                     document.getElementById('vdp-price').innerText = '$' + car.price.toLocaleString();
                     document.getElementById('vdp-payment').innerText = 'Est. $' + car.payment + '/mo';
 
-                    // Load Image seamlessly
                     const imgEl = document.getElementById('vdp-image');
                     const skeletonEl = document.getElementById('vdp-image-skeleton');
-                    
                     imgEl.src = car.img;
                     imgEl.onload = () => {
-                        skeletonEl.classList.add('hidden'); // Hide the pulsing icon
-                        imgEl.classList.remove('hidden');   // Show the actual image
+                        skeletonEl.classList.add('hidden');
+                        imgEl.classList.remove('hidden');
                     };
-                } else {
-                    document.getElementById('vdp-title').innerText = "Vehicle Not Found";
-                    document.getElementById('vdp-image-skeleton').innerHTML = '<i class="fa-solid fa-triangle-exclamation text-4xl text-rose-300"></i>';
                 }
             }
+
+            // Functional Share Button Logic
+            const shareBtn = document.getElementById('vdp-share-btn');
+            shareBtn.addEventListener('click', async () => {
+                const shareData = {
+                    title: currentCarTitle,
+                    text: `Take a look at this ${currentCarTitle}:`,
+                    url: window.location.href
+                };
+
+                if (navigator.share) {
+                    try {
+                        await navigator.share(shareData);
+                    } catch (err) {
+                        // User canceled or failed silently
+                    }
+                } else {
+                    // Fallback: Copy URL to Clipboard
+                    try {
+                        await navigator.clipboard.writeText(window.location.href);
+                        const originalHTML = shareBtn.innerHTML;
+                        shareBtn.innerHTML = `<i class="fa-solid fa-check text-green-600 text-xs"></i> Copied!`;
+                        setTimeout(() => { shareBtn.innerHTML = originalHTML; }, 2000);
+                    } catch (err) {
+                        alert('Link: ' + window.location.href);
+                    }
+                }
+            });
         });
     </script>
 </body>
