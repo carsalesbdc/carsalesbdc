@@ -28,7 +28,7 @@
         </button>
     </header>
 
-    <main class="flex-grow overflow-y-auto relative w-full pb-[100px] bg-white" id="vdp-scroll">
+    <main class="flex-grow overflow-y-auto relative w-full pb-[65px] bg-white" id="vdp-scroll">
         
         <div class="relative w-full aspect-[4/3] bg-slate-200 overflow-hidden border-b border-slate-200">
             <img id="vdp-image" src="" alt="Vehicle" class="w-full h-full object-cover hidden">
@@ -114,13 +114,13 @@
 
     </main>
 
-    <div class="fixed bottom-0 left-0 w-full bg-[#E2E8F0] border-t border-slate-300/60 p-2.5 pb-5 shadow-[0_-8px_20px_rgba(0,0,0,0.06)] z-50">
-        <div class="max-w-md mx-auto flex gap-2.5">
-            <a href="tel:5733564614" class="w-[60px] h-[52px] flex-shrink-0 bg-white border border-slate-300 text-slate-700 flex items-center justify-center rounded-xl active:bg-slate-100 transition shadow-sm">
-                <i class="fa-solid fa-phone text-xl"></i>
+    <div class="fixed bottom-0 left-0 w-full bg-[#E2E8F0] border-t border-slate-300/60 p-1.5 pb-2.5 shadow-[0_-8px_20px_rgba(0,0,0,0.06)] z-50">
+        <div class="max-w-md mx-auto flex gap-2">
+            <a href="tel:5733564614" class="w-[50px] h-[42px] flex-shrink-0 bg-white border border-slate-300 text-slate-700 flex items-center justify-center rounded-lg active:bg-slate-100 transition shadow-sm">
+                <i class="fa-solid fa-phone text-lg"></i>
             </a>
-            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-black text-lg tracking-wide h-[52px] rounded-xl transition shadow-sm flex justify-center items-center gap-2">
-                Is It Here? <i class="fa-solid fa-arrow-right text-sm opacity-80"></i>
+            <button class="flex-grow bg-blue-600 active:bg-blue-700 text-white font-black text-base tracking-wide h-[42px] rounded-lg transition shadow-sm flex justify-center items-center gap-2">
+                Is It Here? <i class="fa-solid fa-arrow-right text-xs opacity-80"></i>
             </button>
         </div>
     </div>
@@ -169,10 +169,8 @@
                     // 2. TRACKING ENGINE: Save to localStorage
                     try {
                         let viewed = JSON.parse(localStorage.getItem('viewedCars')) || [];
-                        // Remove if already exists so it jumps to front
                         viewed = viewed.filter(id => id !== String(car.id));
                         viewed.push(String(car.id));
-                        // Keep history at 15 cars max to save space
                         if (viewed.length > 15) viewed.shift();
                         localStorage.setItem('viewedCars', JSON.stringify(viewed));
                     } catch (e) {
@@ -183,10 +181,9 @@
 
             // 3. MINI-SRP BUILDER ("Vehicles You Might Like")
             if (typeof allVehicles !== 'undefined') {
-                // Find up to 8 cars of same body type, EXCLUDING the current car
                 const similarCars = allVehicles
                     .filter(c => c.type === currentCarType && String(c.id) !== String(carId))
-                    .slice(0, 8); // Grab up to 8
+                    .slice(0, 8);
 
                 if (similarCars.length > 0) {
                     const gridContainer = document.getElementById('vdp-mini-srp');
@@ -220,7 +217,6 @@
                     });
                     gridContainer.innerHTML = miniSrpHtml;
                 } else {
-                    // Hide section if no similar cars found
                     document.getElementById('vdp-mini-srp').parentElement.classList.add('hidden');
                 }
             }
