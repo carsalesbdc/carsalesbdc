@@ -42,6 +42,15 @@ const continueShoppingContainer = document.getElementById('continue-shopping-con
 const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
+// CTA Modal DOM Handles
+const ctaModalBackdrop = document.getElementById('cta-modal-backdrop');
+const ctaModalBox = document.getElementById('cta-modal-box');
+const ctaCloseBtn = document.getElementById('cta-close-btn');
+const ctaReturnBtn = document.getElementById('cta-return-btn');
+const ctaFormStep = document.getElementById('cta-form-step');
+const ctaSuccessStep = document.getElementById('cta-success-step');
+const ctaLeadForm = document.getElementById('cta-lead-form');
+
 // Slang Dictionary
 const slangDictionary = {
     'chevy': 'chevrolet', 'vw': 'volkswagen', 'bimmer': 'bmw', 'suby': 'subaru', 'soob': 'subaru', 
@@ -58,7 +67,7 @@ function cleanSearchString(str) {
 }
 
 // ------------------------------------------------------------------------
-// CONTINUED SHOPPING LOGIC (Reads localStorage and builds horizontal slider)
+// CONTINUED SHOPPING LOGIC
 // ------------------------------------------------------------------------
 function renderViewedCars() {
     let viewedIds = [];
@@ -78,12 +87,10 @@ function renderViewedCars() {
     continueShoppingContainer.classList.remove('hidden');
     let htmlString = '';
     
-    // Reverse array to show most recently viewed first
     [...viewedCarsData].reverse().forEach(car => {
         const milesNum = Number(String(car.miles).replace(/,/g, ''));
         const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
         
-        // Exact same card styling but hardcoded w-[220px] for horizontal swiping
         htmlString += `
             <article class="w-[220px] snap-start shrink-0 bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
                 <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
@@ -100,9 +107,7 @@ function renderViewedCars() {
                             </div>
                         </div>
                         <div class="mt-3">
-                            <div class="flex items-center justify-between gap-1">
-                                <div class="text-xl font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
-                            </div>
+                            <div class="text-xl font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
                         </div>
                     </div>
                 </a>
@@ -120,7 +125,7 @@ if(clearHistoryBtn) {
 }
 
 // ------------------------------------------------------------------------
-// INVENTORY RENDERING (Main Grid)
+// INVENTORY RENDERING (Main Grid) - Notice the CTA Button Class Added!
 // ------------------------------------------------------------------------
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -163,7 +168,7 @@ function renderNextBatch() {
                 </a>
                 
                 <div class="p-2.5 pt-0">
-                    <button class="w-full bg-blue-600 active:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-md transition tracking-wide shadow-sm truncate">Is It Here?</button>
+                    <button class="cta-trigger-btn w-full bg-blue-600 active:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-md transition tracking-wide shadow-sm truncate">Is It Here?</button>
                 </div>
             </article>
         `;
@@ -309,10 +314,52 @@ function openDrawer() { drawerBackdrop.classList.remove('hidden'); drawer.classL
 function closeDrawer() { drawer.classList.add('translate-x-full'); drawerBackdrop.classList.add('hidden'); }
 filterIconBtn.addEventListener('click', openDrawer); closeDrawerBtn.addEventListener('click', closeDrawer); doneDrawerBtn.addEventListener('click', closeDrawer); drawerBackdrop.addEventListener('click', closeDrawer);
 
+// ------------------------------------------------------------------------
+// CTA MODAL LOGIC (Is It Here?)
+// ------------------------------------------------------------------------
+function openCtaModal() {
+    ctaModalBackdrop.classList.remove('hidden');
+    setTimeout(() => {
+        ctaModalBackdrop.classList.remove('opacity-0');
+        ctaModalBox.classList.remove('scale-95');
+    }, 10);
+}
+
+function closeCtaModal() {
+    ctaModalBackdrop.classList.add('opacity-0');
+    ctaModalBox.classList.add('scale-95');
+    setTimeout(() => {
+        ctaModalBackdrop.classList.add('hidden');
+        ctaFormStep.classList.remove('hidden');
+        ctaSuccessStep.classList.add('hidden');
+        ctaLeadForm.reset();
+    }, 300);
+}
+
+// Global listener for dynamically generated buttons
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.cta-trigger-btn')) {
+        openCtaModal();
+    }
+});
+
+ctaCloseBtn.addEventListener('click', closeCtaModal);
+ctaReturnBtn.addEventListener('click', closeCtaModal);
+ctaModalBackdrop.addEventListener('click', (e) => {
+    if(e.target === ctaModalBackdrop) closeCtaModal();
+});
+
+ctaLeadForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Transition to success screen
+    ctaFormStep.classList.add('hidden');
+    ctaSuccessStep.classList.remove('hidden');
+});
+
 function initApp() {
     if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
         filteredVehicles = [...allVehicles];
-        renderViewedCars(); // Inject the "Continue Shopping" slider
+        renderViewedCars(); 
         processInventory();
     } else { setTimeout(initApp, 100); }
 }
