@@ -8,14 +8,7 @@ let searchTerm = '';
 let currentSort = 'default';
 
 // Quick Filters State
-let activeQuickFilters = {
-    suv: false,
-    truck: false,
-    lowmiles: false,
-    under25k: false,
-    newarrival: false,
-    under500mo: false
-};
+let activeQuickFilters = { suv: false, truck: false, lowmiles: false, under25k: false, newarrival: false, under500mo: false };
 
 // Drawer Filters State
 let activeDrawerType = 'All';
@@ -27,7 +20,7 @@ let activeMinYear = null;
 const scrollContainer = document.getElementById('scroll-main');
 const grid = document.getElementById('vehicle-grid');
 const searchInput = document.getElementById('search-input');
-const clearSearchBtn = document.getElementById('clear-search-btn'); // NEW Handle
+const clearSearchBtn = document.getElementById('clear-search-btn');
 const quickButtons = document.querySelectorAll('.quick-btn');
 const clearQuickBtn = document.getElementById('clear-quick-btn');
 const sortSelect = document.getElementById('sort-select');
@@ -44,19 +37,18 @@ const closeDrawerBtn = document.getElementById('close-drawer-btn');
 const doneDrawerBtn = document.getElementById('done-drawer-btn');
 const resetAllBtn = document.getElementById('reset-all-filters-btn');
 const drawerFilterBtns = document.querySelectorAll('.drawer-filter-btn');
-const activeChipsContainer = document.getElementById('active-chips-container'); // NEW Handle
+const activeChipsContainer = document.getElementById('active-chips-container');
+const continueShoppingContainer = document.getElementById('continue-shopping-container');
+const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-// Automotive Slang Dictionary
+// Slang Dictionary
 const slangDictionary = {
-    'chevy': 'chevrolet', 'vw': 'volkswagen', 'bimmer': 'bmw',
-    'suby': 'subaru', 'soob': 'subaru', 'yota': 'toyota',
-    'lex': 'lexus', 'merc': 'mercedes', 'caddy': 'cadillac',
-    'acord': 'accord', 'forerunner': '4runner', 'sintra': 'sentra',      
-    'awd': 'all wheel drive', '4x4': 'four wheel drive',
-    'nav': 'navigation', 'leather': 'leather seats'
+    'chevy': 'chevrolet', 'vw': 'volkswagen', 'bimmer': 'bmw', 'suby': 'subaru', 'soob': 'subaru', 
+    'yota': 'toyota', 'lex': 'lexus', 'merc': 'mercedes', 'caddy': 'cadillac', 'acord': 'accord', 
+    'forerunner': '4runner', 'sintra': 'sentra', 'awd': 'all wheel drive', '4x4': 'four wheel drive'
 };
 
-// Search Normalization & Slang Engine
 function cleanSearchString(str) {
     let cleaned = str.toLowerCase().replace(/[-_ \/\\]/g, '');
     let rawLower = str.toLowerCase().trim();
@@ -65,7 +57,71 @@ function cleanSearchString(str) {
     return cleaned;
 }
 
-// Render Vehicle Cards
+// ------------------------------------------------------------------------
+// CONTINUED SHOPPING LOGIC (Reads localStorage and builds horizontal slider)
+// ------------------------------------------------------------------------
+function renderViewedCars() {
+    let viewedIds = [];
+    try { viewedIds = JSON.parse(localStorage.getItem('viewedCars')) || []; } catch(e) {}
+    
+    if (viewedIds.length === 0) {
+        continueShoppingContainer.classList.add('hidden');
+        return;
+    }
+
+    const viewedCarsData = allVehicles.filter(c => viewedIds.includes(String(c.id)));
+    if (viewedCarsData.length === 0) {
+        continueShoppingContainer.classList.add('hidden');
+        return;
+    }
+
+    continueShoppingContainer.classList.remove('hidden');
+    let htmlString = '';
+    
+    // Reverse array to show most recently viewed first
+    [...viewedCarsData].reverse().forEach(car => {
+        const milesNum = Number(String(car.miles).replace(/,/g, ''));
+        const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
+        
+        // Exact same card styling but hardcoded w-[220px] for horizontal swiping
+        htmlString += `
+            <article class="w-[220px] snap-start shrink-0 bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
+                    <div class="p-2 pb-0">
+                        <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
+                            <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover rounded-xl" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
+                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1.5 text-xs font-bold text-slate-600">
+                                <span>${formattedMiles}</span><span>•</span><span class="${car.colorClass} truncate max-w-[85px]">${car.color}</span>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center justify-between gap-1">
+                                <div class="text-xl font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </article>
+        `;
+    });
+    viewedCarsScroll.innerHTML = htmlString;
+}
+
+if(clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', () => {
+        localStorage.removeItem('viewedCars');
+        continueShoppingContainer.classList.add('hidden');
+    });
+}
+
+// ------------------------------------------------------------------------
+// INVENTORY RENDERING (Main Grid)
+// ------------------------------------------------------------------------
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -86,7 +142,7 @@ function renderNextBatch() {
                 <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
                     <div class="p-2 pb-0">
                         <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
-                            <img src="${car.img}" width="500" height="375" alt="${car.year} ${car.make} ${car.model}" class="w-full h-full object-cover rounded-xl" loading="lazy">
+                            <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover rounded-xl" loading="lazy">
                         </div>
                     </div>
                     <div class="p-3 flex flex-col justify-between">
@@ -117,7 +173,6 @@ function renderNextBatch() {
     currentPage++;
 }
 
-// Unified Filter Processor
 function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
@@ -128,13 +183,11 @@ function processInventory() {
         const carMilesNum = Number(String(car.miles).replace(/,/g, ''));
         const carDaysOnLot = Number(car.daysOnLot || 0);
 
-        // 1. Drawer Filter Checks
         if (activeDrawerType !== 'All' && car.type !== activeDrawerType) return false;
         if (activeMaxPrice && car.price > activeMaxPrice) return false;
         if (activeMaxMiles && carMilesNum > activeMaxMiles) return false;
         if (activeMinYear && car.year < activeMinYear) return false;
 
-        // 2. Quick Filter Checks
         if (activeQuickFilters.suv && car.type !== 'SUV') return false;
         if (activeQuickFilters.truck && car.type !== 'Truck') return false;
         if (activeQuickFilters.lowmiles && carMilesNum >= 60000) return false;
@@ -142,28 +195,18 @@ function processInventory() {
         if (activeQuickFilters.newarrival && carDaysOnLot > 30) return false;
         if (activeQuickFilters.under500mo && car.payment > 500) return false;
 
-        // 3. Search Engine Checks
         const rawString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`;
-        const cleanedCarString = cleanSearchString(rawString);
-        if (!cleanedCarString.includes(cleanedSearchTerm)) return false;
+        if (!cleanSearchString(rawString).includes(cleanedSearchTerm)) return false;
 
         return true;
     });
 
-    // UPDATED Sorting Engine
-    if (currentSort === 'price-low') {
-        filteredVehicles.sort((a, b) => a.price - b.price);
-    } else if (currentSort === 'price-high') {
-        filteredVehicles.sort((a, b) => b.price - a.price);
-    } else if (currentSort === 'miles-low') {
-        filteredVehicles.sort((a, b) => Number(String(a.miles).replace(/,/g, '')) - Number(String(b.miles).replace(/,/g, '')));
-    } else if (currentSort === 'miles-high') {
-        filteredVehicles.sort((a, b) => Number(String(b.miles).replace(/,/g, '')) - Number(String(a.miles).replace(/,/g, '')));
-    } else if (currentSort === 'year-new') {
-        filteredVehicles.sort((a, b) => b.year - a.year);
-    } else if (currentSort === 'year-old') {
-        filteredVehicles.sort((a, b) => a.year - b.year);
-    }
+    if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
+    else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
+    else if (currentSort === 'miles-low') filteredVehicles.sort((a, b) => Number(String(a.miles).replace(/,/g,'')) - Number(String(b.miles).replace(/,/g,'')));
+    else if (currentSort === 'miles-high') filteredVehicles.sort((a, b) => Number(String(b.miles).replace(/,/g,'')) - Number(String(a.miles).replace(/,/g,'')));
+    else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
+    else if (currentSort === 'year-old') filteredVehicles.sort((a, b) => a.year - b.year);
 
     counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
     
@@ -171,9 +214,7 @@ function processInventory() {
     updateUIStates();
 }
 
-// Master UI State Updater
 function updateUIStates() {
-    // Quick Filter Buttons
     let anyQuickActive = false;
     quickButtons.forEach(btn => {
         const key = btn.getAttribute('data-quick');
@@ -187,7 +228,6 @@ function updateUIStates() {
     if (anyQuickActive) clearQuickBtn.classList.remove('hidden');
     else clearQuickBtn.classList.add('hidden');
 
-    // Drawer Buttons Styling
     drawerFilterBtns.forEach(btn => {
         const type = btn.getAttribute('data-filter-type');
         const val = btn.getAttribute('data-value');
@@ -198,42 +238,21 @@ function updateUIStates() {
         if (type === 'miles' && activeMaxMiles === Number(val)) isActive = true;
         if (type === 'year' && activeMinYear === Number(val)) isActive = true;
 
-        if (isActive) {
-            btn.className = "drawer-filter-btn border-2 border-amber-400 bg-amber-400 text-slate-950 py-2 px-2.5 rounded-md font-black text-xs transition text-center shadow-sm";
-        } else {
-            btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center";
-        }
+        if (isActive) btn.className = "drawer-filter-btn border-2 border-amber-400 bg-amber-400 text-slate-950 py-2 px-2.5 rounded-md font-black text-xs transition text-center shadow-sm";
+        else btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center";
     });
 
-    // GENERATE YELLOW ACTIVE CHIPS (Attached to sticky bar)
     activeChipsContainer.innerHTML = '';
     let activeDrawerCount = 0;
+    if (activeDrawerType !== 'All') { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeDrawerType} <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+    if (activeMaxPrice) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">Under $${(activeMaxPrice/1000).toFixed(0)}k <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+    if (activeMaxMiles) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+    if (activeMinYear) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeMinYear}+ <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
 
-    if (activeDrawerType !== 'All') {
-        activeDrawerCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeDrawerType} <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
-    }
-    if (activeMaxPrice) {
-        activeDrawerCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">Under $${(activeMaxPrice/1000).toFixed(0)}k <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
-    }
-    if (activeMaxMiles) {
-        activeDrawerCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
-    }
-    if (activeMinYear) {
-        activeDrawerCount++;
-        activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeMinYear}+ <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`;
-    }
-
-    if (activeDrawerCount > 0) {
-        activeChipsContainer.classList.remove('hidden');
-    } else {
-        activeChipsContainer.classList.add('hidden');
-    }
+    if (activeDrawerCount > 0) activeChipsContainer.classList.remove('hidden');
+    else activeChipsContainer.classList.add('hidden');
 }
 
-// Global function to clear individual drawer chips
 window.clearDrawerFilter = function(filterKey) {
     if (filterKey === 'type') activeDrawerType = 'All';
     if (filterKey === 'price') activeMaxPrice = null;
@@ -242,123 +261,59 @@ window.clearDrawerFilter = function(filterKey) {
     processInventory(); 
 };
 
-// Listeners: Quick Filters
-quickButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const key = btn.getAttribute('data-quick');
-        activeQuickFilters[key] = !activeQuickFilters[key];
-        processInventory();
-    });
-});
-
-clearQuickBtn.addEventListener('click', () => {
-    Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false);
-    processInventory();
-});
-
-// Listeners: Drawer Filters 
+quickButtons.forEach(btn => { btn.addEventListener('click', () => { activeQuickFilters[btn.getAttribute('data-quick')] = !activeQuickFilters[btn.getAttribute('data-quick')]; processInventory(); }); });
+clearQuickBtn.addEventListener('click', () => { Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
 drawerFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        const type = btn.getAttribute('data-filter-type');
-        const val = btn.getAttribute('data-value');
-
+        const type = btn.getAttribute('data-filter-type'); const val = btn.getAttribute('data-value');
         if (type === 'type') activeDrawerType = (activeDrawerType === val) ? 'All' : val;
         if (type === 'price') activeMaxPrice = (activeMaxPrice === Number(val)) ? null : Number(val);
         if (type === 'miles') activeMaxMiles = (activeMaxMiles === Number(val)) ? null : Number(val);
         if (type === 'year') activeMinYear = (activeMinYear === Number(val)) ? null : Number(val);
-
         processInventory();
     });
 });
+resetAllBtn.addEventListener('click', () => { activeDrawerType = 'All'; activeMaxPrice = null; activeMaxMiles = null; activeMinYear = null; Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
 
-resetAllBtn.addEventListener('click', () => {
-    activeDrawerType = 'All';
-    activeMaxPrice = null;
-    activeMaxMiles = null;
-    activeMinYear = null;
-    Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false);
-    processInventory();
-});
-
-// Infinite Scroll Observer
 const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-        const maxPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE);
-        if (currentPage <= maxPages) {
-            spinner.classList.remove('hidden');
-            setTimeout(() => {
-                renderNextBatch();
-                spinner.classList.add('hidden');
-            }, 250);
-        }
+    if (entries[0].isIntersecting && currentPage <= Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE)) {
+        spinner.classList.remove('hidden');
+        setTimeout(() => { renderNextBatch(); spinner.classList.add('hidden'); }, 250);
     }
 }, { root: scrollContainer, rootMargin: '150px' });
 observer.observe(sentinel);
 
-// Listeners: Search & Clear Search
 searchInput.addEventListener('input', (e) => { 
     searchTerm = e.target.value.toLowerCase().trim(); 
-    if (searchTerm.length > 0) {
-        clearSearchBtn.classList.remove('hidden');
-    } else {
-        clearSearchBtn.classList.add('hidden');
-    }
+    if (searchTerm.length > 0) clearSearchBtn.classList.remove('hidden');
+    else clearSearchBtn.classList.add('hidden');
     processInventory(); 
 });
-
-clearSearchBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    searchTerm = '';
-    clearSearchBtn.classList.add('hidden');
-    processInventory();
-    searchInput.focus(); // keep keyboard open for UX
-});
-
-// Listeners: Sort
+clearSearchBtn.addEventListener('click', () => { searchInput.value = ''; searchTerm = ''; clearSearchBtn.classList.add('hidden'); processInventory(); searchInput.focus(); });
 sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
-// Scroll Logic: Sticky Bar Updates (Filter Button style adapts)
 scrollContainer.addEventListener('scroll', () => {
     if (scrollContainer.scrollTop > 70) {
-        stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm');
-        stickyBar.classList.add('bg-slate-900', 'shadow-lg');
+        stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm'); stickyBar.classList.add('bg-slate-900', 'shadow-lg');
         filterIconBtn.className = "shrink-0 bg-white/10 hover:bg-white/20 text-white w-[46px] h-[46px] flex items-center justify-center rounded-lg transition border border-white/20 active:scale-95";
         scrollToTopBtn.classList.remove('hidden');
     } else {
-        stickyBar.classList.remove('bg-slate-900', 'shadow-lg');
-        stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
+        stickyBar.classList.remove('bg-slate-900', 'shadow-lg'); stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
         filterIconBtn.className = "shrink-0 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 w-[46px] h-[46px] flex items-center justify-center rounded-lg transition shadow-sm active:scale-95";
         scrollToTopBtn.classList.add('hidden');
     }
 }, { passive: true });
 
-scrollToTopBtn.addEventListener('click', () => {
-    scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-});
+scrollToTopBtn.addEventListener('click', () => { scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }); });
+function openDrawer() { drawerBackdrop.classList.remove('hidden'); drawer.classList.remove('translate-x-full'); }
+function closeDrawer() { drawer.classList.add('translate-x-full'); drawerBackdrop.classList.add('hidden'); }
+filterIconBtn.addEventListener('click', openDrawer); closeDrawerBtn.addEventListener('click', closeDrawer); doneDrawerBtn.addEventListener('click', closeDrawer); drawerBackdrop.addEventListener('click', closeDrawer);
 
-// Drawer Open / Close Logic
-function openDrawer() {
-    drawerBackdrop.classList.remove('hidden');
-    drawer.classList.remove('translate-x-full');
-}
-function closeDrawer() {
-    drawer.classList.add('translate-x-full');
-    drawerBackdrop.classList.add('hidden');
-}
-
-filterIconBtn.addEventListener('click', openDrawer);
-closeDrawerBtn.addEventListener('click', closeDrawer);
-doneDrawerBtn.addEventListener('click', closeDrawer);
-drawerBackdrop.addEventListener('click', closeDrawer);
-
-// Safe Initial Load
 function initApp() {
     if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
         filteredVehicles = [...allVehicles];
+        renderViewedCars(); // Inject the "Continue Shopping" slider
         processInventory();
-    } else {
-        setTimeout(initApp, 100);
-    }
+    } else { setTimeout(initApp, 100); }
 }
-
 initApp();
