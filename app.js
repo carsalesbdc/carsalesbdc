@@ -67,7 +67,7 @@ function cleanSearchString(str) {
 }
 
 // ------------------------------------------------------------------------
-// CONTINUED SHOPPING LOGIC
+// CONTINUED SHOPPING LOGIC (Updated to 140px, Dark Slate, No CTA)
 // ------------------------------------------------------------------------
 function renderViewedCars() {
     let viewedIds = [];
@@ -87,31 +87,25 @@ function renderViewedCars() {
     continueShoppingContainer.classList.remove('hidden');
     let htmlString = '';
     
+    // Reverse array to show most recently viewed first (far left)
     [...viewedCarsData].reverse().forEach(car => {
         const milesNum = Number(String(car.miles).replace(/,/g, ''));
-        const formattedMiles = Math.round(milesNum / 1000) + 'k miles';
+        const formattedMiles = Math.round(milesNum / 1000) + 'k mi';
         
         htmlString += `
-            <article class="w-[220px] snap-start shrink-0 bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
-                <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
-                    <div class="p-2 pb-0">
-                        <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
-                            <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover rounded-xl" loading="lazy">
-                        </div>
+            <a href="vdp.html?id=${car.id}" class="w-[140px] snap-start shrink-0 bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-sm transition active:scale-95 block">
+                <div class="relative aspect-[4/3] bg-slate-700 w-full overflow-hidden">
+                    <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover" loading="lazy">
+                </div>
+                <div class="p-2.5">
+                    <h2 class="text-[11px] font-black text-white tracking-tight truncate">${car.year} ${car.make}</h2>
+                    <h3 class="text-[10px] font-bold text-slate-400 truncate">${car.model}</h3>
+                    <div class="flex flex-wrap items-center gap-x-1 mt-1 text-[9px] font-bold text-slate-500">
+                        <span>${formattedMiles}</span><span>•</span><span class="truncate max-w-[50px] capitalize">${car.color}</span>
                     </div>
-                    <div class="p-3 flex flex-col justify-between">
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${car.year} ${car.make} ${car.model}</h2>
-                            <div class="flex flex-wrap items-center gap-x-1.5 mt-1.5 text-xs font-bold text-slate-600">
-                                <span>${formattedMiles}</span><span>•</span><span class="${car.colorClass} truncate max-w-[85px]">${car.color}</span>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <div class="text-xl font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
-                        </div>
-                    </div>
-                </a>
-            </article>
+                    <div class="mt-2 text-sm font-normal text-white leading-none">$${car.price.toLocaleString()}</div>
+                </div>
+            </a>
         `;
     });
     viewedCarsScroll.innerHTML = htmlString;
@@ -125,7 +119,7 @@ if(clearHistoryBtn) {
 }
 
 // ------------------------------------------------------------------------
-// INVENTORY RENDERING (Main Grid) - Notice the CTA Button Class Added!
+// INVENTORY RENDERING (Main Grid)
 // ------------------------------------------------------------------------
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -181,6 +175,20 @@ function renderNextBatch() {
 function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
+
+    // Check for search query from URL (if they came from the Lobby)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlSearch = urlParams.get('search');
+    const urlFilter = urlParams.get('filter');
+
+    if (urlSearch && searchTerm === '') searchTerm = urlSearch.toLowerCase().trim();
+    if (urlFilter && urlFilter === 'suv') activeQuickFilters.suv = true;
+    if (urlFilter && urlFilter === 'truck') activeQuickFilters.truck = true;
+
+    if (searchTerm.length > 0) {
+        searchInput.value = searchTerm;
+        clearSearchBtn.classList.remove('hidden');
+    }
 
     const cleanedSearchTerm = cleanSearchString(searchTerm);
 
@@ -336,7 +344,6 @@ function closeCtaModal() {
     }, 300);
 }
 
-// Global listener for dynamically generated buttons
 document.addEventListener('click', (e) => {
     if (e.target.closest('.cta-trigger-btn')) {
         openCtaModal();
@@ -351,7 +358,6 @@ ctaModalBackdrop.addEventListener('click', (e) => {
 
 ctaLeadForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    // Transition to success screen
     ctaFormStep.classList.add('hidden');
     ctaSuccessStep.classList.remove('hidden');
 });
