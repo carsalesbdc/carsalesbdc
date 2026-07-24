@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#E2E8F0">
+    <title>Page Not Found - CarSalesBDC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html, body {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            background-color: #E2E8F0;
+        }
+    </style>
+</head>
+<body class="bg-slate-200 h-[100dvh] flex flex-col font-sans antialiased text-slate-800 overflow-y-auto">
+
+    <header class="p-6 pt-8 flex flex-col items-center justify-center gap-2">
+        <a href="index.html">
+            <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+        </a>
+        <span class="text-[11px] bg-slate-300/60 text-slate-700 font-bold px-3 py-1 rounded uppercase tracking-wider">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+    </header>
+
+    <main class="w-full max-w-md mx-auto flex flex-col px-5 pt-2 pb-12">
+        
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-black text-slate-900 tracking-tight leading-tight">Beep boop beep...<br>Let's try that again.</h2>
+            <p class="text-[14px] font-bold text-slate-500 mt-2 leading-relaxed">
+                Looks like that link took a wrong turn (or someone bought it while you were clicking). What vehicle were you looking for?
+            </p>
+        </div>
+
+        <div class="relative w-full mb-5 shadow-sm rounded-2xl">
+            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl z-10"></i>
+            <input type="text" id="recovery-search" placeholder="Search vehicles..." 
+                class="w-full bg-white text-slate-900 text-[17px] rounded-2xl pl-14 pr-5 py-4 outline-none border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition placeholder-slate-400 font-medium shadow-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-8">
+            <a href="srp.html?filter=new" class="bg-slate-900 text-white p-4 rounded-2xl flex flex-col items-center justify-center gap-1.5 active:scale-95 transition shadow-sm">
+                <i class="fa-solid fa-certificate text-xl text-amber-400"></i>
+                <span class="text-sm font-black tracking-wide uppercase">Shop New</span>
+            </a>
+            <a href="srp.html?filter=used" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-1.5 active:scale-95 transition shadow-sm">
+                <i class="fa-solid fa-key text-xl text-slate-700"></i>
+                <span class="text-sm font-black text-slate-900 tracking-wide uppercase">Shop Used</span>
+            </a>
+        </div>
+
+        <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider mb-3 px-1 text-center">Or check these out</h3>
+        <div id="fallback-grid" class="grid grid-cols-2 gap-2.5">
+            </div>
+
+    </main>
+
+    <script src="inventory.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById('recovery-search');
+            
+            // Redirect to SRP when they type and hit enter
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && searchInput.value.trim() !== '') {
+                    window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
+                }
+            });
+
+            // Inject 4 random cars so the page is never empty
+            if (typeof allVehicles !== 'undefined' && allVehicles.length > 0) {
+                const gridContainer = document.getElementById('fallback-grid');
+                
+                // Shuffle array and grab first 4
+                const shuffled = [...allVehicles].sort(() => 0.5 - Math.random());
+                const fallbackCars = shuffled.slice(0, 4);
+
+                let gridHtml = '';
+                fallbackCars.forEach(car => {
+                    const milesNum = Number(String(car.miles).replace(/,/g, ''));
+                    const formattedMiles = Math.round(milesNum / 1000) + 'k mi';
+                    
+                    gridHtml += `
+                        <article class="bg-white border border-slate-300/80 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm transition transform active:scale-[0.99]">
+                            <a href="vdp.html?id=${car.id}" class="block cursor-pointer flex-grow">
+                                <div class="p-2 pb-0">
+                                    <div class="relative aspect-[4/3] bg-slate-100 w-[104%] -ml-[2%] rounded-xl overflow-hidden shadow-sm border border-slate-300/30">
+                                        <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover rounded-xl" loading="lazy">
+                                    </div>
+                                </div>
+                                <div class="p-3 flex flex-col justify-between">
+                                    <div>
+                                        <h2 class="text-base font-black text-slate-900 tracking-tight truncate leading-tight">${car.year} ${car.make}</h2>
+                                        <h3 class="text-[13px] font-bold text-slate-600 truncate leading-tight">${car.model}</h3>
+                                        <div class="flex flex-wrap items-center gap-x-1.5 mt-1 text-[11px] font-bold text-slate-400">
+                                            <span>${formattedMiles}</span><span>•</span><span class="${car.colorClass} truncate max-w-[50px]">${car.color}</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2.5">
+                                        <div class="text-lg font-normal text-slate-900 leading-none">$${car.price.toLocaleString()}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </article>
+                    `;
+                });
+                gridContainer.innerHTML = gridHtml;
+            }
+        });
+    </script>
+</body>
+</html>
