@@ -28,13 +28,20 @@
 
     <div id="scroll-main" class="flex-grow overflow-y-auto relative w-full">
 
-        <header class="bg-white/95 border-b border-slate-300/60 p-3.5 shadow-sm">
+        <header class="bg-white/95 border-b border-slate-300/60 p-3.5 shadow-sm sticky top-0 z-50 transition-all duration-300" id="global-header">
             <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
-                <a href="index.html" class="flex items-center gap-1.5 text-blue-600 active:scale-95 transition cursor-pointer mr-2">
-                    <i class="fa-solid fa-house text-sm"></i>
+                <button onclick="history.back()" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 active:scale-95 transition cursor-pointer w-16">
+                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                    <span class="text-[13px] font-bold">Back</span>
+                </button>
+                
+                <a href="index.html" class="flex-grow text-center">
+                    <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
                 </a>
-                <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase flex-grow">CarSales<span class="text-blue-600">BDC</span></h1>
-                <span class="text-sm bg-slate-100 text-slate-900 font-bold px-3 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+                
+                <a href="index.html" class="flex items-center justify-end gap-1.5 text-slate-500 hover:text-blue-600 active:scale-95 transition cursor-pointer w-16 pr-1">
+                    <i class="fa-solid fa-house text-lg"></i>
+                </a>
             </div>
         </header>
 
@@ -73,7 +80,7 @@
                 <div class="flex items-center gap-2">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base"></i>
-                        <input type="text" id="search-input" placeholder="Search vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-10 pr-10 py-2.5 outline-none border border-transparent focus:border-blue-500/50 transition">
+                        <input type="text" id="search-input" placeholder="Search vehicles..." class="w-full bg-slate-100 text-slate-800 placeholder-slate-400 text-base rounded-lg pl-10 pr-10 py-2.5 outline-none border border-transparent focus:border-blue-500/50 transition" autocorrect="off" autocomplete="off" spellcheck="false">
                         <button id="clear-search-btn" class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5 cursor-pointer transition">
                             <i class="fa-solid fa-xmark text-lg"></i>
                         </button>
@@ -109,6 +116,15 @@
             
             <div id="scroll-sentinel" class="w-full h-12 flex items-center justify-center mt-4">
                 <div id="spinner" class="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent hidden"></div>
+            </div>
+
+            <div id="surprise-controls" class="hidden mt-6 mb-12 flex flex-col gap-3 px-1">
+                <button id="surprise-again-btn" class="w-full bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-slate-950 font-black text-[15px] tracking-wide py-3.5 rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Surprise Me Again
+                </button>
+                <button id="show-all-surprise-btn" class="w-full bg-slate-900 active:bg-slate-800 text-white font-black text-[15px] tracking-wide py-3.5 rounded-xl transition shadow-md">
+                    Show All Matches
+                </button>
             </div>
         </main>
 
@@ -229,6 +245,6 @@
     </div>
 
     <script src="inventory.js"></script>
-    <script src="app.js?v=17"></script>
+    <script src="app.js"></script>
 </body>
 </html>
