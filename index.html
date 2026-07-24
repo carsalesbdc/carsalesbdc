@@ -8,7 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; background-color: #E2E8F0; }
+        html, body { 
+            touch-action: manipulation; 
+            -webkit-text-size-adjust: 100%; 
+            background-color: #E2E8F0; 
+        }
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -31,7 +35,7 @@
         <div class="relative w-full mb-6 z-50">
             <div class="relative shadow-sm rounded-2xl bg-white">
                 <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl z-10"></i>
-                <input type="text" id="lobby-search" placeholder="Try 'Accord' or 'Under 20k'..." 
+                <input type="text" id="lobby-search" placeholder="Search" 
                     autocomplete="off" autocorrect="off" spellcheck="false"
                     class="w-full bg-transparent text-slate-900 text-[17px] rounded-2xl pl-14 pr-5 py-4 outline-none border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition placeholder-slate-400 font-medium relative z-20">
             </div>
@@ -54,27 +58,7 @@
         </div>
 
         <div class="space-y-3 mb-4">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
-                <button id="btn-used" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700">
-                            <i class="fa-solid fa-key text-lg"></i>
-                        </div>
-                        <span class="text-[17px] font-black text-slate-900">Shop Used</span>
-                    </div>
-                    <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-used"></i>
-                </button>
-                <div id="menu-used" class="hidden grid grid-cols-2 gap-2 p-3 pt-0 bg-slate-50 border-t border-slate-100">
-                    <a href="srp.html?condition=used" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">All Used</a>
-                    <a href="srp.html?condition=used&type=suv" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">SUVs</a>
-                    <a href="srp.html?condition=used&type=truck" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Trucks</a>
-                    <a href="srp.html?condition=used&maxPrice=20000" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Under $20k</a>
-                    <a href="srp.html?condition=used&mode=surprise" class="col-span-2 bg-slate-900 border border-slate-800 p-3 rounded-xl text-center text-[13px] font-black text-amber-400 shadow-sm active:scale-95 transition flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Surprise Me
-                    </a>
-                </div>
-            </div>
-
+            
             <div class="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
                 <button id="btn-new" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition">
                     <div class="flex items-center gap-3">
@@ -91,10 +75,32 @@
                     <a href="srp.html?condition=new&model=civic" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Civic</a>
                     <a href="srp.html?condition=new&model=passport" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Passport</a>
                     <a href="srp.html?condition=new&mode=surprise" class="col-span-2 bg-slate-900 border border-slate-800 p-3 rounded-xl text-center text-[13px] font-black text-amber-400 shadow-sm active:scale-95 transition flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Surprise Me
+                        <i class="fa-solid fa-shuffle"></i> Surprise Me
                     </a>
                 </div>
             </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
+                <button id="btn-used" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700">
+                            <i class="fa-solid fa-key text-lg"></i>
+                        </div>
+                        <span class="text-[17px] font-black text-slate-900">Shop Used</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-used"></i>
+                </button>
+                <div id="menu-used" class="hidden grid grid-cols-2 gap-2 p-3 pt-0 bg-slate-50 border-t border-slate-100">
+                    <a href="srp.html?condition=used" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">All Used</a>
+                    <a href="srp.html?condition=used&type=suv" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">SUVs</a>
+                    <a href="srp.html?condition=used&type=truck" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Trucks</a>
+                    <a href="srp.html?condition=used&maxPrice=20000" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Under $20k</a>
+                    <a href="srp.html?condition=used&mode=surprise" class="col-span-2 bg-slate-900 border border-slate-800 p-3 rounded-xl text-center text-[13px] font-black text-amber-400 shadow-sm active:scale-95 transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-shuffle"></i> Surprise Me
+                    </a>
+                </div>
+            </div>
+
         </div>
         
         <a href="trade.html" class="w-full bg-white border border-slate-300 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-50 active:scale-95 transition shadow-sm">
@@ -119,17 +125,21 @@
             const menuNew = document.getElementById('menu-new');
             const iconNew = document.getElementById('icon-new');
 
-            btnUsed.addEventListener('click', () => {
-                menuUsed.classList.toggle('hidden');
-                iconUsed.classList.toggle('rotate-180');
-                if(!menuNew.classList.contains('hidden')) { menuNew.classList.add('hidden'); iconNew.classList.remove('rotate-180'); }
-            });
+            if (btnUsed) {
+                btnUsed.addEventListener('click', () => {
+                    menuUsed.classList.toggle('hidden');
+                    iconUsed.classList.toggle('rotate-180');
+                    if(!menuNew.classList.contains('hidden')) { menuNew.classList.add('hidden'); iconNew.classList.remove('rotate-180'); }
+                });
+            }
 
-            btnNew.addEventListener('click', () => {
-                menuNew.classList.toggle('hidden');
-                iconNew.classList.toggle('rotate-180');
-                if(!menuUsed.classList.contains('hidden')) { menuUsed.classList.add('hidden'); iconUsed.classList.remove('rotate-180'); }
-            });
+            if (btnNew) {
+                btnNew.addEventListener('click', () => {
+                    menuNew.classList.toggle('hidden');
+                    iconNew.classList.toggle('rotate-180');
+                    if(!menuUsed.classList.contains('hidden')) { menuUsed.classList.add('hidden'); iconUsed.classList.remove('rotate-180'); }
+                });
+            }
 
             const searchInput = document.getElementById('lobby-search');
             const dropdown = document.getElementById('search-dropdown');
@@ -137,51 +147,70 @@
             const visualMatchesContainer = document.getElementById('search-visual-matches');
             const seeAllLink = document.getElementById('search-see-all');
 
-            function closeSearch() { dropdown.classList.add('hidden'); }
-            document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) closeSearch(); });
+            const slangDictionary = { 
+                'chevy': 'chevrolet', 'vw': 'volkswagen', 'bimmer': 'bmw', 'suby': 'subaru', 
+                'yota': 'toyota', 'lex': 'lexus', 'crv': 'crv', 'cr-v': 'crv', 'acord': 'accord' 
+            };
 
-            searchInput.addEventListener('input', (e) => {
-                const term = e.target.value.toLowerCase().trim();
-                if (term.length < 2) { closeSearch(); return; }
-                if (typeof allVehicles === 'undefined') return;
+            function cleanSearchString(str) {
+                if (!str) return '';
+                let cleaned = String(str).toLowerCase().replace(/[-_ \/\\]/g, '');
+                let rawLower = String(str).toLowerCase().trim();
+                if (slangDictionary[rawLower]) return slangDictionary[rawLower].replace(/[-_ \/\\]/g, '');
+                if (slangDictionary[cleaned]) return slangDictionary[cleaned].replace(/[-_ \/\\]/g, '');
+                return cleaned;
+            }
 
-                const matches = allVehicles.filter(car => {
-                    const str = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color}`.toLowerCase();
-                    return str.includes(term);
+            function closeSearch() { if (dropdown) dropdown.classList.add('hidden'); }
+            document.addEventListener('click', (e) => { 
+                if (searchInput && dropdown && !searchInput.contains(e.target) && !dropdown.contains(e.target)) closeSearch(); 
+            });
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const rawTerm = e.target.value.trim();
+                    const cleanedTerm = cleanSearchString(rawTerm);
+
+                    if (cleanedTerm.length < 2) { closeSearch(); return; }
+                    if (typeof allVehicles === 'undefined') return;
+
+                    const matches = allVehicles.filter(car => {
+                        const rawCarStr = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color}`;
+                        return cleanSearchString(rawCarStr).includes(cleanedTerm);
+                    });
+
+                    if (matches.length === 0) { closeSearch(); return; }
+
+                    dropdown.classList.remove('hidden');
+                    seeAllLink.href = `srp.html?search=${encodeURIComponent(rawTerm)}`;
+                    seeAllLink.innerHTML = `See all ${matches.length} results <i class="fa-solid fa-arrow-right text-xs ml-1"></i>`;
+
+                    const uniqueModels = [...new Set(matches.map(m => `${m.make} ${m.model}`))].slice(0, 2);
+                    textMatchesContainer.innerHTML = uniqueModels.map(m => `
+                        <a href="srp.html?search=${encodeURIComponent(m)}" class="px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 rounded flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400"></i> ${m}
+                        </a>
+                    `).join('');
+
+                    const topCars = matches.slice(0, 2);
+                    visualMatchesContainer.innerHTML = topCars.map(car => `
+                        <a href="vdp.html?id=${car.id}" class="bg-white border border-slate-200 rounded-lg p-2 flex gap-3 shadow-sm hover:border-blue-300 transition items-center">
+                            <img src="${car.img}" class="w-16 h-12 object-cover rounded bg-slate-100" loading="lazy">
+                            <div>
+                                <div class="text-xs font-black text-slate-900">${car.year} ${car.make} ${car.model}</div>
+                                <div class="text-xs font-bold text-slate-500">$${car.price.toLocaleString()}</div>
+                            </div>
+                        </a>
+                    `).join('');
                 });
 
-                if (matches.length === 0) { closeSearch(); return; }
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && searchInput.value.trim() !== '') {
+                        window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
+                    }
+                });
+            }
 
-                dropdown.classList.remove('hidden');
-                seeAllLink.href = `srp.html?search=${encodeURIComponent(term)}`;
-                seeAllLink.innerHTML = `See all ${matches.length} results <i class="fa-solid fa-arrow-right text-xs ml-1"></i>`;
-
-                const uniqueModels = [...new Set(matches.map(m => `${m.make} ${m.model}`))].slice(0, 2);
-                textMatchesContainer.innerHTML = uniqueModels.map(m => `
-                    <a href="srp.html?search=${encodeURIComponent(m)}" class="px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 rounded flex items-center gap-2">
-                        <i class="fa-solid fa-magnifying-glass text-slate-400"></i> ${m}
-                    </a>
-                `).join('');
-
-                const topCars = matches.slice(0, 2);
-                visualMatchesContainer.innerHTML = topCars.map(car => `
-                    <a href="vdp.html?id=${car.id}" class="bg-white border border-slate-200 rounded-lg p-2 flex gap-3 shadow-sm hover:border-blue-300 transition items-center">
-                        <img src="${car.img}" class="w-16 h-12 object-cover rounded bg-slate-100" loading="lazy">
-                        <div>
-                            <div class="text-xs font-black text-slate-900">${car.year} ${car.make} ${car.model}</div>
-                            <div class="text-xs font-bold text-slate-500">$${car.price.toLocaleString()}</div>
-                        </div>
-                    </a>
-                `).join('');
-            });
-
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && searchInput.value.trim() !== '') {
-                    window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
-                }
-            });
-
-            // Continue Shopping Tracker
             const continueContainer = document.getElementById('continue-shopping-container');
             const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
             const clearHistoryBtn = document.getElementById('clear-history-btn');
@@ -189,7 +218,7 @@
             let viewedIds = [];
             try { viewedIds = JSON.parse(localStorage.getItem('viewedCars')) || []; } catch(e) {}
             
-            if (viewedIds.length > 0 && typeof allVehicles !== 'undefined') {
+            if (viewedIds.length > 0 && typeof allVehicles !== 'undefined' && continueContainer && viewedCarsScroll) {
                 const viewedData = allVehicles.filter(c => viewedIds.includes(String(c.id)));
                 if (viewedData.length > 0) {
                     continueContainer.classList.remove('hidden');
@@ -214,7 +243,8 @@
                     }).join('');
                 }
             }
-            if(clearHistoryBtn) {
+
+            if (clearHistoryBtn && continueContainer) {
                 clearHistoryBtn.addEventListener('click', () => {
                     localStorage.removeItem('viewedCars');
                     continueContainer.classList.add('hidden');
