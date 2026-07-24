@@ -17,42 +17,50 @@
 </head>
 <body class="bg-slate-200 h-[100dvh] flex flex-col font-sans antialiased text-slate-800 overflow-y-auto">
 
-    <header class="p-6 pt-8 flex flex-col items-center justify-center gap-2">
-        <a href="index.html">
-            <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
-        </a>
-        <span class="text-[11px] bg-slate-300/60 text-slate-700 font-bold px-3 py-1 rounded uppercase tracking-wider">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+    <header class="bg-white/95 border-b border-slate-300/60 p-3.5 shadow-sm sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
+            <button onclick="history.back()" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 active:scale-95 transition cursor-pointer w-16">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+                <span class="text-[13px] font-bold">Back</span>
+            </button>
+            <a href="index.html" class="flex-grow text-center">
+                <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+            </a>
+            <a href="index.html" class="flex items-center justify-end gap-1.5 text-slate-500 hover:text-blue-600 active:scale-95 transition cursor-pointer w-16 pr-1">
+                <i class="fa-solid fa-house text-lg"></i>
+            </a>
+        </div>
     </header>
 
-    <main class="w-full max-w-md mx-auto flex flex-col px-5 pt-2 pb-12">
+    <main class="w-full max-w-md mx-auto flex flex-col px-5 pt-6 pb-12">
         
         <div class="text-center mb-6">
             <h2 class="text-2xl font-black text-slate-900 tracking-tight leading-tight">Beep boop beep...<br>Let's try that again.</h2>
             <p class="text-[14px] font-bold text-slate-500 mt-2 leading-relaxed">
-                Looks like that link took a wrong turn (or someone bought it while you were clicking). What vehicle were you looking for?
+                Looks like that link took a wrong turn. What vehicle were you looking for?
             </p>
         </div>
 
         <div class="relative w-full mb-5 shadow-sm rounded-2xl">
             <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl z-10"></i>
-            <input type="text" id="recovery-search" placeholder="Search vehicles..." 
+            <input type="text" id="recovery-search" placeholder="Search" 
+                autocomplete="off" autocorrect="off" spellcheck="false"
                 class="w-full bg-white text-slate-900 text-[17px] rounded-2xl pl-14 pr-5 py-4 outline-none border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition placeholder-slate-400 font-medium shadow-sm">
         </div>
 
         <div class="grid grid-cols-2 gap-3 mb-8">
-            <a href="srp.html?filter=new" class="bg-slate-900 text-white p-4 rounded-2xl flex flex-col items-center justify-center gap-1.5 active:scale-95 transition shadow-sm">
+            <a href="srp.html?condition=new" class="bg-slate-900 text-white p-4 rounded-2xl flex flex-col items-center justify-center gap-1.5 active:scale-95 transition shadow-sm">
                 <i class="fa-solid fa-certificate text-xl text-amber-400"></i>
                 <span class="text-sm font-black tracking-wide uppercase">Shop New</span>
             </a>
-            <a href="srp.html?filter=used" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-1.5 active:scale-95 transition shadow-sm">
+            <a href="srp.html?condition=used" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-1.5 active:scale-95 transition shadow-sm">
                 <i class="fa-solid fa-key text-xl text-slate-700"></i>
                 <span class="text-sm font-black text-slate-900 tracking-wide uppercase">Shop Used</span>
             </a>
         </div>
 
         <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider mb-3 px-1 text-center">Or check these out</h3>
-        <div id="fallback-grid" class="grid grid-cols-2 gap-2.5">
-            </div>
+        <div id="fallback-grid" class="grid grid-cols-2 gap-2.5"></div>
 
     </main>
 
@@ -61,18 +69,17 @@
         document.addEventListener("DOMContentLoaded", () => {
             const searchInput = document.getElementById('recovery-search');
             
-            // Redirect to SRP when they type and hit enter
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && searchInput.value.trim() !== '') {
-                    window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
-                }
-            });
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && searchInput.value.trim() !== '') {
+                        window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
+                    }
+                });
+            }
 
-            // Inject 4 random cars so the page is never empty
             if (typeof allVehicles !== 'undefined' && allVehicles.length > 0) {
                 const gridContainer = document.getElementById('fallback-grid');
                 
-                // Shuffle array and grab first 4
                 const shuffled = [...allVehicles].sort(() => 0.5 - Math.random());
                 const fallbackCars = shuffled.slice(0, 4);
 
@@ -105,7 +112,7 @@
                         </article>
                     `;
                 });
-                gridContainer.innerHTML = gridHtml;
+                if (gridContainer) gridContainer.innerHTML = gridHtml;
             }
         });
     </script>
