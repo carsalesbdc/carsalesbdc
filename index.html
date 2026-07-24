@@ -8,67 +8,97 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html, body {
-            touch-action: manipulation;
-            -webkit-text-size-adjust: 100%;
-            background-color: #E2E8F0;
-        }
+        html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; background-color: #E2E8F0; }
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-200 h-[100dvh] flex flex-col font-sans antialiased text-slate-800">
+<body class="bg-slate-200 h-[100dvh] flex flex-col font-sans antialiased text-slate-800 relative">
 
     <header class="p-6 pt-8 flex flex-col items-center justify-center gap-2">
-        <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+        <a href="index.html">
+            <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+        </a>
         <span class="text-[11px] bg-slate-300/60 text-slate-700 font-bold px-3 py-1 rounded uppercase tracking-wider">A <span class="text-indigo-950 font-black">CB</span> Design</span>
     </header>
 
-    <main class="flex-grow overflow-y-auto w-full max-w-md mx-auto flex flex-col px-5 pt-4 pb-12">
+    <main class="flex-grow overflow-y-auto w-full max-w-md mx-auto flex flex-col px-5 pt-2 pb-12">
         
-        <div class="text-center mb-7">
+        <div class="text-center mb-6">
             <h2 class="text-[26px] font-black text-slate-900 tracking-tight leading-tight">What are you looking for?</h2>
-            <p class="text-[13px] font-bold text-slate-500 mt-1.5">Search 400+ new and used vehicles.</p>
         </div>
 
-        <div class="relative w-full mb-8 shadow-sm rounded-2xl">
-            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl z-10"></i>
-            <input type="text" id="lobby-search" placeholder="Try 'Black F-150' or 'Under 20k'..." 
-                class="w-full bg-white text-slate-900 text-[17px] rounded-2xl pl-14 pr-5 py-4 outline-none border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition placeholder-slate-400 font-medium shadow-sm">
+        <div class="relative w-full mb-6 z-50">
+            <div class="relative shadow-sm rounded-2xl bg-white">
+                <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl z-10"></i>
+                <input type="text" id="lobby-search" placeholder="Try 'Accord' or 'Under 20k'..." 
+                    autocomplete="off" autocorrect="off" spellcheck="false"
+                    class="w-full bg-transparent text-slate-900 text-[17px] rounded-2xl pl-14 pr-5 py-4 outline-none border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition placeholder-slate-400 font-medium relative z-20">
+            </div>
+            
+            <div id="search-dropdown" class="hidden absolute top-[90%] left-0 right-0 pt-6 pb-2 bg-white rounded-b-2xl shadow-xl border border-t-0 border-slate-300 z-10 overflow-hidden">
+                <div id="search-text-matches" class="px-3 pb-2 flex flex-col gap-1 border-b border-slate-100"></div>
+                <div id="search-visual-matches" class="p-3 bg-slate-50 flex flex-col gap-2"></div>
+                <a id="search-see-all" href="#" class="block text-center p-3 pb-1 text-sm font-black text-blue-600 hover:text-blue-700 transition">See all results <i class="fa-solid fa-arrow-right text-xs ml-1"></i></a>
+            </div>
         </div>
 
-        <div id="continue-shopping-container" class="hidden w-full bg-slate-900 rounded-2xl p-4 mb-8 shadow-md">
+        <div id="continue-shopping-container" class="hidden w-full bg-slate-900 rounded-2xl p-4 mb-6 shadow-md">
             <div class="flex items-center justify-between mb-3">
                 <h3 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
                     <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Continue Shopping
                 </h3>
                 <button id="clear-history-btn" class="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-wide transition">Clear</button>
             </div>
-            <div id="viewed-cars-scroll" class="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory">
-                </div>
+            <div id="viewed-cars-scroll" class="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory"></div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 mb-3">
-            <a href="srp.html?filter=suv" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-50 active:scale-95 transition shadow-sm">
-                <i class="fa-solid fa-truck-monster text-2xl text-slate-700"></i>
-                <span class="text-sm font-black text-slate-900">SUVs</span>
-            </a>
-            <a href="srp.html?filter=truck" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-50 active:scale-95 transition shadow-sm">
-                <i class="fa-solid fa-truck-pickup text-2xl text-slate-700"></i>
-                <span class="text-sm font-black text-slate-900">Trucks</span>
-            </a>
+        <div class="space-y-3 mb-4">
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
+                <button id="btn-used" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700">
+                            <i class="fa-solid fa-key text-lg"></i>
+                        </div>
+                        <span class="text-[17px] font-black text-slate-900">Shop Used</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-used"></i>
+                </button>
+                <div id="menu-used" class="hidden grid grid-cols-2 gap-2 p-3 pt-0 bg-slate-50 border-t border-slate-100">
+                    <a href="srp.html?condition=used" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">All Used</a>
+                    <a href="srp.html?condition=used&type=suv" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">SUVs</a>
+                    <a href="srp.html?condition=used&type=truck" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Trucks</a>
+                    <a href="srp.html?condition=used&maxPrice=20000" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Under $20k</a>
+                    <a href="srp.html?condition=used&mode=surprise" class="col-span-2 bg-slate-900 border border-slate-800 p-3 rounded-xl text-center text-[13px] font-black text-amber-400 shadow-sm active:scale-95 transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Surprise Me
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
+                <button id="btn-new" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                            <i class="fa-solid fa-certificate text-lg"></i>
+                        </div>
+                        <span class="text-[17px] font-black text-slate-900">Shop New</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-new"></i>
+                </button>
+                <div id="menu-new" class="hidden grid grid-cols-2 gap-2 p-3 pt-0 bg-slate-50 border-t border-slate-100">
+                    <a href="srp.html?condition=new" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">All New</a>
+                    <a href="srp.html?condition=new&model=cr-v" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">CR-V</a>
+                    <a href="srp.html?condition=new&model=civic" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Civic</a>
+                    <a href="srp.html?condition=new&model=passport" class="bg-white border border-slate-200 p-3 rounded-xl text-center text-[13px] font-bold text-slate-700 shadow-sm active:scale-95 transition">Passport</a>
+                    <a href="srp.html?condition=new&mode=surprise" class="col-span-2 bg-slate-900 border border-slate-800 p-3 rounded-xl text-center text-[13px] font-black text-amber-400 shadow-sm active:scale-95 transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Surprise Me
+                    </a>
+                </div>
+            </div>
+
         </div>
         
-        <a href="srp.html" class="w-full bg-white border border-slate-300 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-50 active:scale-95 transition mb-3 shadow-sm">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                    <i class="fa-solid fa-car-side text-lg"></i>
-                </div>
-                <span class="text-[15px] font-black text-slate-900">Browse All Inventory</span>
-            </div>
-            <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
-        </a>
-
         <a href="trade.html" class="w-full bg-white border border-slate-300 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-50 active:scale-95 transition shadow-sm">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
@@ -78,74 +108,130 @@
             </div>
             <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
         </a>
-
     </main>
 
     <script src="inventory.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const continueShoppingContainer = document.getElementById('continue-shopping-container');
-            const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
-            const clearHistoryBtn = document.getElementById('clear-history-btn');
-            const searchInput = document.getElementById('lobby-search');
+            // Expandable Door Logic
+            const btnUsed = document.getElementById('btn-used');
+            const menuUsed = document.getElementById('menu-used');
+            const iconUsed = document.getElementById('icon-used');
+            
+            const btnNew = document.getElementById('btn-new');
+            const menuNew = document.getElementById('menu-new');
+            const iconNew = document.getElementById('icon-new');
 
-            // Listen for enter key on search to redirect to SRP
+            btnUsed.addEventListener('click', () => {
+                menuUsed.classList.toggle('hidden');
+                iconUsed.classList.toggle('rotate-180');
+                if(!menuNew.classList.contains('hidden')) { menuNew.classList.add('hidden'); iconNew.classList.remove('rotate-180'); }
+            });
+
+            btnNew.addEventListener('click', () => {
+                menuNew.classList.toggle('hidden');
+                iconNew.classList.toggle('rotate-180');
+                if(!menuUsed.classList.contains('hidden')) { menuUsed.classList.add('hidden'); iconUsed.classList.remove('rotate-180'); }
+            });
+
+            // Live Search Logic
+            const searchInput = document.getElementById('lobby-search');
+            const dropdown = document.getElementById('search-dropdown');
+            const textMatchesContainer = document.getElementById('search-text-matches');
+            const visualMatchesContainer = document.getElementById('search-visual-matches');
+            const seeAllLink = document.getElementById('search-see-all');
+
+            function closeSearch() { dropdown.classList.add('hidden'); }
+            
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) closeSearch();
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase().trim();
+                if (term.length < 2) { closeSearch(); return; }
+                
+                if (typeof allVehicles === 'undefined') return;
+
+                // Match against inventory ONLY
+                const matches = allVehicles.filter(car => {
+                    const str = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color}`.toLowerCase();
+                    return str.includes(term);
+                });
+
+                if (matches.length === 0) { closeSearch(); return; }
+
+                dropdown.classList.remove('hidden');
+                seeAllLink.href = `srp.html?search=${encodeURIComponent(term)}`;
+                seeAllLink.innerHTML = `See all ${matches.length} results <i class="fa-solid fa-arrow-right text-xs ml-1"></i>`;
+
+                // Unique Text Predictions based on inventory
+                const uniqueModels = [...new Set(matches.map(m => `${m.make} ${m.model}`))].slice(0, 2);
+                textMatchesContainer.innerHTML = uniqueModels.map(m => `
+                    <a href="srp.html?search=${encodeURIComponent(m)}" class="px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 rounded flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400"></i> ${m}
+                    </a>
+                `).join('');
+
+                // Live Visual Cards (top 2)
+                const topCars = matches.slice(0, 2);
+                visualMatchesContainer.innerHTML = topCars.map(car => `
+                    <a href="vdp.html?id=${car.id}" class="bg-white border border-slate-200 rounded-lg p-2 flex gap-3 shadow-sm hover:border-blue-300 transition items-center">
+                        <img src="${car.img}" class="w-16 h-12 object-cover rounded bg-slate-100" loading="lazy">
+                        <div>
+                            <div class="text-xs font-black text-slate-900">${car.year} ${car.make} ${car.model}</div>
+                            <div class="text-xs font-bold text-slate-500">$${car.price.toLocaleString()}</div>
+                        </div>
+                    </a>
+                `).join('');
+            });
+
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter' && searchInput.value.trim() !== '') {
                     window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
                 }
             });
 
-            function renderViewedCars() {
-                let viewedIds = [];
-                try { viewedIds = JSON.parse(localStorage.getItem('viewedCars')) || []; } catch(e) {}
-                
-                if (viewedIds.length === 0 || typeof allVehicles === 'undefined') {
-                    continueShoppingContainer.classList.add('hidden');
-                    return;
-                }
+            // Continue Shopping Tracker
+            const continueContainer = document.getElementById('continue-shopping-container');
+            const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
+            const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-                const viewedCarsData = allVehicles.filter(c => viewedIds.includes(String(c.id)));
-                if (viewedCarsData.length === 0) {
-                    continueShoppingContainer.classList.add('hidden');
-                    return;
-                }
-
-                continueShoppingContainer.classList.remove('hidden');
-                let htmlString = '';
-                
-                [...viewedCarsData].reverse().forEach(car => {
-                    const milesNum = Number(String(car.miles).replace(/,/g, ''));
-                    const formattedMiles = Math.round(milesNum / 1000) + 'k mi';
-                    
-                    htmlString += `
-                        <a href="vdp.html?id=${car.id}" class="w-[140px] snap-start shrink-0 bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-sm transition active:scale-95 block">
-                            <div class="relative aspect-[4/3] bg-slate-700 w-full overflow-hidden">
-                                <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover" loading="lazy">
-                            </div>
-                            <div class="p-2.5">
-                                <h2 class="text-[11px] font-black text-white tracking-tight truncate">${car.year} ${car.make}</h2>
-                                <h3 class="text-[10px] font-bold text-slate-400 truncate">${car.model}</h3>
-                                <div class="flex flex-wrap items-center gap-x-1 mt-1 text-[9px] font-bold text-slate-500">
-                                    <span>${formattedMiles}</span><span>•</span><span class="truncate max-w-[50px] capitalize">${car.color}</span>
+            let viewedIds = [];
+            try { viewedIds = JSON.parse(localStorage.getItem('viewedCars')) || []; } catch(e) {}
+            
+            if (viewedIds.length > 0 && typeof allVehicles !== 'undefined') {
+                const viewedData = allVehicles.filter(c => viewedIds.includes(String(c.id)));
+                if (viewedData.length > 0) {
+                    continueContainer.classList.remove('hidden');
+                    viewedCarsScroll.innerHTML = [...viewedData].reverse().map(car => {
+                        const milesNum = Number(String(car.miles).replace(/,/g, ''));
+                        const formattedMiles = Math.round(milesNum / 1000) + 'k mi';
+                        return `
+                            <a href="vdp.html?id=${car.id}" class="w-[140px] snap-start shrink-0 bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-sm transition active:scale-95 block">
+                                <div class="relative aspect-[4/3] bg-slate-700 w-full">
+                                    <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover">
                                 </div>
-                                <div class="mt-2 text-sm font-normal text-white leading-none">$${car.price.toLocaleString()}</div>
-                            </div>
-                        </a>
-                    `;
-                });
-                viewedCarsScroll.innerHTML = htmlString;
+                                <div class="p-2.5">
+                                    <h2 class="text-[11px] font-black text-white truncate">${car.year} ${car.make}</h2>
+                                    <h3 class="text-[10px] font-bold text-slate-400 truncate">${car.model}</h3>
+                                    <div class="flex items-center gap-x-1 mt-1 text-[9px] font-bold text-slate-500">
+                                        <span>${formattedMiles}</span><span>•</span><span class="truncate capitalize">${car.color}</span>
+                                    </div>
+                                    <div class="mt-2 text-sm font-normal text-white leading-none">$${car.price.toLocaleString()}</div>
+                                </div>
+                            </a>
+                        `;
+                    }).join('');
+                }
             }
 
             if(clearHistoryBtn) {
                 clearHistoryBtn.addEventListener('click', () => {
                     localStorage.removeItem('viewedCars');
-                    continueShoppingContainer.classList.add('hidden');
+                    continueContainer.classList.add('hidden');
                 });
             }
-
-            // Init
-            setTimeout(renderViewedCars, 100);
         });
     </script>
 </body>
