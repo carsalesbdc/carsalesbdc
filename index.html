@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#E2E8F0">
+    <title>CarSalesBDC - Find Your Vehicle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html, body {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            background-color: #E2E8F0;
+        }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-200 h-[100dvh] flex flex-col font-sans antialiased text-slate-800">
+
+    <header class="p-6 pt-8 flex flex-col items-center justify-center gap-2">
+        <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+        <span class="text-[11px] bg-slate-300/60 text-slate-700 font-bold px-3 py-1 rounded uppercase tracking-wider">A <span class="text-indigo-950 font-black">CB</span> Design</span>
+    </header>
+
+    <main class="flex-grow overflow-y-auto w-full max-w-md mx-auto flex flex-col px-5 pt-4 pb-12">
+        
+        <div class="text-center mb-7">
+            <h2 class="text-[26px] font-black text-slate-900 tracking-tight leading-tight">What are you looking for?</h2>
+            <p class="text-[13px] font-bold text-slate-500 mt-1.5">Search 400+ new and used vehicles.</p>
+        </div>
+
+        <div class="relative w-full mb-8 shadow-sm rounded-2xl">
+            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-blue-600 text-xl z-10"></i>
+            <input type="text" id="lobby-search" placeholder="Try 'Black F-150' or 'Under 20k'..." 
+                class="w-full bg-white text-slate-900 text-[17px] rounded-2xl pl-14 pr-5 py-4 outline-none border border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition placeholder-slate-400 font-medium shadow-sm">
+        </div>
+
+        <div id="continue-shopping-container" class="hidden w-full bg-slate-900 rounded-2xl p-4 mb-8 shadow-md">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Continue Shopping
+                </h3>
+                <button id="clear-history-btn" class="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-wide transition">Clear</button>
+            </div>
+            <div id="viewed-cars-scroll" class="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory">
+                </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-3">
+            <a href="srp.html?filter=suv" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-50 active:scale-95 transition shadow-sm">
+                <i class="fa-solid fa-truck-monster text-2xl text-slate-700"></i>
+                <span class="text-sm font-black text-slate-900">SUVs</span>
+            </a>
+            <a href="srp.html?filter=truck" class="bg-white border border-slate-300 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-50 active:scale-95 transition shadow-sm">
+                <i class="fa-solid fa-truck-pickup text-2xl text-slate-700"></i>
+                <span class="text-sm font-black text-slate-900">Trucks</span>
+            </a>
+        </div>
+        
+        <a href="srp.html" class="w-full bg-white border border-slate-300 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-50 active:scale-95 transition mb-3 shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                    <i class="fa-solid fa-car-side text-lg"></i>
+                </div>
+                <span class="text-[15px] font-black text-slate-900">Browse All Inventory</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+        </a>
+
+        <a href="trade.html" class="w-full bg-white border border-slate-300 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-50 active:scale-95 transition shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+                </div>
+                <span class="text-[15px] font-black text-slate-900">Value Your Trade</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+        </a>
+
+    </main>
+
+    <script src="inventory.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const continueShoppingContainer = document.getElementById('continue-shopping-container');
+            const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
+            const clearHistoryBtn = document.getElementById('clear-history-btn');
+            const searchInput = document.getElementById('lobby-search');
+
+            // Listen for enter key on search to redirect to SRP
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && searchInput.value.trim() !== '') {
+                    window.location.href = `srp.html?search=${encodeURIComponent(searchInput.value.trim())}`;
+                }
+            });
+
+            function renderViewedCars() {
+                let viewedIds = [];
+                try { viewedIds = JSON.parse(localStorage.getItem('viewedCars')) || []; } catch(e) {}
+                
+                if (viewedIds.length === 0 || typeof allVehicles === 'undefined') {
+                    continueShoppingContainer.classList.add('hidden');
+                    return;
+                }
+
+                const viewedCarsData = allVehicles.filter(c => viewedIds.includes(String(c.id)));
+                if (viewedCarsData.length === 0) {
+                    continueShoppingContainer.classList.add('hidden');
+                    return;
+                }
+
+                continueShoppingContainer.classList.remove('hidden');
+                let htmlString = '';
+                
+                [...viewedCarsData].reverse().forEach(car => {
+                    const milesNum = Number(String(car.miles).replace(/,/g, ''));
+                    const formattedMiles = Math.round(milesNum / 1000) + 'k mi';
+                    
+                    htmlString += `
+                        <a href="vdp.html?id=${car.id}" class="w-[140px] snap-start shrink-0 bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-sm transition active:scale-95 block">
+                            <div class="relative aspect-[4/3] bg-slate-700 w-full overflow-hidden">
+                                <img src="${car.img}" alt="Vehicle" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+                            <div class="p-2.5">
+                                <h2 class="text-[11px] font-black text-white tracking-tight truncate">${car.year} ${car.make}</h2>
+                                <h3 class="text-[10px] font-bold text-slate-400 truncate">${car.model}</h3>
+                                <div class="flex flex-wrap items-center gap-x-1 mt-1 text-[9px] font-bold text-slate-500">
+                                    <span>${formattedMiles}</span><span>•</span><span class="truncate max-w-[50px] capitalize">${car.color}</span>
+                                </div>
+                                <div class="mt-2 text-sm font-normal text-white leading-none">$${car.price.toLocaleString()}</div>
+                            </div>
+                        </a>
+                    `;
+                });
+                viewedCarsScroll.innerHTML = htmlString;
+            }
+
+            if(clearHistoryBtn) {
+                clearHistoryBtn.addEventListener('click', () => {
+                    localStorage.removeItem('viewedCars');
+                    continueShoppingContainer.classList.add('hidden');
+                });
+            }
+
+            // Init
+            setTimeout(renderViewedCars, 100);
+        });
+    </script>
+</body>
+</html>
