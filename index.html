@@ -54,7 +54,6 @@
         </div>
 
         <div class="space-y-3 mb-4">
-            
             <div class="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
                 <button id="btn-used" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition">
                     <div class="flex items-center gap-3">
@@ -96,7 +95,6 @@
                     </a>
                 </div>
             </div>
-
         </div>
         
         <a href="trade.html" class="w-full bg-white border border-slate-300 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-50 active:scale-95 transition shadow-sm">
@@ -113,7 +111,6 @@
     <script src="inventory.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Expandable Door Logic
             const btnUsed = document.getElementById('btn-used');
             const menuUsed = document.getElementById('menu-used');
             const iconUsed = document.getElementById('icon-used');
@@ -134,7 +131,6 @@
                 if(!menuUsed.classList.contains('hidden')) { menuUsed.classList.add('hidden'); iconUsed.classList.remove('rotate-180'); }
             });
 
-            // Live Search Logic
             const searchInput = document.getElementById('lobby-search');
             const dropdown = document.getElementById('search-dropdown');
             const textMatchesContainer = document.getElementById('search-text-matches');
@@ -142,18 +138,13 @@
             const seeAllLink = document.getElementById('search-see-all');
 
             function closeSearch() { dropdown.classList.add('hidden'); }
-            
-            document.addEventListener('click', (e) => {
-                if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) closeSearch();
-            });
+            document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) closeSearch(); });
 
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase().trim();
                 if (term.length < 2) { closeSearch(); return; }
-                
                 if (typeof allVehicles === 'undefined') return;
 
-                // Match against inventory ONLY
                 const matches = allVehicles.filter(car => {
                     const str = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color}`.toLowerCase();
                     return str.includes(term);
@@ -165,7 +156,6 @@
                 seeAllLink.href = `srp.html?search=${encodeURIComponent(term)}`;
                 seeAllLink.innerHTML = `See all ${matches.length} results <i class="fa-solid fa-arrow-right text-xs ml-1"></i>`;
 
-                // Unique Text Predictions based on inventory
                 const uniqueModels = [...new Set(matches.map(m => `${m.make} ${m.model}`))].slice(0, 2);
                 textMatchesContainer.innerHTML = uniqueModels.map(m => `
                     <a href="srp.html?search=${encodeURIComponent(m)}" class="px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 rounded flex items-center gap-2">
@@ -173,7 +163,6 @@
                     </a>
                 `).join('');
 
-                // Live Visual Cards (top 2)
                 const topCars = matches.slice(0, 2);
                 visualMatchesContainer.innerHTML = topCars.map(car => `
                     <a href="vdp.html?id=${car.id}" class="bg-white border border-slate-200 rounded-lg p-2 flex gap-3 shadow-sm hover:border-blue-300 transition items-center">
@@ -225,7 +214,6 @@
                     }).join('');
                 }
             }
-
             if(clearHistoryBtn) {
                 clearHistoryBtn.addEventListener('click', () => {
                     localStorage.removeItem('viewedCars');
