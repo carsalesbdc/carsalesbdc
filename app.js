@@ -16,8 +16,14 @@ let activeMaxPrice = null;
 let activeMaxMiles = null;
 let activeMinYear = null;
 
+// URL Param State (Passed from Home Page)
+let isSurpriseMode = false;
+let forceCondition = null; 
+let forcedModel = null;
+
 // DOM Handles
 const scrollContainer = document.getElementById('scroll-main');
+const globalHeader = document.getElementById('global-header');
 const grid = document.getElementById('vehicle-grid');
 const searchInput = document.getElementById('search-input');
 const clearSearchBtn = document.getElementById('clear-search-btn');
@@ -28,7 +34,6 @@ const counter = document.getElementById('vehicle-counter');
 const sentinel = document.getElementById('scroll-sentinel');
 const spinner = document.getElementById('spinner');
 const stickyBar = document.getElementById('sticky-search-bar');
-const callIconBtn = document.getElementById('call-icon-btn');
 const filterIconBtn = document.getElementById('filter-icon-btn');
 const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 const drawerBackdrop = document.getElementById('filter-drawer-backdrop');
@@ -42,7 +47,12 @@ const continueShoppingContainer = document.getElementById('continue-shopping-con
 const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-// CTA Modal DOM Handles
+// Surprise Me Handles
+const surpriseControls = document.getElementById('surprise-controls');
+const surpriseAgainBtn = document.getElementById('surprise-again-btn');
+const showAllSurpriseBtn = document.getElementById('show-all-surprise-btn');
+
+// CTA Modal Handles
 const ctaModalBackdrop = document.getElementById('cta-modal-backdrop');
 const ctaModalBox = document.getElementById('cta-modal-box');
 const ctaCloseBtn = document.getElementById('cta-close-btn');
@@ -67,7 +77,7 @@ function cleanSearchString(str) {
 }
 
 // ------------------------------------------------------------------------
-// CONTINUED SHOPPING LOGIC (Updated to 140px, Dark Slate, No CTA)
+// CONTINUED SHOPPING LOGIC
 // ------------------------------------------------------------------------
 function renderViewedCars() {
     let viewedIds = [];
@@ -87,7 +97,6 @@ function renderViewedCars() {
     continueShoppingContainer.classList.remove('hidden');
     let htmlString = '';
     
-    // Reverse array to show most recently viewed first (far left)
     [...viewedCarsData].reverse().forEach(car => {
         const milesNum = Number(String(car.miles).replace(/,/g, ''));
         const formattedMiles = Math.round(milesNum / 1000) + 'k mi';
@@ -119,7 +128,7 @@ if(clearHistoryBtn) {
 }
 
 // ------------------------------------------------------------------------
-// INVENTORY RENDERING (Main Grid)
+// INVENTORY RENDERING & FILTERING
 // ------------------------------------------------------------------------
 function renderNextBatch() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -176,14 +185,25 @@ function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
 
-    // Check for search query from URL (if they came from the Lobby)
+    // 1. Grab parameters passed from Home Page doors
     const urlParams = new URLSearchParams(window.location.search);
     const urlSearch = urlParams.get('search');
-    const urlFilter = urlParams.get('filter');
+    const urlType = urlParams.get('type');
+    const urlCondition = urlParams.get('condition');
+    const urlMaxPrice = urlParams.get('maxPrice');
+    const urlModel = urlParams.get('model');
+    const urlMode = urlParams.get('mode');
 
+    // 2. Set State based on URL
+    if (urlMode === 'surprise') isSurpriseMode = true;
+    if (urlCondition) forceCondition = urlCondition.toLowerCase();
+    if (urlModel) forcedModel = urlModel.toLowerCase();
     if (urlSearch && searchTerm === '') searchTerm = urlSearch.toLowerCase().trim();
-    if (urlFilter && urlFilter === 'suv') activeQuickFilters.suv = true;
-    if (urlFilter && urlFilter === 'truck') activeQuickFilters.truck = true;
+    if (urlType) {
+        if (urlType.toLowerCase() === 'suv') activeQuickFilters.suv = true;
+        if (urlType.toLowerCase() === 'truck') activeQuickFilters.truck = true;
+    }
+    if (urlMaxPrice && !activeMaxPrice) activeMaxPrice = Number(urlMaxPrice);
 
     if (searchTerm.length > 0) {
         searchInput.value = searchTerm;
@@ -192,9 +212,17 @@ function processInventory() {
 
     const cleanedSearchTerm = cleanSearchString(searchTerm);
 
+    // 3. Filter Dataset
     filteredVehicles = allVehicles.filter(car => {
         const carMilesNum = Number(String(car.miles).replace(/,/g, ''));
         const carDaysOnLot = Number(car.daysOnLot || 0);
+        
+        // Proxy for New vs Used if condition flag doesn't exist
+        const isCarNew = carMilesNum < 500; 
+
+        if (forceCondition === 'new' && !isCarNew) return false;
+        if (forceCondition === 'used' && isCarNew) return false;
+        if (forcedModel && car.model.toLowerCase() !== forcedModel) return false;
 
         if (activeDrawerType !== 'All' && car.type !== activeDrawerType) return false;
         if (activeMaxPrice && car.price > activeMaxPrice) return false;
@@ -214,14 +242,29 @@ function processInventory() {
         return true;
     });
 
-    if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
-    else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
-    else if (currentSort === 'miles-low') filteredVehicles.sort((a, b) => Number(String(a.miles).replace(/,/g,'')) - Number(String(b.miles).replace(/,/g,'')));
-    else if (currentSort === 'miles-high') filteredVehicles.sort((a, b) => Number(String(b.miles).replace(/,/g,'')) - Number(String(a.miles).replace(/,/g,'')));
-    else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
-    else if (currentSort === 'year-old') filteredVehicles.sort((a, b) => a.year - b.year);
+    // 4. Sort or Randomize Logic
+    if (isSurpriseMode) {
+        // Shuffle the array randomly
+        filteredVehicles = filteredVehicles.sort(() => 0.5 - Math.random());
+        // Cap exactly at 8 cars
+        filteredVehicles = filteredVehicles.slice(0, 8);
+        
+        counter.innerText = `8 Surprise Matches`;
+        sentinel.classList.add('hidden'); // Disable infinite scroll
+        if(surpriseControls) surpriseControls.classList.remove('hidden');
+    } else {
+        // Standard sort logic
+        if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
+        else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
+        else if (currentSort === 'miles-low') filteredVehicles.sort((a, b) => Number(String(a.miles).replace(/,/g,'')) - Number(String(b.miles).replace(/,/g,'')));
+        else if (currentSort === 'miles-high') filteredVehicles.sort((a, b) => Number(String(b.miles).replace(/,/g,'')) - Number(String(a.miles).replace(/,/g,'')));
+        else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
+        else if (currentSort === 'year-old') filteredVehicles.sort((a, b) => a.year - b.year);
 
-    counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
+        counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
+        sentinel.classList.remove('hidden'); // Re-enable scroll
+        if(surpriseControls) surpriseControls.classList.add('hidden');
+    }
     
     renderNextBatch();
     updateUIStates();
@@ -274,8 +317,12 @@ window.clearDrawerFilter = function(filterKey) {
     processInventory(); 
 };
 
+// ------------------------------------------------------------------------
+// EVENT LISTENERS
+// ------------------------------------------------------------------------
 quickButtons.forEach(btn => { btn.addEventListener('click', () => { activeQuickFilters[btn.getAttribute('data-quick')] = !activeQuickFilters[btn.getAttribute('data-quick')]; processInventory(); }); });
 clearQuickBtn.addEventListener('click', () => { Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
+
 drawerFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const type = btn.getAttribute('data-filter-type'); const val = btn.getAttribute('data-value');
@@ -288,14 +335,6 @@ drawerFilterBtns.forEach(btn => {
 });
 resetAllBtn.addEventListener('click', () => { activeDrawerType = 'All'; activeMaxPrice = null; activeMaxMiles = null; activeMinYear = null; Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
 
-const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && currentPage <= Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE)) {
-        spinner.classList.remove('hidden');
-        setTimeout(() => { renderNextBatch(); spinner.classList.add('hidden'); }, 250);
-    }
-}, { root: scrollContainer, rootMargin: '150px' });
-observer.observe(sentinel);
-
 searchInput.addEventListener('input', (e) => { 
     searchTerm = e.target.value.toLowerCase().trim(); 
     if (searchTerm.length > 0) clearSearchBtn.classList.remove('hidden');
@@ -305,8 +344,24 @@ searchInput.addEventListener('input', (e) => {
 clearSearchBtn.addEventListener('click', () => { searchInput.value = ''; searchTerm = ''; clearSearchBtn.classList.add('hidden'); processInventory(); searchInput.focus(); });
 sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
+// Scroll behaviors
+const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !isSurpriseMode && currentPage <= Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE)) {
+        spinner.classList.remove('hidden');
+        setTimeout(() => { renderNextBatch(); spinner.classList.add('hidden'); }, 250);
+    }
+}, { root: scrollContainer, rootMargin: '150px' });
+observer.observe(sentinel);
+
 scrollContainer.addEventListener('scroll', () => {
-    if (scrollContainer.scrollTop > 70) {
+    // Hide global header on scroll down to save space
+    if (scrollContainer.scrollTop > 50) {
+        globalHeader.classList.add('-translate-y-full');
+    } else {
+        globalHeader.classList.remove('-translate-y-full');
+    }
+
+    if (scrollContainer.scrollTop > 120) {
         stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm'); stickyBar.classList.add('bg-slate-900', 'shadow-lg');
         filterIconBtn.className = "shrink-0 bg-white/10 hover:bg-white/20 text-white w-[46px] h-[46px] flex items-center justify-center rounded-lg transition border border-white/20 active:scale-95";
         scrollToTopBtn.classList.remove('hidden');
@@ -318,9 +373,28 @@ scrollContainer.addEventListener('scroll', () => {
 }, { passive: true });
 
 scrollToTopBtn.addEventListener('click', () => { scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+// Drawer Logic
 function openDrawer() { drawerBackdrop.classList.remove('hidden'); drawer.classList.remove('translate-x-full'); }
 function closeDrawer() { drawer.classList.add('translate-x-full'); drawerBackdrop.classList.add('hidden'); }
 filterIconBtn.addEventListener('click', openDrawer); closeDrawerBtn.addEventListener('click', closeDrawer); doneDrawerBtn.addEventListener('click', closeDrawer); drawerBackdrop.addEventListener('click', closeDrawer);
+
+// Surprise Me Controls Logic
+if (surpriseAgainBtn) {
+    surpriseAgainBtn.addEventListener('click', () => {
+        processInventory(); 
+        scrollContainer.scrollTo({top: 0, behavior: 'smooth'});
+    });
+}
+if (showAllSurpriseBtn) {
+    showAllSurpriseBtn.addEventListener('click', () => {
+        isSurpriseMode = false;
+        const url = new URL(window.location);
+        url.searchParams.delete('mode');
+        window.history.replaceState({}, '', url);
+        processInventory();
+    });
+}
 
 // ------------------------------------------------------------------------
 // CTA MODAL LOGIC (Is It Here?)
@@ -345,26 +419,20 @@ function closeCtaModal() {
 }
 
 document.addEventListener('click', (e) => {
-    if (e.target.closest('.cta-trigger-btn')) {
-        openCtaModal();
-    }
+    if (e.target.closest('.cta-trigger-btn')) openCtaModal();
 });
-
 ctaCloseBtn.addEventListener('click', closeCtaModal);
 ctaReturnBtn.addEventListener('click', closeCtaModal);
-ctaModalBackdrop.addEventListener('click', (e) => {
-    if(e.target === ctaModalBackdrop) closeCtaModal();
-});
-
+ctaModalBackdrop.addEventListener('click', (e) => { if(e.target === ctaModalBackdrop) closeCtaModal(); });
 ctaLeadForm.addEventListener('submit', (e) => {
     e.preventDefault();
     ctaFormStep.classList.add('hidden');
     ctaSuccessStep.classList.remove('hidden');
 });
 
+// Init
 function initApp() {
     if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
-        filteredVehicles = [...allVehicles];
         renderViewedCars(); 
         processInventory();
     } else { setTimeout(initApp, 100); }
