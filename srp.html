@@ -8,20 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html, body {
-            touch-action: manipulation;
-            -webkit-text-size-adjust: 100%;
-        }
-        #scroll-main {
-            scroll-behavior: smooth;
-        }
-        .scrollbar-none::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-none {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
+        #scroll-main { scroll-behavior: smooth; }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-200 h-[100dvh] overflow-hidden flex flex-col font-sans antialiased text-slate-800">
@@ -34,11 +24,9 @@
                     <i class="fa-solid fa-chevron-left text-sm"></i>
                     <span class="text-[13px] font-bold">Back</span>
                 </button>
-                
                 <a href="index.html" class="flex-grow text-center">
                     <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
                 </a>
-                
                 <a href="index.html" class="flex items-center justify-end gap-1.5 text-slate-500 hover:text-blue-600 active:scale-95 transition cursor-pointer w-16 pr-1">
                     <i class="fa-solid fa-house text-lg"></i>
                 </a>
@@ -94,7 +82,6 @@
                         <i class="fa-solid fa-sliders text-base"></i>
                     </button>
                 </div>
-                
                 <div id="active-chips-container" class="hidden flex flex-wrap gap-1.5 pt-1"></div>
             </div>
         </div>
@@ -108,8 +95,7 @@
                     </h3>
                     <button id="clear-history-btn" class="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-wide transition">Clear</button>
                 </div>
-                <div id="viewed-cars-scroll" class="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory">
-                    </div>
+                <div id="viewed-cars-scroll" class="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory"></div>
             </div>
 
             <div id="vehicle-grid" class="grid grid-cols-2 gap-2.5"></div>
@@ -127,7 +113,6 @@
                 </button>
             </div>
         </main>
-
     </div>
 
     <button id="scroll-to-top-btn" class="fixed bottom-6 right-4 z-50 hidden bg-slate-900 border-2 border-slate-700 text-white w-12 h-12 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.4)] flex items-center justify-center active:bg-slate-700 active:scale-95 transition-all">
@@ -191,43 +176,34 @@
 
     <div id="cta-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
         <div id="cta-modal-box" class="bg-white w-full max-w-[340px] rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 relative">
-            
             <button id="cta-close-btn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 p-2 z-10 transition active:scale-90">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-
             <div id="cta-form-step" class="p-5 pt-7">
                 <h3 class="text-[22px] font-black text-slate-900 tracking-tight leading-tight">Let's check the lot.</h3>
                 <p class="text-[13px] text-slate-500 mt-2 font-medium leading-relaxed">
                     Drop your info below and we'll literally run outside to verify this exact vehicle is still available before we reach out. (We need the cardio anyway).
                 </p>
-
                 <form id="cta-lead-form" class="mt-5 space-y-3">
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="sr-only">First Name</label>
                             <input type="text" required placeholder="First Name" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3 py-3 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                         </div>
                         <div>
-                            <label class="sr-only">Last Name</label>
                             <input type="text" required placeholder="Last Name" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3 py-3 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                         </div>
                     </div>
                     <div>
-                        <label class="sr-only">Phone Number</label>
                         <input type="tel" required placeholder="Mobile Number" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3 py-3 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                     </div>
                     <div>
-                        <label class="sr-only">Email Address</label>
                         <input type="email" placeholder="Email (Optional)" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3 py-3 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
                     </div>
-                    
                     <button type="submit" class="w-full bg-blue-600 active:bg-blue-700 text-white font-black text-[15px] tracking-wide py-3.5 rounded-xl transition shadow-md shadow-blue-600/20 mt-2 flex items-center justify-center gap-2">
                         Check Availability <i class="fa-solid fa-arrow-right text-xs opacity-80"></i>
                     </button>
                 </form>
             </div>
-
             <div id="cta-success-step" class="hidden p-6 text-center py-10">
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
                     <i class="fa-solid fa-check text-3xl text-green-500"></i>
@@ -240,7 +216,6 @@
                     Back to Shopping
                 </button>
             </div>
-            
         </div>
     </div>
 
