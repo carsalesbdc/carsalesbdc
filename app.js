@@ -59,19 +59,21 @@ const ctaLeadForm = document.getElementById('cta-lead-form');
 const slangDictionary = {
     'chevy': 'chevrolet', 'vw': 'volkswagen', 'bimmer': 'bmw', 'suby': 'subaru', 'soob': 'subaru', 
     'yota': 'toyota', 'lex': 'lexus', 'merc': 'mercedes', 'caddy': 'cadillac', 'acord': 'accord', 
-    'forerunner': '4runner', 'sintra': 'sentra', 'awd': 'all wheel drive', '4x4': 'four wheel drive'
+    'forerunner': '4runner', 'sintra': 'sentra', 'awd': 'all wheel drive', '4x4': 'four wheel drive',
+    'crv': 'crv', 'cr-v': 'crv'
 };
 
 function cleanSearchString(str) {
-    let cleaned = str.toLowerCase().replace(/[-_ \/\\]/g, '');
-    let rawLower = str.toLowerCase().trim();
+    if (!str) return '';
+    let cleaned = String(str).toLowerCase().replace(/[-_ \/\\]/g, '');
+    let rawLower = String(str).toLowerCase().trim();
     if (slangDictionary[rawLower]) return slangDictionary[rawLower].replace(/[-_ \/\\]/g, '');
     if (slangDictionary[cleaned]) return slangDictionary[cleaned].replace(/[-_ \/\\]/g, '');
     return cleaned;
 }
 
 // ------------------------------------------------------------------------
-// 1. INITIALIZE URL PARAMETERS ONLY ONCE ON LOAD
+// 1. INITIALIZE URL PARAMETERS ONLY ONCE ON PAGE LOAD
 // ------------------------------------------------------------------------
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('mode') === 'surprise') isSurpriseMode = true;
@@ -83,10 +85,12 @@ if (urlParams.get('type')) {
     if (t === 'truck') activeQuickFilters.truck = true;
 }
 if (urlParams.get('maxPrice')) activeMaxPrice = Number(urlParams.get('maxPrice'));
-if (urlParams.get('search')) {
-    searchTerm = urlParams.get('search').toLowerCase().trim();
-    searchInput.value = searchTerm;
-    clearSearchBtn.classList.remove('hidden');
+
+const initialSearch = urlParams.get('search');
+if (initialSearch) {
+    searchTerm = initialSearch.toLowerCase().trim();
+    if (searchInput) searchInput.value = initialSearch;
+    if (clearSearchBtn) clearSearchBtn.classList.remove('hidden');
 }
 
 // ------------------------------------------------------------------------
@@ -96,8 +100,8 @@ function renderViewedCars() {
     let viewedIds = [];
     try { viewedIds = JSON.parse(localStorage.getItem('viewedCars')) || []; } catch(e) {}
     
-    if (viewedIds.length === 0) {
-        continueShoppingContainer.classList.add('hidden');
+    if (viewedIds.length === 0 || !continueShoppingContainer) {
+        if(continueShoppingContainer) continueShoppingContainer.classList.add('hidden');
         return;
     }
 
@@ -136,7 +140,7 @@ function renderViewedCars() {
 if(clearHistoryBtn) {
     clearHistoryBtn.addEventListener('click', () => {
         localStorage.removeItem('viewedCars');
-        continueShoppingContainer.classList.add('hidden');
+        if(continueShoppingContainer) continueShoppingContainer.classList.add('hidden');
     });
 }
 
@@ -195,6 +199,7 @@ function renderNextBatch() {
 }
 
 function processInventory() {
+    if (!grid) return;
     grid.innerHTML = ''; 
     currentPage = 1;
 
@@ -208,7 +213,7 @@ function processInventory() {
 
         if (forceCondition === 'new' && !isCarNew) return false;
         if (forceCondition === 'used' && isCarNew) return false;
-        if (forcedModel && car.model.toLowerCase() !== forcedModel) return false;
+        if (forcedModel && cleanSearchString(car.model) !== cleanSearchString(forcedModel)) return false;
 
         if (activeDrawerType !== 'All' && car.type !== activeDrawerType) return false;
         if (activeMaxPrice && car.price > activeMaxPrice) return false;
@@ -222,8 +227,10 @@ function processInventory() {
         if (activeQuickFilters.newarrival && carDaysOnLot > 30) return false;
         if (activeQuickFilters.under500mo && car.payment > 500) return false;
 
-        const rawString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`;
-        if (!cleanSearchString(rawString).includes(cleanedSearchTerm)) return false;
+        if (cleanedSearchTerm.length > 0) {
+            const rawString = `${car.year} ${car.make} ${car.model} ${car.type} ${car.color} ${car.price} ${car.miles}`;
+            if (!cleanSearchString(rawString).includes(cleanedSearchTerm)) return false;
+        }
 
         return true;
     });
@@ -233,9 +240,9 @@ function processInventory() {
         filteredVehicles = filteredVehicles.sort(() => 0.5 - Math.random());
         filteredVehicles = filteredVehicles.slice(0, 8);
         
-        counter.innerText = `8 Surprise Matches`;
-        sentinel.classList.add('hidden'); 
-        if(surpriseControls) surpriseControls.classList.remove('hidden');
+        if (counter) counter.innerText = `8 Surprise Matches`;
+        if (sentinel) sentinel.classList.add('hidden'); 
+        if (surpriseControls) surpriseControls.classList.remove('hidden');
     } else {
         if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
         else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
@@ -244,9 +251,9 @@ function processInventory() {
         else if (currentSort === 'year-new') filteredVehicles.sort((a, b) => b.year - a.year);
         else if (currentSort === 'year-old') filteredVehicles.sort((a, b) => a.year - b.year);
 
-        counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
-        sentinel.classList.remove('hidden'); 
-        if(surpriseControls) surpriseControls.classList.add('hidden');
+        if (counter) counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
+        if (sentinel) sentinel.classList.remove('hidden'); 
+        if (surpriseControls) surpriseControls.classList.add('hidden');
     }
     
     renderNextBatch();
@@ -264,8 +271,10 @@ function updateUIStates() {
             btn.className = "quick-btn shrink-0 bg-white border border-slate-300 text-slate-700 font-bold text-xs px-3 py-2 rounded-md transition shadow-xs";
         }
     });
-    if (anyQuickActive) clearQuickBtn.classList.remove('hidden');
-    else clearQuickBtn.classList.add('hidden');
+    if (clearQuickBtn) {
+        if (anyQuickActive) clearQuickBtn.classList.remove('hidden');
+        else clearQuickBtn.classList.add('hidden');
+    }
 
     drawerFilterBtns.forEach(btn => {
         const type = btn.getAttribute('data-filter-type');
@@ -281,15 +290,17 @@ function updateUIStates() {
         else btn.className = "drawer-filter-btn border border-slate-700 bg-slate-800 text-slate-200 py-2 px-2.5 rounded-md font-bold text-xs transition text-center";
     });
 
-    activeChipsContainer.innerHTML = '';
-    let activeDrawerCount = 0;
-    if (activeDrawerType !== 'All') { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeDrawerType} <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
-    if (activeMaxPrice) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">Under $${(activeMaxPrice/1000).toFixed(0)}k <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
-    if (activeMaxMiles) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
-    if (activeMinYear) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeMinYear}+ <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+    if (activeChipsContainer) {
+        activeChipsContainer.innerHTML = '';
+        let activeDrawerCount = 0;
+        if (activeDrawerType !== 'All') { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('type')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeDrawerType} <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+        if (activeMaxPrice) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('price')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">Under $${(activeMaxPrice/1000).toFixed(0)}k <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+        if (activeMaxMiles) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('miles')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">&lt; ${(activeMaxMiles/1000).toFixed(0)}k mi <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
+        if (activeMinYear) { activeDrawerCount++; activeChipsContainer.innerHTML += `<button onclick="clearDrawerFilter('year')" class="inline-flex items-center gap-1 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-md shadow-sm active:scale-95 transition cursor-pointer w-auto">${activeMinYear}+ <i class="fa-solid fa-xmark ml-1 opacity-70"></i></button>`; }
 
-    if (activeDrawerCount > 0) activeChipsContainer.classList.remove('hidden');
-    else activeChipsContainer.classList.add('hidden');
+        if (activeDrawerCount > 0) activeChipsContainer.classList.remove('hidden');
+        else activeChipsContainer.classList.add('hidden');
+    }
 }
 
 window.clearDrawerFilter = function(filterKey) {
@@ -304,7 +315,7 @@ window.clearDrawerFilter = function(filterKey) {
 // EVENT LISTENERS
 // ------------------------------------------------------------------------
 quickButtons.forEach(btn => { btn.addEventListener('click', () => { activeQuickFilters[btn.getAttribute('data-quick')] = !activeQuickFilters[btn.getAttribute('data-quick')]; processInventory(); }); });
-clearQuickBtn.addEventListener('click', () => { Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
+if(clearQuickBtn) clearQuickBtn.addEventListener('click', () => { Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
 
 drawerFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -316,62 +327,77 @@ drawerFilterBtns.forEach(btn => {
         processInventory();
     });
 });
-resetAllBtn.addEventListener('click', () => { activeDrawerType = 'All'; activeMaxPrice = null; activeMaxMiles = null; activeMinYear = null; Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
+if(resetAllBtn) resetAllBtn.addEventListener('click', () => { activeDrawerType = 'All'; activeMaxPrice = null; activeMaxMiles = null; activeMinYear = null; Object.keys(activeQuickFilters).forEach(k => activeQuickFilters[k] = false); processInventory(); });
 
-searchInput.addEventListener('input', (e) => { 
-    searchTerm = e.target.value.toLowerCase().trim(); 
-    if (searchTerm.length > 0) clearSearchBtn.classList.remove('hidden');
-    else clearSearchBtn.classList.add('hidden');
-    processInventory(); 
-});
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => { 
+        searchTerm = e.target.value.toLowerCase().trim(); 
+        if (clearSearchBtn) {
+            if (searchTerm.length > 0) clearSearchBtn.classList.remove('hidden');
+            else clearSearchBtn.classList.add('hidden');
+        }
+        processInventory(); 
+    });
+}
 
-// FIXED: Clear search completely wipes the URL so backspace works normally
-clearSearchBtn.addEventListener('click', () => { 
-    searchInput.value = ''; 
-    searchTerm = ''; 
-    clearSearchBtn.classList.add('hidden'); 
-    
-    // Wipe the search parameter from the URL instantly
-    const url = new URL(window.location);
-    url.searchParams.delete('search');
-    window.history.replaceState({}, '', url);
-    
-    processInventory(); 
-    searchInput.focus(); 
-});
+if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => { 
+        if(searchInput) searchInput.value = ''; 
+        searchTerm = ''; 
+        clearSearchBtn.classList.add('hidden'); 
+        
+        const url = new URL(window.location);
+        url.searchParams.delete('search');
+        window.history.replaceState({}, '', url);
+        
+        processInventory(); 
+        if(searchInput) searchInput.focus(); 
+    });
+}
 
-sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
+if(sortSelect) sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
-const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !isSurpriseMode && currentPage <= Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE)) {
-        spinner.classList.remove('hidden');
-        setTimeout(() => { renderNextBatch(); spinner.classList.add('hidden'); }, 250);
-    }
-}, { root: scrollContainer, rootMargin: '150px' });
-observer.observe(sentinel);
+if (sentinel) {
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !isSurpriseMode && currentPage <= Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE)) {
+            if(spinner) spinner.classList.remove('hidden');
+            setTimeout(() => { renderNextBatch(); if(spinner) spinner.classList.add('hidden'); }, 250);
+        }
+    }, { root: scrollContainer, rootMargin: '150px' });
+    observer.observe(sentinel);
+}
 
-scrollContainer.addEventListener('scroll', () => {
-    if (scrollContainer.scrollTop > 50) globalHeader.classList.add('-translate-y-full');
-    else globalHeader.classList.remove('-translate-y-full');
+if (scrollContainer) {
+    scrollContainer.addEventListener('scroll', () => {
+        if (globalHeader) {
+            if (scrollContainer.scrollTop > 50) globalHeader.classList.add('-translate-y-full');
+            else globalHeader.classList.remove('-translate-y-full');
+        }
 
-    if (scrollContainer.scrollTop > 120) {
-        stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm'); stickyBar.classList.add('bg-slate-900', 'shadow-lg');
-        filterIconBtn.className = "shrink-0 bg-white/10 hover:bg-white/20 text-white w-[46px] h-[46px] flex items-center justify-center rounded-lg transition border border-white/20 active:scale-95";
-        scrollToTopBtn.classList.remove('hidden');
-    } else {
-        stickyBar.classList.remove('bg-slate-900', 'shadow-lg'); stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
-        filterIconBtn.className = "shrink-0 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 w-[46px] h-[46px] flex items-center justify-center rounded-lg transition shadow-sm active:scale-95";
-        scrollToTopBtn.classList.add('hidden');
-    }
-}, { passive: true });
+        if (stickyBar) {
+            if (scrollContainer.scrollTop > 120) {
+                stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm'); stickyBar.classList.add('bg-slate-900', 'shadow-lg');
+                if(filterIconBtn) filterIconBtn.className = "shrink-0 bg-white/10 hover:bg-white/20 text-white w-[46px] h-[46px] flex items-center justify-center rounded-lg transition border border-white/20 active:scale-95";
+                if(scrollToTopBtn) scrollToTopBtn.classList.remove('hidden');
+            } else {
+                stickyBar.classList.remove('bg-slate-900', 'shadow-lg'); stickyBar.classList.add('bg-white/80', 'backdrop-blur-sm');
+                if(filterIconBtn) filterIconBtn.className = "shrink-0 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 w-[46px] h-[46px] flex items-center justify-center rounded-lg transition shadow-sm active:scale-95";
+                if(scrollToTopBtn) scrollToTopBtn.classList.add('hidden');
+            }
+        }
+    }, { passive: true });
+}
 
-scrollToTopBtn.addEventListener('click', () => { scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }); });
+if(scrollToTopBtn && scrollContainer) scrollToTopBtn.addEventListener('click', () => { scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }); });
 
-function openDrawer() { drawerBackdrop.classList.remove('hidden'); drawer.classList.remove('translate-x-full'); }
-function closeDrawer() { drawer.classList.add('translate-x-full'); drawerBackdrop.classList.add('hidden'); }
-filterIconBtn.addEventListener('click', openDrawer); closeDrawerBtn.addEventListener('click', closeDrawer); doneDrawerBtn.addEventListener('click', closeDrawer); drawerBackdrop.addEventListener('click', closeDrawer);
+function openDrawer() { if(drawerBackdrop && drawer) { drawerBackdrop.classList.remove('hidden'); drawer.classList.remove('translate-x-full'); } }
+function closeDrawer() { if(drawerBackdrop && drawer) { drawer.classList.add('translate-x-full'); drawerBackdrop.classList.add('hidden'); } }
+if(filterIconBtn) filterIconBtn.addEventListener('click', openDrawer); 
+if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer); 
+if(doneDrawerBtn) doneDrawerBtn.addEventListener('click', closeDrawer); 
+if(drawerBackdrop) drawerBackdrop.addEventListener('click', closeDrawer);
 
-if (surpriseAgainBtn) surpriseAgainBtn.addEventListener('click', () => { processInventory(); scrollContainer.scrollTo({top: 0, behavior: 'smooth'}); });
+if (surpriseAgainBtn) surpriseAgainBtn.addEventListener('click', () => { processInventory(); if(scrollContainer) scrollContainer.scrollTo({top: 0, behavior: 'smooth'}); });
 if (showAllSurpriseBtn) {
     showAllSurpriseBtn.addEventListener('click', () => {
         isSurpriseMode = false;
@@ -382,13 +408,13 @@ if (showAllSurpriseBtn) {
     });
 }
 
-function openCtaModal() { ctaModalBackdrop.classList.remove('hidden'); setTimeout(() => { ctaModalBackdrop.classList.remove('opacity-0'); ctaModalBox.classList.remove('scale-95'); }, 10); }
-function closeCtaModal() { ctaModalBackdrop.classList.add('opacity-0'); ctaModalBox.classList.add('scale-95'); setTimeout(() => { ctaModalBackdrop.classList.add('hidden'); ctaFormStep.classList.remove('hidden'); ctaSuccessStep.classList.add('hidden'); ctaLeadForm.reset(); }, 300); }
+function openCtaModal() { if(ctaModalBackdrop && ctaModalBox) { ctaModalBackdrop.classList.remove('hidden'); setTimeout(() => { ctaModalBackdrop.classList.remove('opacity-0'); ctaModalBox.classList.remove('scale-95'); }, 10); } }
+function closeCtaModal() { if(ctaModalBackdrop && ctaModalBox) { ctaModalBackdrop.classList.add('opacity-0'); ctaModalBox.classList.add('scale-95'); setTimeout(() => { ctaModalBackdrop.classList.add('hidden'); if(ctaFormStep) ctaFormStep.classList.remove('hidden'); if(ctaSuccessStep) ctaSuccessStep.classList.add('hidden'); if(ctaLeadForm) ctaLeadForm.reset(); }, 300); } }
 document.addEventListener('click', (e) => { if (e.target.closest('.cta-trigger-btn')) openCtaModal(); });
-ctaCloseBtn.addEventListener('click', closeCtaModal);
-ctaReturnBtn.addEventListener('click', closeCtaModal);
-ctaModalBackdrop.addEventListener('click', (e) => { if(e.target === ctaModalBackdrop) closeCtaModal(); });
-ctaLeadForm.addEventListener('submit', (e) => { e.preventDefault(); ctaFormStep.classList.add('hidden'); ctaSuccessStep.classList.remove('hidden'); });
+if(ctaCloseBtn) ctaCloseBtn.addEventListener('click', closeCtaModal);
+if(ctaReturnBtn) ctaReturnBtn.addEventListener('click', closeCtaModal);
+if(ctaModalBackdrop) ctaModalBackdrop.addEventListener('click', (e) => { if(e.target === ctaModalBackdrop) closeCtaModal(); });
+if(ctaLeadForm) ctaLeadForm.addEventListener('submit', (e) => { e.preventDefault(); if(ctaFormStep) ctaFormStep.classList.add('hidden'); if(ctaSuccessStep) ctaSuccessStep.classList.remove('hidden'); });
 
 function initApp() {
     if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
