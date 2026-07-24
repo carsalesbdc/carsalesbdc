@@ -6,17 +6,13 @@ let currentPage = 1;
 // Master Filter State
 let searchTerm = '';
 let currentSort = 'default';
-
-// Quick Filters State
 let activeQuickFilters = { suv: false, truck: false, lowmiles: false, under25k: false, newarrival: false, under500mo: false };
-
-// Drawer Filters State
 let activeDrawerType = 'All';
 let activeMaxPrice = null;
 let activeMaxMiles = null;
 let activeMinYear = null;
 
-// URL Param State (Passed from Home Page)
+// URL Param State
 let isSurpriseMode = false;
 let forceCondition = null; 
 let forcedModel = null;
@@ -47,12 +43,10 @@ const continueShoppingContainer = document.getElementById('continue-shopping-con
 const viewedCarsScroll = document.getElementById('viewed-cars-scroll');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-// Surprise Me Handles
 const surpriseControls = document.getElementById('surprise-controls');
 const surpriseAgainBtn = document.getElementById('surprise-again-btn');
 const showAllSurpriseBtn = document.getElementById('show-all-surprise-btn');
 
-// CTA Modal Handles
 const ctaModalBackdrop = document.getElementById('cta-modal-backdrop');
 const ctaModalBox = document.getElementById('cta-modal-box');
 const ctaCloseBtn = document.getElementById('cta-close-btn');
@@ -74,6 +68,25 @@ function cleanSearchString(str) {
     if (slangDictionary[rawLower]) return slangDictionary[rawLower].replace(/[-_ \/\\]/g, '');
     if (slangDictionary[cleaned]) return slangDictionary[cleaned].replace(/[-_ \/\\]/g, '');
     return cleaned;
+}
+
+// ------------------------------------------------------------------------
+// 1. INITIALIZE URL PARAMETERS ONLY ONCE ON LOAD
+// ------------------------------------------------------------------------
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('mode') === 'surprise') isSurpriseMode = true;
+if (urlParams.get('condition')) forceCondition = urlParams.get('condition').toLowerCase();
+if (urlParams.get('model')) forcedModel = urlParams.get('model').toLowerCase();
+if (urlParams.get('type')) {
+    const t = urlParams.get('type').toLowerCase();
+    if (t === 'suv') activeQuickFilters.suv = true;
+    if (t === 'truck') activeQuickFilters.truck = true;
+}
+if (urlParams.get('maxPrice')) activeMaxPrice = Number(urlParams.get('maxPrice'));
+if (urlParams.get('search')) {
+    searchTerm = urlParams.get('search').toLowerCase().trim();
+    searchInput.value = searchTerm;
+    clearSearchBtn.classList.remove('hidden');
 }
 
 // ------------------------------------------------------------------------
@@ -185,39 +198,12 @@ function processInventory() {
     grid.innerHTML = ''; 
     currentPage = 1;
 
-    // 1. Grab parameters passed from Home Page doors
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlSearch = urlParams.get('search');
-    const urlType = urlParams.get('type');
-    const urlCondition = urlParams.get('condition');
-    const urlMaxPrice = urlParams.get('maxPrice');
-    const urlModel = urlParams.get('model');
-    const urlMode = urlParams.get('mode');
-
-    // 2. Set State based on URL
-    if (urlMode === 'surprise') isSurpriseMode = true;
-    if (urlCondition) forceCondition = urlCondition.toLowerCase();
-    if (urlModel) forcedModel = urlModel.toLowerCase();
-    if (urlSearch && searchTerm === '') searchTerm = urlSearch.toLowerCase().trim();
-    if (urlType) {
-        if (urlType.toLowerCase() === 'suv') activeQuickFilters.suv = true;
-        if (urlType.toLowerCase() === 'truck') activeQuickFilters.truck = true;
-    }
-    if (urlMaxPrice && !activeMaxPrice) activeMaxPrice = Number(urlMaxPrice);
-
-    if (searchTerm.length > 0) {
-        searchInput.value = searchTerm;
-        clearSearchBtn.classList.remove('hidden');
-    }
-
     const cleanedSearchTerm = cleanSearchString(searchTerm);
 
-    // 3. Filter Dataset
+    // Filter Dataset
     filteredVehicles = allVehicles.filter(car => {
         const carMilesNum = Number(String(car.miles).replace(/,/g, ''));
         const carDaysOnLot = Number(car.daysOnLot || 0);
-        
-        // Proxy for New vs Used if condition flag doesn't exist
         const isCarNew = carMilesNum < 500; 
 
         if (forceCondition === 'new' && !isCarNew) return false;
@@ -242,18 +228,15 @@ function processInventory() {
         return true;
     });
 
-    // 4. Sort or Randomize Logic
+    // Sort or Randomize Logic
     if (isSurpriseMode) {
-        // Shuffle the array randomly
         filteredVehicles = filteredVehicles.sort(() => 0.5 - Math.random());
-        // Cap exactly at 8 cars
         filteredVehicles = filteredVehicles.slice(0, 8);
         
         counter.innerText = `8 Surprise Matches`;
-        sentinel.classList.add('hidden'); // Disable infinite scroll
+        sentinel.classList.add('hidden'); 
         if(surpriseControls) surpriseControls.classList.remove('hidden');
     } else {
-        // Standard sort logic
         if (currentSort === 'price-low') filteredVehicles.sort((a, b) => a.price - b.price);
         else if (currentSort === 'price-high') filteredVehicles.sort((a, b) => b.price - a.price);
         else if (currentSort === 'miles-low') filteredVehicles.sort((a, b) => Number(String(a.miles).replace(/,/g,'')) - Number(String(b.miles).replace(/,/g,'')));
@@ -262,7 +245,7 @@ function processInventory() {
         else if (currentSort === 'year-old') filteredVehicles.sort((a, b) => a.year - b.year);
 
         counter.innerText = `${filteredVehicles.length} ${filteredVehicles.length === 1 ? 'Vehicle' : 'Vehicles'}`;
-        sentinel.classList.remove('hidden'); // Re-enable scroll
+        sentinel.classList.remove('hidden'); 
         if(surpriseControls) surpriseControls.classList.add('hidden');
     }
     
@@ -341,10 +324,24 @@ searchInput.addEventListener('input', (e) => {
     else clearSearchBtn.classList.add('hidden');
     processInventory(); 
 });
-clearSearchBtn.addEventListener('click', () => { searchInput.value = ''; searchTerm = ''; clearSearchBtn.classList.add('hidden'); processInventory(); searchInput.focus(); });
+
+// FIXED: Clear search completely wipes the URL so backspace works normally
+clearSearchBtn.addEventListener('click', () => { 
+    searchInput.value = ''; 
+    searchTerm = ''; 
+    clearSearchBtn.classList.add('hidden'); 
+    
+    // Wipe the search parameter from the URL instantly
+    const url = new URL(window.location);
+    url.searchParams.delete('search');
+    window.history.replaceState({}, '', url);
+    
+    processInventory(); 
+    searchInput.focus(); 
+});
+
 sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; processInventory(); });
 
-// Scroll behaviors
 const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && !isSurpriseMode && currentPage <= Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE)) {
         spinner.classList.remove('hidden');
@@ -354,12 +351,8 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(sentinel);
 
 scrollContainer.addEventListener('scroll', () => {
-    // Hide global header on scroll down to save space
-    if (scrollContainer.scrollTop > 50) {
-        globalHeader.classList.add('-translate-y-full');
-    } else {
-        globalHeader.classList.remove('-translate-y-full');
-    }
+    if (scrollContainer.scrollTop > 50) globalHeader.classList.add('-translate-y-full');
+    else globalHeader.classList.remove('-translate-y-full');
 
     if (scrollContainer.scrollTop > 120) {
         stickyBar.classList.remove('bg-white/80', 'backdrop-blur-sm'); stickyBar.classList.add('bg-slate-900', 'shadow-lg');
@@ -374,18 +367,11 @@ scrollContainer.addEventListener('scroll', () => {
 
 scrollToTopBtn.addEventListener('click', () => { scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }); });
 
-// Drawer Logic
 function openDrawer() { drawerBackdrop.classList.remove('hidden'); drawer.classList.remove('translate-x-full'); }
 function closeDrawer() { drawer.classList.add('translate-x-full'); drawerBackdrop.classList.add('hidden'); }
 filterIconBtn.addEventListener('click', openDrawer); closeDrawerBtn.addEventListener('click', closeDrawer); doneDrawerBtn.addEventListener('click', closeDrawer); drawerBackdrop.addEventListener('click', closeDrawer);
 
-// Surprise Me Controls Logic
-if (surpriseAgainBtn) {
-    surpriseAgainBtn.addEventListener('click', () => {
-        processInventory(); 
-        scrollContainer.scrollTo({top: 0, behavior: 'smooth'});
-    });
-}
+if (surpriseAgainBtn) surpriseAgainBtn.addEventListener('click', () => { processInventory(); scrollContainer.scrollTo({top: 0, behavior: 'smooth'}); });
 if (showAllSurpriseBtn) {
     showAllSurpriseBtn.addEventListener('click', () => {
         isSurpriseMode = false;
@@ -396,41 +382,14 @@ if (showAllSurpriseBtn) {
     });
 }
 
-// ------------------------------------------------------------------------
-// CTA MODAL LOGIC (Is It Here?)
-// ------------------------------------------------------------------------
-function openCtaModal() {
-    ctaModalBackdrop.classList.remove('hidden');
-    setTimeout(() => {
-        ctaModalBackdrop.classList.remove('opacity-0');
-        ctaModalBox.classList.remove('scale-95');
-    }, 10);
-}
-
-function closeCtaModal() {
-    ctaModalBackdrop.classList.add('opacity-0');
-    ctaModalBox.classList.add('scale-95');
-    setTimeout(() => {
-        ctaModalBackdrop.classList.add('hidden');
-        ctaFormStep.classList.remove('hidden');
-        ctaSuccessStep.classList.add('hidden');
-        ctaLeadForm.reset();
-    }, 300);
-}
-
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.cta-trigger-btn')) openCtaModal();
-});
+function openCtaModal() { ctaModalBackdrop.classList.remove('hidden'); setTimeout(() => { ctaModalBackdrop.classList.remove('opacity-0'); ctaModalBox.classList.remove('scale-95'); }, 10); }
+function closeCtaModal() { ctaModalBackdrop.classList.add('opacity-0'); ctaModalBox.classList.add('scale-95'); setTimeout(() => { ctaModalBackdrop.classList.add('hidden'); ctaFormStep.classList.remove('hidden'); ctaSuccessStep.classList.add('hidden'); ctaLeadForm.reset(); }, 300); }
+document.addEventListener('click', (e) => { if (e.target.closest('.cta-trigger-btn')) openCtaModal(); });
 ctaCloseBtn.addEventListener('click', closeCtaModal);
 ctaReturnBtn.addEventListener('click', closeCtaModal);
 ctaModalBackdrop.addEventListener('click', (e) => { if(e.target === ctaModalBackdrop) closeCtaModal(); });
-ctaLeadForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    ctaFormStep.classList.add('hidden');
-    ctaSuccessStep.classList.remove('hidden');
-});
+ctaLeadForm.addEventListener('submit', (e) => { e.preventDefault(); ctaFormStep.classList.add('hidden'); ctaSuccessStep.classList.remove('hidden'); });
 
-// Init
 function initApp() {
     if (typeof allVehicles !== 'undefined' && Array.isArray(allVehicles)) {
         renderViewedCars(); 
