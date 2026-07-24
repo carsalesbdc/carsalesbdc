@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#E2E8F0">
-    <title>CarSalesBDC - Mobile Vehicle Inventory</title>
+    <title>Inventory - CarSalesBDC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,7 +30,10 @@
 
         <header class="bg-white/95 border-b border-slate-300/60 p-3.5 shadow-sm">
             <div class="max-w-md mx-auto flex items-center justify-between pb-0.5">
-                <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">CarSales<span class="text-blue-600">BDC</span></h1>
+                <a href="index.html" class="flex items-center gap-1.5 text-blue-600 active:scale-95 transition cursor-pointer mr-2">
+                    <i class="fa-solid fa-house text-sm"></i>
+                </a>
+                <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase flex-grow">CarSales<span class="text-blue-600">BDC</span></h1>
                 <span class="text-sm bg-slate-100 text-slate-900 font-bold px-3 py-1 rounded">A <span class="text-indigo-950 font-black">CB</span> Design</span>
             </div>
         </header>
@@ -91,14 +94,14 @@
 
         <main class="max-w-md mx-auto p-3 pb-24">
             
-            <div id="continue-shopping-container" class="hidden mb-6 mt-1">
-                <div class="flex items-center justify-between mb-2.5 px-1">
-                    <h2 class="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-clock-rotate-left text-blue-600"></i> Continue Shopping
-                    </h2>
-                    <button id="clear-history-btn" class="text-[10px] font-bold text-slate-400 hover:text-rose-500 uppercase tracking-wide transition">Clear</button>
+            <div id="continue-shopping-container" class="hidden w-full bg-slate-900 rounded-2xl p-4 mb-6 mt-1 shadow-md">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Continue Shopping
+                    </h3>
+                    <button id="clear-history-btn" class="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-wide transition">Clear</button>
                 </div>
-                <div id="viewed-cars-scroll" class="flex gap-3 overflow-x-auto pb-2 scrollbar-none px-1 -mx-1 snap-x snap-mandatory">
+                <div id="viewed-cars-scroll" class="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory">
                     </div>
             </div>
 
@@ -226,6 +229,6 @@
     </div>
 
     <script src="inventory.js"></script>
-    <script src="app.js?v=16"></script>
+    <script src="app.js?v=17"></script>
 </body>
 </html>
